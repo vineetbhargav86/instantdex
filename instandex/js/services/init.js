@@ -2,7 +2,7 @@
 Instantdex.value('isCordova',  window.cordova ? true : false);
 
 'use strict';
-Instantdex.factory('naclAPI', function($log, isCordova,$http, nodeWebkit) {
+Instantdex.factory('naclAPI', function($log, isCordova,$http) {
 
 var root={usePexe:false, domain:"http://127.0.0.1",port:"7778"};
 
@@ -92,7 +92,7 @@ root.makeRequest = function( request, callback ) {
 }
 
    }
-    };
+};
     root.useGETRequest=function(request){
         if(request.method && (request.method==='apikeypair' || request.method==='setuserid')){
             return false;
@@ -151,8 +151,7 @@ root.makeRequest = function( request, callback ) {
 
 
 'use strict';
-angular.module('iguanaApp.services')
-  .factory('naclCommon', function($log,naclAPI,fileStorageService) {
+Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService) {
 
               var root={
     /** A reference to the NaCl module, once it is loaded. */

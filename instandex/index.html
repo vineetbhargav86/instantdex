@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app="InstandexApp">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="InstandexApp" ng-csp>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,12 +9,14 @@
     <link href="css/foundation.css" type="text/css" rel="stylesheet" />
     <link href="css/app.css" type="text/css" rel="stylesheet" />
     <link rel="stylesheet" href="css/font-awesome.min.css">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/angular.min.js"></script>
-    <script src="js/angular-ui-router.min.js"></script>
-    <script src="js/angular-route.min.js"></script>
-    <script type="text/javascript" src="js/angular-animate.min.js"></script>
-    <script src="js/libs/foundation.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/angular-csp.css">  
+
+    <!-- <script src="js/jquery.min.js"></script> -->
+    <script src="js/libs/angular.min.js"></script>
+    <script src="js/libs/angular-ui-router.min.js"></script>
+    <script src="js/libs/angular-route.min.js"></script>
+    <script type="text/javascript" src="js/libs/angular-animate.min.js"></script>
+    <!-- <script src="js/libs/foundation.min.js"></script> -->
     <script src="js/app.js"></script>
     <script type="text/javascript" src="js/controllers/coin_exchange_1by1_controller.js"></script>
     <script type="text/javascript" src="js/controllers/consolidate_coins_controller.js"></script>
@@ -23,9 +25,10 @@
     <script type="text/javascript" src="js/controllers/options_controller.js"></script>
     <script type="text/javascript" src="js/services/globalServices.js"></script>
     <script type="text/javascript" src="js/services/init.js"></script>
-    <script type="text/javascript" src="js/services/storage.js"></script>
+    <script type="text/javascript" src="js/services/storage.js"></script>  
 </head>
-<body>
+<body ng-cloak class="ng-cloak" data-custom-load="true" data-name="iguana" data-tools="pnacl newlib glibc clang-newlib mac" data-configs="Debug Release"
+data-path="{tc}/{config}">
     <nav class="top-bar top-bar-01" data-topbar role="navigation">
     	<div class="row">
         	<div class="top-section small-12 columns">
@@ -48,6 +51,7 @@
     </nav>
 
     <div ui-view></div>
-
+    
+    <div id="listener"></div>
 </body>
 </html>

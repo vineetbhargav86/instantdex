@@ -1,6 +1,7 @@
 'use strict';
 
-Instantdex.controller('CoinExchangeController', function($scope, $state, GlobalServices){
+Instantdex.controller('CoinExchangeController', function($scope, $state, GlobalServices, naclAPI, naclCommon){
+    naclCommon.onload();
     $scope.combinedor1by1 = false;
     $scope.coinslist = GlobalServices.getCoinTypes();
 
@@ -21,5 +22,9 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, GlobalS
         var temp = $scope.coinType1;
         $scope.coinType1 = $scope.coinType2;
         $scope.coinType2 = temp;
+    }
+
+    $scope.preventDefault = function(event){
+        event.preventDefault();
     }
 });

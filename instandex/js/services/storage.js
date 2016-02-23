@@ -1,7 +1,7 @@
 
 'use strict';
 
-Instantdex.factory('fileStorageService', function(lodash, $log) {
+Instantdex.factory('fileStorageService', function($log) {
     var root = {},
       _fs, _dir;
 

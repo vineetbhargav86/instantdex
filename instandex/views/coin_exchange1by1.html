@@ -55,17 +55,21 @@
     	<div class="tab-box">
           <div class="medium-2 columns no-right-padding">
             <ul class="tabs vertical" id="example-vert-tabs" data-tabs>
-              <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Bittrex<br /> CoinA: 10<br /> CoinB: 20</a></li>
-              <li class="tabs-title"><a href="#panel2v">BTer<br /> CoinA: 10<br /> CoinB: 20</a></li>
-              <li class="tabs-title"><a href="#panel3v">Poloniex<br /> CoinA: 10<br /> CoinB: 20</a></li>
-              <li class="tabs-title"><a href="#panel4v">BTC38.com<br /> CoinA: 10<br /> CoinB: 20</a></li>
-              <li class="tabs-title"><a href="#panel3v">bitfinex<br /> CoinA: 10<br /> CoinB: 20</a></li>
-              <li class="tabs-title"><a href="#panel4v">MultiGate Way<br /> CoinA: 10<br /> CoinB: 20</a></li>
+              <li class="tabs-title" ng-class="tabPanels['panel1v'] ? 'is-active' : '' "><a href="#panel1v" aria-selected="true" ng-click="changeTabContent($event, 'panel1v')">Bittrex<br /> CoinA: 10<br /> CoinB: 20</a></li>
+              <li class="tabs-title" ng-class="tabPanels['panel2v'] ? 'is-active' : '' "><a href="#panel2v"  ng-click="changeTabContent($event, 'panel2v')">BTer<br /> CoinA: 10<br /> CoinB: 20</a></li>
+
+              <li class="tabs-title" ng-class="tabPanels['panel3v'] ? 'is-active' : '' "><a href="#panel3v" ng-click="changeTabContent($event, 'panel3v')">Poloniex<br /> CoinA: 10<br /> CoinB: 20</a></li>
+
+              <li class="tabs-title" ng-class="tabPanels['panel4v'] ? 'is-active' : '' "><a href="#panel4v" ng-click="changeTabContent($event, 'panel4v')">BTC38.com<br /> CoinA: 10<br /> CoinB: 20</a></li>
+
+              <li class="tabs-title" ng-class="tabPanels['panel5v'] ? 'is-active' : '' "><a href="#panel5v" ng-click="changeTabContent($event, 'panel5v')">bitfinex<br /> CoinA: 10<br /> CoinB: 20</a></li>
+
+              <li class="tabs-title" ng-class="tabPanels['panel6v'] ? 'is-active' : '' "><a href="#panel6v" ng-click="changeTabContent($event, 'panel6v')">MultiGate Way<br /> CoinA: 10<br /> CoinB: 20</a></li>
             </ul>
             </div>
             <div class="medium-10 columns no-left-padding">
             <div class="tabs-content vertical" data-tabs-content="example-vert-tabs">
-              <div class="tabs-panel is-active" id="panel1v">
+              <div class="tabs-panel" id="panel1v" ng-show="tabPanels['panel1v']">
                 <div class="row no-left-margin">
                 	<div class="left-box medium-6 columns">
                     	<div class="innr-box">
@@ -120,7 +124,7 @@
                                             <span class="input-group-label">CoinA</span>
                                         </div>
                                         <span class="buy-btn">
-                                        	<a href="#" onclick="event.preventDefault();">Buy CoinB</a>
+                                        	<a href="#" ng-click="preventDefault($event)">Buy CoinB</a>
                                         </span>
                                     </li>
                                 </ul>
@@ -170,7 +174,7 @@
                                             <span class="input-group-label">CoinA</span>
                                         </div>
                                         <span class="buy-btn">
-                                        	<a href="#" onclick="event.preventDefault();">Buy CoinB</a>
+                                        	<a href="#" ng-click="preventDefault($event)">Buy CoinB</a>
                                         </span>
                                     </li>
                                 </ul>
@@ -272,19 +276,19 @@
                 </div>
                 
               </div>
-              <div class="tabs-panel" id="panel2v">
+              <div class="tabs-panel" id="panel2v" ng-show="tabPanels['panel2v']">
                
               </div>
-              <div class="tabs-panel" id="panel3v">
+              <div class="tabs-panel" id="panel3v" ng-show="tabPanels['panel3v']">
                 
               </div>
-              <div class="tabs-panel" id="panel4v">
+              <div class="tabs-panel" id="panel4v" ng-show="tabPanels['panel4v']">
                
               </div>
-              <div class="tabs-panel" id="panel5v">
+              <div class="tabs-panel" id="panel5v" ng-show="tabPanels['panel5v']">
                 
               </div>
-              <div class="tabs-panel" id="panel6v">
+              <div class="tabs-panel" id="panel6v" ng-show="tabPanels['panel6v']">
                
               </div>
             </div>
@@ -327,10 +331,10 @@
 </div>
 
 <script>
-$(document).ready(function() {
-      $(document).foundation();
-  $('#myTabs').on('toggled', function (event, tab) {
-    console.log(tab);
-  });
-   });
+// $(document).ready(function() {
+//       $(document).foundation();
+//   $('#myTabs').on('toggled', function (event, tab) {
+//     console.log(tab);
+//   });
+//    });
 </script>

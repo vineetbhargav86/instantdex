@@ -2,9 +2,13 @@
 
 var Instantdex = angular.module('InstandexApp', [
     'ui.router', 'ngAnimate'])
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
+    .config(['$stateProvider', '$urlRouterProvider', '$provide', function($stateProvider, $urlRouterProvider, $provide){
+        $provide.decorator('$window', function($delegate) {
+            Object.defineProperty($delegate, 'history', {get: () => null});
+            return $delegate;
+        });
+
         $urlRouterProvider.otherwise('/coin_exchange');
-        
         $stateProvider.state('consolidate_coins', {
             url: '/consolidate_coins',
             templateUrl: 'views/consolidate_coins.html'
