@@ -1,0 +1,201 @@
+<div ng-controller="CoinExchangeController">
+    <div class="row ">
+        <div class="header small-12 columns">
+        	<h1>Coin Exchange</h1>
+        	<div class="row">
+            	<div class="top-part small-12 columns">
+                	<div class="row">
+                         <div class="left-part small-12 medium-8 large-8 columns">
+                                <label>Pairing</label>
+                                <select ng-options="coin.value as coin.key for coin in coinslist" ng-model="coinType1">
+                                    <option value="">Select Coin Type</option>
+                                </select>
+                                <span class="seprator">/</span>
+                                
+                                <select ng-options="coin.value as coin.key for coin in coinslist" ng-model="coinType2">
+                                    <option value="">Select Coin Type</option>
+                                </select>
+                                
+                                <span class="interchange-img">
+                                    <a href="#" ng-click="exchangeCoinsTypes($event)">
+                                        <i class="fa fa-exchange"></i>
+                                    </a>
+                                </span>     
+                            </div>
+                    
+                         <div class="right-part small-12 medium-4 large-4 columns">
+                         	<div class="top">
+                              	<h2>View</h2>
+                              	<ul class="combine-list">
+                                  <li>
+                                      <label>Combined</label>
+                                  </li>
+                                  <li>
+                                      <div class="switch round">
+                                        <input class="switch-input" id="switch" type="checkbox" name="switch" ng-model="combinedor1by1" ng-change="switchToCombinedOr1By1()">
+                                        <label class="switch-paddle" for="switch">
+                                          <span class="show-for-sr">View</span>
+                                        </label>
+                                      </div>
+                                  </li>
+                                  <li>
+                                      <label>1 By 1</label>
+                                  </li>
+                              </ul>
+                              </div>
+                         </div>
+                 	</div>
+             	</div>
+             </div>
+        </div>
+        
+            <div class="bottom-part small-12 columns">     
+            	<div class="row">
+                    <div class="left-part small-12 medium-8 large-8 columns">
+                     
+                    <table>
+                            <tr>
+                                <th>Exchange</th>
+                                <th>Price</th>
+                                <th>Amount</th>
+                                <th>Total CoinA</th>
+                            </tr>
+                            
+                            <tr>
+                                <td>poloniex</td>
+                                <td>0.00012 CoinA</td>
+                                <td>(1000 CoinB) <span class="change-amount"><a href="#" onclick="event.preventDefault();">Change amount</a></span></td>
+                                <td>(0.12 CoinA)</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Bittrex</td>
+                                <td>0.00013 CoinA</td>
+                                <td><span class="left-total">(+500 CoinB)<br /> 1500 CoinB Total</span><span class="change-amount"><a href="#" onclick="event.preventDefault();">Change amount</a></span></td>
+                                <td>(0.065 CoinA)<br /> (0.1265 CoinA) Total</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>poloniex</td>
+                                <td>0.00013 CoinA</td>
+                                <td><span class="left-total">(+1000 CoinB)<br /> 2500 CoinB Total</span></td>
+                                 <td>(+0.13 CoinA)<br /> 0.2565 CoinA Total</td>
+                            </tr>
+                            
+                             <tr class="line">
+                                <td>bitfinex</td>
+                                <td>0.000135 CoinA</td>
+                                <td>(1238 CoinB)</td>
+                                 <td>(0.16713 CoinA)</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>Bter</td>
+                                <td>0.00014 CoinA</td>
+                                <td><span class="left-total">(+2000 CoinB)<br /> 3500 CoinB Total</span><span class="balance-low">Your balance is too low (0.01 CoinA</span></td>
+                                <td>(+0.28 CoinA)<br /> 0.5365 CoinA Total</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>MGW</td>
+                                <td>0.00015 CoinA</td>
+                                <td><span class="left-total">(+5000 CoinB)<br /> 8500 CoinB Total</span><span class="change-amount"><a href="#"  onclick="event.preventDefault();">Change amount</a></span></td>
+                                <td>(0.75 CoinA)<br /> (1.2865 CoinA) Total</td>
+                            </tr>
+                            
+                            
+                        </table>
+                    
+                </div>
+                
+                     <div class="right-part small-12 medium-4 large-4 columns"> 
+                        <div class="bottom">
+                            <h4>Exchanges that offer CoinA/CoinB market Show? - Exchange - Balance</h4>
+                            <ul class="checkbox-ul">
+                                <li><input type="checkbox" value="" alt="" checked="checked" /> Bittrex - 3 CoinA</li>
+                                <li><input type="checkbox" value="" alt="" checked="checked" /> BTer - 0.01 CoinA</li>
+                                <li><input type="checkbox" value="" alt="" checked="checked" /> Polo - 1 CoinA</li>
+                                <li><input type="checkbox" value="" alt="" />BTC38.com <a href="#" onclick="event.preventDefault();">Add Api Key</a></li>
+                                <li><input type="checkbox" value="" alt="" checked="checked" />bitfinex<a href="#" onclick="event.preventDefault();">Add Api Key</a></li>
+                                <li><input type="checkbox" value="" alt="" checked="checked" />MultiGateWay - 2 CoinA</li>
+                                
+                                <li><input type="checkbox" value="" alt="" checked="checked" /> Bittrex - 3 CoinA</li>
+                                 
+                            </ul>
+                        </div>
+                 </div>
+                 </div>
+                 
+                <div class="row">
+                	<div class="bottom-area small-12 columns">
+                        <div class="convert-area">
+                        	<ul class="convert-list">
+                            	<li>
+                                	<label>Convert</label>
+                                     <select>
+                                          <option>0.2565 CoinA</option>
+                                      </select>
+                                </li>
+                                
+                                <li>
+                                	<label>into</label>
+                                     <select>
+                                          <option>2500 CoinA</option>
+                                      </select>
+                                </li>
+                                
+                                <li>
+                                	<label>Stored at</label>
+                                     <select>
+                                          <option>Super NET</option>
+                                          <option>Bittrex</option>
+                                          <option>Poloniex</option>
+                                          <option>NXT AE</option>
+                                          <option>---</option>
+                                      </select>
+                                </li>
+                                
+                                <li>
+                                	<span class="convert-btn">
+                                    	<input type="submit" value="Convert" alt="" />
+                                    </span>
+                                </li>
+                            </ul>
+                          
+                      </div>
+                    </div>
+                </div> 
+                 
+            </div>     
+            
+        
+          <div class="footer-frame small-12 columns">
+          	<div class="footer">
+              <h4>Order History</h4>
+              
+              <table>
+              	<thead>
+                    <tr>
+                        <th>lorem</th>
+                        <th>ipsum</th>
+                        <th>dolor</th>
+                        <th>sit</th>
+                        <th>lorem</th>
+                    </tr>
+                </thead>
+                    
+                <tbody>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </tbody>
+                    
+                </table>
+              </div>
+          </div>
+    </div>
+</div>

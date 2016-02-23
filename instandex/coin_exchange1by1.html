@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coin Exchange</title>
+<link href="css/style.css" type="text/css" rel="stylesheet" />
+<link href="css/copay.css" type="text/css" rel="stylesheet" />
+<link href="css/foundation.css" type="text/css" rel="stylesheet" />
+<link href="css/app.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+
+</head>
+
+<body>
+<div class="row">
+<div class="header small-12 columns">
+	<h1>Coin Exchange</h1>
+	<div class="row">
+    	<div class="top-part small-12 columns">
+        	<div class="row">
+                 <div class="left-part small-12 medium-8 large-8 columns">
+                        <label>Pairing</label>
+                        <select>
+                            <option>Coin A</option>
+                        </select>
+                        <span class="seprator">/</span>
+                        
+                        <select>
+                            <option>Coin B</option>
+                        </select>
+                        
+                        <span class="interchange-img">
+                            <a href="#">
+                                <i class="fa fa-exchange"></i>
+                            </a>
+                        </span>     
+                    </div>
+            
+                 <div class="right-part small-12 medium-4 large-4 columns">
+                 	<div class="top">
+                      	<h2>View Exchanges</h2>
+                      	<ul class="combine-list">
+                          <li>
+                              <label>Combined</label>
+                          </li>
+                          <li>
+                              <div class="switch round">
+                                <input class="switch-input" id="switch" type="checkbox" name="switch">
+                                <label class="switch-paddle" for="switch">
+                                  <span class="show-for-sr">View</span>
+                                </label>
+                              </div>
+                          </li>
+                          <li>
+                              <label>1 By 1</label>
+                          </li>
+                      </ul>
+                      </div>
+                 </div>
+         	</div>
+     	</div>
+     </div>
+</div>
+</div>
+
+
+<div class="row collapse">
+	<div class="tab-box">
+      <div class="medium-2 columns no-right-padding">
+        <ul class="tabs vertical" id="example-vert-tabs" data-tabs>
+          <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Bittrex<br /> CoinA: 10<br /> CoinB: 20</a></li>
+          <li class="tabs-title"><a href="#panel2v">BTer<br /> CoinA: 10<br /> CoinB: 20</a></li>
+          <li class="tabs-title"><a href="#panel3v">Poloniex<br /> CoinA: 10<br /> CoinB: 20</a></li>
+          <li class="tabs-title"><a href="#panel4v">BTC38.com<br /> CoinA: 10<br /> CoinB: 20</a></li>
+          <li class="tabs-title"><a href="#panel3v">bitfinex<br /> CoinA: 10<br /> CoinB: 20</a></li>
+          <li class="tabs-title"><a href="#panel4v">MultiGate Way<br /> CoinA: 10<br /> CoinB: 20</a></li>
+        </ul>
+        </div>
+        <div class="medium-10 columns no-left-padding">
+        <div class="tabs-content vertical" data-tabs-content="example-vert-tabs">
+          <div class="tabs-panel is-active" id="panel1v">
+            <div class="row no-left-margin">
+            	<div class="left-box medium-6 columns">
+                	<div class="innr-box">
+                        <h4>Buy CoinB for CoinA</h4>
+                        <h5><strong>Balance:</strong> 100 CoinA</h5>
+                        <form>
+                        	<ul class="form-list">
+                            	<li>
+                                    <label>Quantity</label>
+                                    <div class="input-group">
+                                        <input type="text" name="" class="rem-value input-group-field" value="">
+                                        <span class="input-group-label">CoinB</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Bid</label>
+                                    <div class="input-group">
+                                        <input type="text" name="" class="rem-value input-group-field" value="">
+                                        <span class="input-group-label">CoinA</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Order Type</label>
+                                    <div class="input-group">
+                                       <select>
+                                            <option>Limit (default)</option>
+                                        </select>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Time in force</label>
+                                    <div class="input-group">
+                                       <select>
+                                            <option>None (default)</option>
+                                        </select>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Buy when price is</label>
+                                    <select class="small">
+                                        <option>Condition</option>
+                                    </select>
+                                    <div class="input-group small">
+                                        <input type="text" name="" class="rem-value input-group-field" value="">
+                                        <span class="input-group-label">CoinA</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Total</label>
+                                    <div class="input-group small left">
+                                        <input type="text" name="" class="rem-value input-group-field" value="">
+                                        <span class="input-group-label">CoinA</span>
+                                    </div>
+                                    <span class="buy-btn">
+                                    	<a href="#">Buy CoinB</a>
+                                    </span>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+                <div class="right-box medium-6 columns">
+                	<div class="innr-box">
+                        <h4>Sell CoinB for CoinA</h4>
+                        <h5><strong>Balance:</strong> 100 CoinB</h5>
+                        <form>
+                        	<ul class="form-list">
+                            	<li>
+                                    <label>Quantity</label>
+                                    <div class="input-group">
+                                        <input type="text" name="" class="rem-value input-group-field" value="">
+                                        <span class="input-group-label">CoinB</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Ask</label>
+                                    <div class="input-group">
+                                        <input type="text" name="" class="rem-value input-group-field" value="">
+                                        <span class="input-group-label">CoinA</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Order Type</label>
+                                    <div class="input-group">
+                                       <select>
+                                            <option>Limit (default)</option>
+                                        </select>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Time in force</label>
+                                    <div class="input-group">
+                                       <select>
+                                            <option>None (default)</option>
+                                        </select>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Total</label>
+                                    <div class="input-group small left">
+                                        <input type="text" name="" class="rem-value input-group-field" value="">
+                                        <span class="input-group-label">CoinA</span>
+                                    </div>
+                                    <span class="buy-btn">
+                                    	<a href="#">Buy CoinB</a>
+                                    </span>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            <div class="row no-left-margin">
+            	<div class="left-box medium-6 columns">
+                	<div class="innr-box-01">
+                    	<h4>Sell Orders</h4>
+                        <div class="table-box">
+                			<table>
+                              <thead>
+                                <tr>
+                                  <th>Quantity CoinB</th>
+                                  <th>Price in CoinA</th>
+                                  <th>Total in CoinA</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>10</td>
+                                  <td>0.0012</td>
+                                  <td>0.012</td>
+                                </tr>
+                                <tr>
+                                  <td>45</td>
+                                  <td>0.0014</td>
+                                  <td>0.063</td>
+                                </tr>
+                                <tr>
+                                  <td>12</td>
+                                  <td>0.001672</td>
+                                  <td>0.020064</td>
+                                </tr>
+                                <tr>
+                                  <td>62</td>
+                                  <td>0.00168845</td>
+                                  <td>0.1046839</td>
+                                </tr>
+                                <tr>
+                                  <td>266</td>
+                                  <td>0.0019</td>
+                                  <td>0.5054</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-box medium-6 columns">
+                	<div class="innr-box-01">
+                    	<h4>Buy Orders</h4>
+                        <div class="table-box">
+                			<table>
+                              <thead>
+                                <tr>
+                                  <th>Quantity CoinB</th>
+                                  <th>Price in CoinA</th>
+                                  <th>Total in CoinA</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>10</td>
+                                  <td>0.0012</td>
+                                  <td>0.012</td>
+                                </tr>
+                                <tr>
+                                  <td>45</td>
+                                  <td>0.0014</td>
+                                  <td>0.063</td>
+                                </tr>
+                                <tr>
+                                  <td>12</td>
+                                  <td>0.001672</td>
+                                  <td>0.020064</td>
+                                </tr>
+                                <tr>
+                                  <td>62</td>
+                                  <td>0.00168845</td>
+                                  <td>0.1046839</td>
+                                </tr>
+                                <tr>
+                                  <td>266</td>
+                                  <td>0.0019</td>
+                                  <td>0.5054</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+          </div>
+          <div class="tabs-panel" id="panel2v">
+           
+          </div>
+          <div class="tabs-panel" id="panel3v">
+            
+          </div>
+          <div class="tabs-panel" id="panel4v">
+           
+          </div>
+          <div class="tabs-panel" id="panel5v">
+            
+          </div>
+          <div class="tabs-panel" id="panel6v">
+           
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+<div class="footer-frame small-12 columns">
+  	<div class="footer">
+      <h4>Order History</h4>
+      
+      <table>
+      	<thead>
+            <tr>
+                <th>lorem</th>
+                <th>ipsum</th>
+                <th>dolor</th>
+                <th>sit</th>
+                <th>lorem</th>
+            </tr>
+        </thead>
+            
+        <tbody>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </tbody>
+            
+        </table>
+      </div>
+  </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="js/foundation.min.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+$(document).ready(function() {
+      $(document).foundation();
+  $('#myTabs').on('toggled', function (event, tab) {
+    console.log(tab);
+  });
+   });
+</script>
+
+
+
+</body>
+</html>

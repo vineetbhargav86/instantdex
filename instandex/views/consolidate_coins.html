@@ -1,0 +1,153 @@
+<!--    original index.html cut short to view      -->
+<div ng-controller="ConsolidateCoinsController">
+    <div class="row">
+        <div class="header small-12 columns">
+            <h1>Consolidate Coins</h1>	
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="consolidate-bottom-box small-12 columns">
+        	<div class="top-caption-box">
+            	<label>Select coin</label>
+                <select>
+    				<option value="Bitcoin">Bitcoin (BTC)</option>
+    				<option value="Bitcoin">Bitcoin (BTC)</option>
+    			</select>
+            </div>
+            
+            <div class="consolidate-table-box">
+            	<h2>Source</h2>
+                <table>
+    				<thead>
+                        <tr>
+                            <th>Active? []</th>
+                            <th>Exchange</th>
+                            <th>Available Amount</th>
+                            <th>Transfer Fee</th>
+                            <th class="transaction-col">How much to send <input type="button" name="" value="Send Max"></th>
+                        </tr>
+                    </thead>
+    				<tbody>
+                        <tr>
+                            <td><input type="checkbox" name="" value=""></td>
+                            <td>Bittrex</td>
+                            <td>0.00223</td>
+                            <td>0.00001</td>
+                            <td class="transaction-col"><input type="number" name="" value="" placeholder="0.002"><span class="btn-box"><input type="button" name="" value="X"><input type="button" name="" value="Max"></span></td>
+                        </tr>
+        
+                        <tr>
+                            <td><input type="checkbox" name="" value=""></td>
+                            <td>Poloneix</td>
+                            <td>1.4</td>
+                            <td>0.00002</td>
+                            <td class="transaction-col"><input type="number" name="" value="" placeholder="13998"><span class="btn-box"><input type="button" name="" value="X"><input type="button" name="" value="Max"></span></td>
+                        </tr>
+        
+                        <tr>
+                            <td><input type="checkbox" name="" value=""></td>
+                            <td>NXT AE</td>
+                            <td>2</td>
+                            <td>1 NXT</td>
+                            <td class="transaction-col"><input type="number" name="" value="" placeholder="1"><span class="btn-box"><input type="button" name="" value="X"><input type="button" name="" value="Max"></span></td>
+                        </tr> 
+                        <tr>
+                            <td><input type="checkbox" name="" value=""></td>
+                            <td>Bter</td>
+                            <td>1,542</td>
+                            <td>0.0001</td>
+                            <td class="transaction-col disabled"><input type="number" name="" value="" placeholder="1"><span class="btn-box"><input type="button" name="" value="X"><input type="button" name="" value="Max"></span></td>
+                        </tr>    
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="transaction-col"></td>
+                        </tr>
+        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="transaction-col"></td>
+                        </tr>
+        
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="transaction-col"></td>
+                        </tr>
+                        <tr id="last-row">
+                            <td class="no-border"></td>
+                            <td class="no-border"></td>
+                            <td class="no-border"></td>
+                            <td class="thick-border"><strong>Fee totals: </strong> 0.0003 BTC 1 NXT</td>
+                            <td class="thick-border transaction-col"><strong>Total: </strong>2,4 BTC</td>
+                        </tr>
+                     </tbody>
+    			</table>
+            </div>
+            
+            <div class="bot-caption-box">
+            	<label>Destination</label>
+                <select>
+    				<option value="Bitcoin">BTC Address</option>
+    				<option value="Bitcoin">BTC Address</option>
+    			</select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="dest-addrs small-12 columns">
+        	<ul class="dest-addrs-list">
+            	<li>
+                	<label>Enter Destination Address</label>
+                    <span class="text"><input type="text" name="destination-address" value="" placeholder=""></span>
+                </li>
+                <li>
+                	<span class="send-btn">
+                    	<input type="button" id="sendbtn" name="Send" value="Send">
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    
+    <div class="footer-frame small-12 columns">
+      	<div class="footer">
+          <h4>Order History</h4>
+          
+          <table>
+          	<thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Coin</th>
+                    <th>Amount</th>
+                    <th>Confirmations</th>
+                </tr>
+            </thead>
+                
+            <tbody>
+                <tr>
+                    <td>01.01.2013</td>
+                    <td>Bittrex</td>
+                    <td>NXT AE</td>
+                    <td>NXT</td>
+                    <td>1000</td>
+                    <td>1000+</td>
+                </tr>
+            </tbody>
+                
+            </table>
+          </div>
+      </div>
+</div>
