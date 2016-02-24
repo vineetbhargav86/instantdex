@@ -25,10 +25,10 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
 
 
 .header .top-part .left-part {	padding-top: 25px;}
-.header .top-part .left-part select{ width:180px; display:inline-block; margin-left:10px; margin-right:10px; }
+.header .top-part .left-part select{ width:180px; display:inline-block; margin-left:10px; margin-right:10px; padding-right:25px; background-position:112% center;}
 .header .top-part .left-part label{  display:inline-block; line-height:35px; font-size:18px; font-weight:bold;}
 .header .top-part .left-part .left-image{  display:inline-block; border:1px solid rgb(202, 202, 202); padding: 9px 0; }
-.header .top-part .left-part .seprator{ display:inline-block; vertical-align:middle; }
+.header .top-part .left-part .seprator{ display:inline-block; vertical-align:middle; color:#3498db; font-size:25px;}
 .header .top-part .left-part span.interchange-img i{ font-size:25px; opacity:0.5;}
 .header .top-part .left-part span.interchange-img i:hover{ opacity:1;}
 
@@ -248,7 +248,8 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
 
 
 .footer-frame{ margin-top:20px;}
-.footer{ width:100%; float:left; border:2px solid #000; padding:0 20px;}
+.footer{ width:100%; float:left; border:2px solid #000; padding:0 20px 20px;}
+.footer table{ margin-bottom:0;}
 .footer h4{ float:left; background:#fff; padding:0 8px; font-size:20px; margin-top:-15px; margin-left:10px; }
 .footer table thead, .footer table tbody, .footer table tfoot{ border:1px solid #ccc;}
 .footer th{ font-size:14px; color:#000; font-weight:bold;}
@@ -272,7 +273,7 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
 	
 	.top-bar-01 ul.menu li a { font-size: 16px; padding: 0 15px;}	
 	
-	.header .top-part .left-part select{ width:120px;}
+	.header .top-part .left-part select{ width:140px; background-position:118% center;}
 	.bottom-area .convert-area ul.convert-list li select{ width:148px;}
 	.bottom-area .convert-area ul.convert-list li input[type="submit"]{ width:40%;}
 	
@@ -296,7 +297,7 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     .header .top-part .right-part .top{ float:none; display:inline-block;}
     
     
-    .bottom-part .left-part{ width:100%; margin-bottom:10px;}
+    .bottom-part .left-part{ width:100%; margin-bottom:30px;}
     .bottom-part .left-part .table-box{ float:left; max-width:100%; overflow:auto; border:1px solid #ccc;}
     .bottom-part .left-part .table-box table{ min-width:740px;}
     .bottom-part .right-part{ width:100%;}
@@ -312,6 +313,11 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     
     table{ margin-bottom:0 !important;}
     
+    .top-bar-01 ul.title-area{ width:100%; text-align:center;}
+    .top-bar-01 ul.title-area li{ float:none; display:inline-block;}
+    .top-bar-01 ul.menu li a { float: left; font-size: 18px; line-height: 60px; padding: 0 15px;}
+    
+    .top-bar-01 ul.title-area h2{ font-size:2.5rem;}
     
     
 }
@@ -328,6 +334,10 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     .header .top-part .left-part select{ width:150px;}
     
     table{ margin-bottom:0 !important;}
+    
+    .top-bar-01 ul.menu li a { font-size: 15px; padding: 0 10px;}
+    
+    .top-bar-01 ul.title-area h2{ font-size:2.5rem;}
     
 }
 
@@ -349,6 +359,11 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     .bottom-area .convert-area ul.convert-list li + li{ margin-top:15px;}
     .bottom-area .convert-area ul.convert-list li label { float: left; width: 30%;}
     .bottom-area .convert-area ul.convert-list li select { margin: 0; width: 68%;}
+    .top-bar-01 ul.menu li{ width:100%;}
+    .top-bar-01 ul.menu li a { font-size: 17px; line-height: 50px; padding: 0 15px; text-align: left; width: 100%;}
+    
+    
+    
 }
 
 
@@ -360,6 +375,9 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     .header .top-part .left-part select{ width:100%; margin-left:0;}
     .header .top-part .left-part .seprator{ margin-bottom:10px;}
     .bottom-area .convert-area ul.convert-list li input[type=submit]{ width:100%;}
+    
+    .header .top-part .left-part select{ background-position:100% center; padding-right:10px;}
+    
 }
 
 
