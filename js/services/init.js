@@ -156,7 +156,7 @@ Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService) {
               var root={
     /** A reference to the NaCl module, once it is loaded. */
     naclModule: null,
-
+	loaded:false,
     attachDefaultListeners: attachDefaultListeners,
     domContentLoaded: domContentLoaded,
     createNaClModule: createNaClModule,
@@ -649,6 +649,8 @@ root.handleMessage=function(message_event) {
   }
   
   root.onload=function(){
+
+if(!root.loaded){
         var body = document.body;
 console.log("init called");
     // The data-* attributes on the body can be referenced via body.dataset.
@@ -702,13 +704,14 @@ console.log("init called");
 
             root.domContentLoaded(body.dataset.name, tc, path, body.dataset.width,
                 body.dataset.height, attrs);
+	root.loaded=true;
         
     }
-      
+    }  
   };
 
   /** Saved text to display in the element with id 'statusField'. */
-  root.statusText = 'NO-S)TATUSES';
+  root.statusText = 'NO-STATUSES';
 
   /**
    * Set the global status message. If the element with id 'statusField'
