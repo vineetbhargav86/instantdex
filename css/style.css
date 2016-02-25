@@ -245,7 +245,8 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
 .bottom-part .bottom table a{ float:right; font-size:14px;}
 
 
-.consolidate-table-box .table-box{ border:1px solid #ccc;}
+.consolidate-table-box .table-box{ float:left; width:100%; border:1px solid #ccc;}
+.consolidate-table-box .table-box table{ margin-bottom:0;}
 
 
 
@@ -337,7 +338,7 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     
     
     .consolidate-table-box table td.transaction-col input[type="number"]{ width:100%; margin-right:0; margin-bottom:15px;}
-    .consolidate-table-box .table-box{ width:100%; overflow-y:auto;}
+    .consolidate-table-box .table-box{ float:left; width:100%; overflow-y:auto;}
     .consolidate-table-box .table-box table{ min-width:780px;}
     
     
@@ -361,6 +362,8 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     
     
     .tabs-content{ min-height:0;}
+    
+    .exchange-overview-box .left-box{ margin-bottom:30px;}
     
 
 }
