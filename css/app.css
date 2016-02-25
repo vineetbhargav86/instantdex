@@ -7779,3 +7779,10 @@ ul.events-list-bottom {
   border: 1px solid #ddd !important;
   color: #000;
 }
+
+nav.top-bar .active{
+  background-color: #0594D0;
+}
+nav.top-bar .active a{
+  color: #fff !important;
+}

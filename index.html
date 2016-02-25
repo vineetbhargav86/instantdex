@@ -28,6 +28,7 @@
     <script type="text/javascript" src="js/controllers/coin_exchange_controller.js"></script>
     <script type="text/javascript" src="js/controllers/exchange_overview_controller.js"></script>
     <script type="text/javascript" src="js/controllers/options_controller.js"></script>
+    <script type="text/javascript" src="js/controllers/navigation_controller.js"></script>
     <script type="text/javascript" src="js/services/globalServices.js"></script>
     <script type="text/javascript" src="js/services/init.js"></script>
     <script type="text/javascript" src="js/services/storage.js"></script>
@@ -36,7 +37,7 @@
 <body ng-cloak class="ng-cloak" data-custom-load="true" data-name="iguana" data-tools="pnacl newlib glibc clang-newlib mac" data-configs="Debug Release"
 data-path="{tc}/{config}">
     <div class="fixed">
-    <nav class="top-bar top-bar-01" data-topbar role="navigation">
+    <nav class="top-bar top-bar-01" data-topbar role="navigation" ng-controller="NavigationController">
     	<div class="row">
         	<div class="top-section small-12 columns">
                 <ul class="title-area">
@@ -47,10 +48,10 @@ data-path="{tc}/{config}">
                 </ul>
                 <section class="top-bar-section">
                     <ul class="menu">
-                        <li><a ui-sref ="coin_exchange">Home</a></li>
-                        <li><a ui-sref ="consolidate_coins">Consolidate Coins</a></li>
-                        <li><a ui-sref ="exchange_overview">Exchange Overview</a></li>
-                        <li><a ui-sref ="options">Options</a></li>
+                        <li ng-class="tabActive[0] ? 'active': ''" ng-click="setTabActive(0)"><a ui-sref ="coin_exchange">Home</a></li>
+                        <li ng-class="tabActive[1] ? 'active': ''" ng-click="setTabActive(1)"><a ui-sref ="consolidate_coins">Consolidate Coins</a></li>
+                        <li ng-class="tabActive[2] ? 'active': ''" ng-click="setTabActive(2)"><a ui-sref ="exchange_overview">Exchange Overview</a></li>
+                        <li ng-class="tabActive[3] ? 'active': ''" ng-click="setTabActive(3)"><a ui-sref ="options">Options</a></li>
                     </ul>
                 </section>
            	 </div>
