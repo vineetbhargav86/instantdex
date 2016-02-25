@@ -1,7 +1,7 @@
 'use strict';
 
 var Instantdex = angular.module('InstandexApp', [
-    'ui.router', 'ngAnimate'])
+    'ui.router', 'ngAnimate', 'ngDialog'])
     .config(['$stateProvider', '$urlRouterProvider', '$provide', function($stateProvider, $urlRouterProvider, $provide){
         $provide.decorator('$window', function($delegate) {
             Object.defineProperty($delegate, 'history', {get: () => null});

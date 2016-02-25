@@ -6,77 +6,73 @@
     </div>
     
     
- <div class="row ">
-    <div class="option-box small-12 columns">
-        <table>
-            <thead>
-                <tr>
-                    <th>Active ?</th>
-                    <th>Exchanges</th>
-                    <th>&nbsp;</th>
-                    <th class="small-5"></th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="checkbox" value="" alt=""  checked="checked"/></td>
-                    <td><span class="button-first"><a href="#" ng-click="preventDefault($event)">Poloniex.com</a></span></td>
-                    <td><span class="add-cre-btn"><a href="#" class="disabled" ng-click="preventDefault($event)">Add Credentials</a></span><span class="help-icon"><a href="#">&nbsp;</a></span></td>
-                    <td class="small-5"></td>
+     <div class="row ">
+        <div class="option-box small-12 columns">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Active ?</th>
+                        <th>Exchanges</th>
+                        <th>&nbsp;</th>
+                        <th class="small-5"></th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ex in exchanges">
+                        <td><input type="checkbox" value="" alt=""  checked="{{ex.active}}"/></td>
+                        <td><span class="button-first"><a href="#" ng-click="preventDefault($event)">{{ex.name}}</a></span></td>
+                        <td>
+                            <span class="add-cre-btn">
+                                <button ng-disabled="ex.areCredsSet" ng-click="open(ex.name)">Add Credentials</button>
+                            </span>
+                            <span class="help-icon"><a href="#" ng-click="preventDefault($event)">&nbsp;</a></span></td>
+                        <td class="small-5"></td>
+                        
+                       <td><span class="edit-btn"><button ng-click="open(ex.name)" ng-disabled="!ex.areCredsSet">Edit</button></span></td>
+                        <td><span class="remove-btn"><button href="#" ng-click="preventDefault($event)" ng-disabled="!ex.areCredsSet">Remove Credentials</button></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="row">
+                <div class="dest-addrs small-12 columns">
+                    <ul class="dest-addrs-list">
+                        <li>
+                            <label>Add New Service</label>
+                            <span class="text"><input type="text" value="" alt="" placeholder="Search" /></span>
+                        </li>
+                        <li>
+                            <span class="send-btn">
+                                <input type="button" value="Search" name="search" id="sendbtn">
+                            </span>
+                        </li>
+                    </ul>
                     
-                   <td><span class="edit-btn"><a href="#" ng-click="preventDefault($event)">Edit</a></span></td>
-                    <td><span class="remove-btn"><a href="#" ng-click="preventDefault($event)">Remove Credentials</a></span></td>
-                </tr>
-                
-                <tr>
-                    <td><input type="checkbox" value="" alt="" checked="checked" disabled="disabled" /></td>
-                    <td><span class="button-first"><a href="#" ng-click="preventDefault($event)">NXT AE</a></td>
-                    <td><span class="add-cre-btn"><a href="#" class="disabled" ng-click="preventDefault($event)">Add Credentials</a></span><span class="help-icon"><a href="#">&nbsp;</a></span></td>
-                    <td class="small-5"></td>
-                    <td><span class="edit-btn"><a href="#" ng-click="preventDefault($event)">Edit</a></span></td>
-                    <td><span class="remove-btn"><a href="#" class="disabled" ng-click="preventDefault($event)">Remove Credentials</a></span></td>
-                </tr>
-                
-                <tr>
-                    <td><input type="checkbox" value="" alt="" /></td>
-                    <td><span class="button-first"><a href="#" ng-click="preventDefault($event)">Bittrex</a></span></td>
-                    <td><span class="add-cre-btn"><a href="#" ng-click="preventDefault($event)">Add Credentials</a></span><span class="help-icon"><a href="#">&nbsp;</a></span></td>
-                    <td class="small-5"></td>
-                    <td><span class="edit-btn"><a href="#" ng-click="preventDefault($event)">Edit</a></span></td>
-                    <td><span class="remove-btn"><a href="#" class="disabled" ng-click="preventDefault($event)">Remove Credentials</a></span></td>
-                </tr>
-                
-                <tr>
-                    <td><input type="checkbox" value="" alt="" checked="checked" /></td>
-                    <td><span class="button-first"><a href="#" ng-click="preventDefault($event)">Exchange D</a></span></td>
-                    <td><span class="add-cre-btn"><a href="#" class="disabled" ng-click="preventDefault($event)">Add Credentials</a></span><span class="help-icon"><a href="#">&nbsp;</a></span></td>
-                    <td class="small-5"></td>
-                    <td><span class="edit-btn"><a href="#" ng-click="preventDefault($event)">Edit</a></span></td>
-                    <td><span class="remove-btn"><a href="#" ng-click="preventDefault($event)">Remove Credentials</a></span></td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div class="row">
-            <div class="dest-addrs small-12 columns">
-                <ul class="dest-addrs-list">
-                    <li>
-                        <label>Add New Service</label>
-                        <span class="text"><input type="text" value="" alt="" placeholder="Search" /></span>
-                    </li>
-                    <li>
-                        <span class="send-btn">
-                            <input type="button" value="Search" name="search" id="sendbtn">
-                        </span>
-                    </li>
-                </ul>
-                
-                <br /><br /><br /><br />
-                
-                <p class="note-text">Your credentials are stored in-browser, encrypted with your NXT wallet passphrase. (?)</p>
+                    <br /><br /><br /><br />
+                    
+                    <p class="note-text">Your credentials are stored in-browser, encrypted with your NXT wallet passphrase. (?)</p>
+                </div>
             </div>
         </div>
     </div>
-</div>   
+</div>
+
+<script type="text/ng-template" id="apiExchangeCredsModal.html">
+    <div class="modal-wrapper">
+        <h4>Add Credentials for {{exchange}}</h4>
+        <hr/>
+        <div class="creds-form-cointainer">
+            <div class="form-field-container">
+                <input type="text" name="apikey" placeholder="Api Key" ng-model="apikey" class="form-input-field" />
+            </div>
+            <div class="form-field-container">
+                <input type="text" name="apisecret" placeholder="Api Secret" ng-model="apisecret" class="form-input-field"/>
+            </div>
+        </div>
+        <div class="form-action-container">
+            <button class="button" ng-click="ok()">OK</button>
+        </div>
+    </div>
+</script>

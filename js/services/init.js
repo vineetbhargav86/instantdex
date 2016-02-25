@@ -94,7 +94,8 @@ root.makeRequest = function( request, callback ) {
    }
 };
     root.useGETRequest=function(request){
-        if(request.method && (request.method==='apikeypair' || request.method==='setuserid')){
+        // if(request.method && (request.method==='apikeypair' || request.method==='setuserid')){
+        if(request.method && (request.method==='setuserid')){
             return false;
         }else{
             return true;

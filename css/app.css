@@ -7750,3 +7750,32 @@ ul.events-list-bottom {
   float: left;
 }
 
+.modal-wrapper{
+  width: 400px;
+  min-height: 200px;
+  height: auto;
+  margin: auto;
+}
+.creds-form-cointainer{
+  width: 100%;
+  min-height: 100px;
+  height: auto;
+  float: left;
+}
+.form-field-container{
+  width: 100%;
+  height:40px;
+  float: left;
+}
+.form-action-container{
+  height:50px;
+  width: 100%;
+  float: left;
+}
+.form-input-field{
+  height: 35px;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ddd !important;
+  color: #000;
+}

@@ -226,16 +226,16 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
 .option-box table td span.button-first{ float:left; width:100%;}
 .option-box table td span.button-first a{ float:left; width:100%; border:1px solid #ccc; padding: 10px 15px; border-radius:5px; color:#555;}
 .option-box table td span.add-cre-btn{ float:left; display:inline-block;}
-.option-box table td span.add-cre-btn a{ float:left; width:100%; border:1px solid #ccc; padding: 10px 15px; border-radius:5px; color:#555;}
+.option-box table td span.add-cre-btn button{ float:left; width:100%; border:1px solid #ccc; padding: 10px 15px; border-radius:5px; color:#555;}
 .option-box table td span.help-icon{ display:inline-block; float:none;}
 .option-box table td span.help-icon a{ position:relative;}
 .option-box table td span.help-icon a:before{ border: 2px solid #555; border-radius: 50%; content: "?"; font-size: 15px; height: 20px; line-height: 15px; position: absolute; right: -24px; text-align: center; top: 5px; width: 20px; color:#555;}
 .option-box table td span.edit-btn{ float:left; width:100%;}
-.option-box table td span.edit-btn a{ background:#1c6fdf; width:100%; color: #fff; float: left; margin-right: 10px; opacity: 0.5; padding: 10px 15px; text-transform: uppercase; border-radius:5px;}
-.option-box table td span.edit-btn a:hover{ opacity:1;}
+.option-box table td span.edit-btn button{ background:#1c6fdf; width:100%; color: #fff; float: left; margin-right: 10px; opacity: 0.5; padding: 10px 15px; text-transform: uppercase; border-radius:5px;}
+.option-box table td span.edit-btn button:hover{ opacity:1;}
 .option-box table td span.remove-btn{ float:left; width:100%;}
-.option-box table td span.remove-btn a{ background: #127715; color: #fff; float: left; width:100%; opacity: 0.5; padding: 12px 25px; text-transform: uppercase; border-radius:5px;}
-.option-box table td span.remove-btn a:hover{ opacity:1;}
+.option-box table td span.remove-btn button{ background: #127715; color: #fff; float: left; width:100%; opacity: 0.5; padding: 12px 25px; text-transform: uppercase; border-radius:5px;}
+.option-box table td span.remove-btn button:hover{ opacity:1;}
 
 
 .bottom-part .bottom .table-box{ border: 1px solid #ccc; max-height: 300px; overflow: auto; margin-top:15px;}
