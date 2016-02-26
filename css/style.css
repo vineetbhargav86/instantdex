@@ -248,6 +248,10 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
 .consolidate-table-box .table-box{ float:left; width:100%; border:1px solid #ccc;}
 .consolidate-table-box .table-box table{ margin-bottom:0;}
 
+.angular-box{ margin-bottom:20px;}
+.angular-accordion-header{ font-size:16px !important; line-height:20px !important; border-radius:5px;}
+.angular-accordion-pane{ padding:4px 2px !important;}
+
 
 
 
@@ -287,6 +291,10 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
 	.right-part ul.combine-list li + li{ margin-left:6px;}
 	
 	.consolidate-table-box table td.transaction-col input[type="number"]{ width:100%; margin-right:0; margin-bottom:15px;}
+	
+	.ce-accordion form ul.form-list li select.small{ width:65%;}
+	.ce-accordion form ul.form-list li .input-group.small{ width:65%;}
+	.ce-accordion form ul.form-list li span.buy-btn{ float:right;}
 	
 	#panel1v .left-box { width: 100%;}
 	#panel1v .left-box .innr-box { margin-bottom: 30px;}
@@ -347,6 +355,11 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     #panel1v .left-box { width: 100%;}
 	#panel1v .left-box .innr-box { margin-bottom: 30px;}
 	#panel1v .right-box { width: 100%;}
+	
+	
+	.ce-accordion form ul.form-list li select.small{ width:65%;}
+	.ce-accordion form ul.form-list li .input-group.small{ width:65%;}
+	.ce-accordion form ul.form-list li span.buy-btn{ float:right;}
     
     
 }
@@ -364,6 +377,11 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     .tabs-content{ min-height:0;}
     
     .exchange-overview-box .left-box{ margin-bottom:30px;}
+    
+    .ce-accordion form ul.form-list li select.small{ width:30%;}
+	.ce-accordion form ul.form-list li .input-group.small{ width:30%;}
+	
+	.ce-accordion .left-box .innr-box{ margin-bottom:40px;}
     
 
 }
@@ -408,6 +426,12 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
     .top-bar-01 ul.menu li{ width:100%;}
     .top-bar-01 ul.menu li a { font-size: 17px; line-height: 50px; padding: 0 15px; text-align: left; width: 100%;}
     
+    
+    .ce-accordion form ul.form-list li label{ width:100%; text-align:left;}
+    .ce-accordion form ul.form-list li select.small{ width:100% !important; float:left; margin-left:0 !important;}
+	.ce-accordion form ul.form-list li .input-group.small{ width:100% !important; float:left; margin-left:0 !important;}
+	.ce-accordion form ul.form-list li .input-group{ width:100% !important; float:left;}
+	.ce-accordion form ul.form-list li span.buy-btn{ float:left; width:40% !important; margin-left:0 !important;}
     
     
 }
