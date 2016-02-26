@@ -152,7 +152,7 @@ root.makeRequest = function( request, callback ) {
 
 
 'use strict';
-Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService) {
+Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices) {
 
               var root={
     /** A reference to the NaCl module, once it is loaded. */
@@ -368,6 +368,12 @@ root.handleMessage=function(message_event) {
       //var x='{"agent":"InstantDEX","method":"apikeypair","exchange":"qq","apikey":"oo","apisecret":"kk"}';
     
  //naclAPI.makeRequest(x);
+      var request = '{\"agent\":\"InstantDEX\",\"method\":\"allexchanges\"}';
+      var callback = function(req, res){
+        GlobalServices.exchangeDetails = res.data.result;
+        // console.log(res.data.result);
+      }
+      naclAPI.makeRequest(request, callback);
  }
   }
   else if (data instanceof Object)

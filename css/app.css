@@ -7786,3 +7786,7 @@ nav.top-bar .active{
 nav.top-bar .active a{
   color: #fff !important;
 }
+
+.angular-accordion-pane-content{
+  padding: 25px 10px !important;
+}

@@ -30,7 +30,8 @@
                             <span class="help-icon"><a href="#" ng-click="preventDefault($event)">&nbsp;</a></span></td>
                         <td class="small-5"></td>
                         
-                       <td><span class="edit-btn"><button ng-click="open(ex.name)" ng-disabled="!ex.areCredsSet">Edit</button></span></td>
+                      <!--  <td><span class="edit-btn"><button ng-click="open(ex.name)" ng-disabled="!ex.areCredsSet">Edit</button></span></td> -->
+                       <td><span class="edit-btn"><button ng-disabled="!ex.areCredsSet">Edit</button></span></td>
                         <td><span class="remove-btn"><button href="#" ng-click="preventDefault($event)" ng-disabled="!ex.areCredsSet">Remove Credentials</button></span></td>
                     </tr>
                 </tbody>
