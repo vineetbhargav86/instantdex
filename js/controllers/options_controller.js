@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.controller('OptionsController', function($scope, $state, $http, ngDialog, InstantdexServices, GlobalServices){
+Instantdex.controller('OptionsController', function($scope, $state, $http, ngDialog, InstantdexServices, GlobalServices, ApikeyService){
 	// $scope.exchanges = GlobalServices.exchangeDetails;
 	$scope.exchanges = [];
     $scope.preventDefault = function(event){
@@ -27,6 +27,8 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
     	// GlobalServices.makeRequest(request, callback);
     // }
     // $scope.getAllExchanges();
+    console.log('before init', $scope.exchanges);
+    console.log('glob serv', GlobalServices.exchangeDetails);
     $scope.setExtraParamsToExchanges = function(){
     	var exchngObj = null;
     	for(var e in GlobalServices.exchangeDetails){
@@ -40,6 +42,13 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
 		}
     }
 	$scope.setExtraParamsToExchanges();
+
+
+	var getPassphrase = function() {
+		var modalInstanse = ngDialog.open({
+			template: '' // go from here 
+		})
+	};
 
     $scope.open = function (exchange) {
 	    var modalInstance = ngDialog.open({
@@ -56,13 +65,34 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
 	        }
 	      }
 	    });
+
 	    modalInstance.closePromise.then(function (apiCreds) {
 	    	if(typeof(apiCreds.value.apikey) != 'undefined' && typeof(apiCreds.value.apisecret) != 'undefined' && apiCreds.value.apikey != "" && apiCreds.value.apisecret != ""){
-	    		$scope.apiKeyPair(apiCreds.value);
+	    		//$scope.apiKeyPair(apiCreds.value);
+
+	    		// user enter passphrase and then update saved apikey pairs
+	    		ApikeyService.getApiKeyPairs(function(json) {
+					// update model
+					for(var e in $scope.exchanges){
+		    			if($scope.exchanges[e]["name"] == apiCreds.value.exchange){
+		    				$scope.exchanges[e]["areCredsSet"] = true;
+		    				break;
+		    			};
+		    		};
+		    		// update saved apikeys
+					ApikeyService.updateApiKeyPairs(json, apiCreds.value, function() {
+						console.log('updated apikey', apiCreds.value);
+					});
+		        });
+
 	    	}
 	    });
 	};
 
+	// deprecated function. can be deleted. 
+	// apikey pairs api access in init.js with 
+	// function call begins wiht:  
+	// ApikeyService.getApiKeyPairs(true, function(json) {
 	$scope.apiKeyPair = function(apiCreds){
 		var request = '{\"agent\":\"InstantDEX\",\"method\":\"apikeypair\",\"exchange\":\"'+apiCreds.exchange+
 						'\",\"apikey\":\"'+apiCreds.apikey+'\",\"apisecret\":\"'+apiCreds.apisecret+'\"}';
@@ -91,4 +121,9 @@ Instantdex.controller('ApiExchangeCredsCtrl', function ($scope, exchangeDets) {
 		$scope.closeThisDialog({ apikey: $scope.apikey, apisecret: $scope.apisecret, exchange: $scope.exchange
 		});
 	};
+});
+
+// controller for use in checking passphrase modal
+Instantdex.controller('ApiExchangePassphraseCtrl', function($scope) {
+
 });

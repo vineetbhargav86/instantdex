@@ -152,7 +152,7 @@ root.makeRequest = function( request, callback ) {
 
 
 'use strict';
-Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices) {
+Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices, ApikeyService) {
 
               var root={
     /** A reference to the NaCl module, once it is loaded. */
@@ -522,7 +522,7 @@ root.handleMessage=function(message_event) {
       {elm.appendChild(node);
           }
       //document.getElementById('log').appendChild(message);
-              console.log(message);
+              //console.log(message);
   }
 
   /**
@@ -660,6 +660,7 @@ root.handleMessage=function(message_event) {
 if(!root.loaded){
         var body = document.body;
 console.log("init called");
+
     // The data-* attributes on the body can be referenced via body.dataset.
     if (body.dataset) {
         //var  loadFunction = root.domContentLoaded;
@@ -712,7 +713,17 @@ console.log("init called");
             root.domContentLoaded(body.dataset.name, tc, path, body.dataset.width,
                 body.dataset.height, attrs);
 	root.loaded=true;
-        
+
+        /**
+         *  Ask user passphrase
+         *  Decrypt apikeypairs json
+         *  Access all api keys if where saved
+         */
+        ApikeyService.getApiKeyPairs(function(json) {
+            ApikeyService.callApiKeyPairsApi(json);
+            console.log('init getapikeypairs', json);
+        });
+
     }
     }  
   };
