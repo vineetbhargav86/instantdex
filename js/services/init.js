@@ -150,7 +150,7 @@ root.makeRequest = function( request, callback ) {
 
 
 'use strict';
-Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices) {
+Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices, ApikeyService) {
 
 							var root={
 		/** A reference to the NaCl module, once it is loaded. */
@@ -661,88 +661,98 @@ root.handleMessage=function(message_event) {
 if(!root.loaded){
 				var body = document.body;
 console.log("init called");
-		// The data-* attributes on the body can be referenced via body.dataset.
-		if (body.dataset) {
-				//var  loadFunction = root.domContentLoaded;
-				
-				// From https://developer.mozilla.org/en-US/docs/DOM/window.location
-				var searchVars = {};
-				if (window.location.search.length > 1) {
-						var pairs = window.location.search.substr(1).split('&');
-						for (var key_ix = 0; key_ix < pairs.length; key_ix++) {
-								var keyValue = pairs[key_ix].split('=');
-								searchVars[unescape(keyValue[0])] =
-										keyValue.length > 1 ? unescape(keyValue[1]) : '';
-						}
-				}
+    // The data-* attributes on the body can be referenced via body.dataset.
+    if (body.dataset) {
+        //var  loadFunction = root.domContentLoaded;
+        
+        // From https://developer.mozilla.org/en-US/docs/DOM/window.location
+        var searchVars = {};
+        if (window.location.search.length > 1) {
+            var pairs = window.location.search.substr(1).split('&');
+            for (var key_ix = 0; key_ix < pairs.length; key_ix++) {
+                var keyValue = pairs[key_ix].split('=');
+                searchVars[unescape(keyValue[0])] =
+                    keyValue.length > 1 ? unescape(keyValue[1]) : '';
+            }
+        }
 
-				
-						var toolchains = body.dataset.tools.split(' ');
-						var configs = body.dataset.configs.split(' ');
+        
+            var toolchains = body.dataset.tools.split(' ');
+            var configs = body.dataset.configs.split(' ');
 
-						var attrs = {};
-						if (body.dataset.attrs) {
-								var attr_list = body.dataset.attrs.split(' ');
-								for (var key in attr_list) {
-										var attr = attr_list[key].split('=');
-										var key = attr[0];
-										var value = attr[1];
-										attrs[key] = value;
-								}
-						}
+            var attrs = {};
+            if (body.dataset.attrs) {
+                var attr_list = body.dataset.attrs.split(' ');
+                for (var key in attr_list) {
+                    var attr = attr_list[key].split('=');
+                    var key = attr[0];
+                    var value = attr[1];
+                    attrs[key] = value;
+                }
+            }
 
-						var tc = toolchains.indexOf(searchVars.tc) !== -1 ?
-								searchVars.tc : toolchains[0];
+            var tc = toolchains.indexOf(searchVars.tc) !== -1 ?
+                searchVars.tc : toolchains[0];
 
-						// If the config value is included in the search vars, use that.
-						// Otherwise default to Release if it is valid, or the first value if
-						// Release is not valid.
-						if (configs.indexOf(searchVars.config) !== -1)
-								var config = searchVars.config;
-						else if (configs.indexOf('Release') !== -1)
-								var config = 'Release';
-						else
-								var config = configs[0];
+            // If the config value is included in the search vars, use that.
+            // Otherwise default to Release if it is valid, or the first value if
+            // Release is not valid.
+            if (configs.indexOf(searchVars.config) !== -1)
+                var config = searchVars.config;
+            else if (configs.indexOf('Release') !== -1)
+                var config = 'Release';
+            else
+                var config = configs[0];
 
-						var pathFormat = body.dataset.path;
-						var path = pathFormat.replace('{tc}', tc).replace('{config}', config);
+            var pathFormat = body.dataset.path;
+            var path = pathFormat.replace('{tc}', tc).replace('{config}', config);
 
-						root.isTest = searchVars.test === 'true';
-						root.isRelease = path.toLowerCase().indexOf('release') !== -1;
+            root.isTest = searchVars.test === 'true';
+            root.isRelease = path.toLowerCase().indexOf('release') !== -1;
 
-						root.domContentLoaded(body.dataset.name, tc, path, body.dataset.width,
-								body.dataset.height, attrs);
+            root.domContentLoaded(body.dataset.name, tc, path, body.dataset.width,
+                body.dataset.height, attrs);
 	root.loaded=true;
-				
-		}
-		}  
-	};
 
-	/** Saved text to display in the element with id 'statusField'. */
-	root.statusText = 'NO-STATUSES';
+        /**
+         *  Ask user passphrase
+         *  Decrypt apikeypairs json
+         *  Access all api keys if where saved
+         */
+        ApikeyService.getApiKeyPairs(function(json) {
+            ApikeyService.callApiKeyPairsApi(json);
+            console.log('init getapikeypairs', json);
+        });
 
-	/**
-	 * Set the global status message. If the element with id 'statusField'
-	 * exists, then set its HTML to the status message as well.
-	 *
-	 * @param {string} opt_message The message to set. If null or undefined, then
-	 *     set element 'statusField' to the message from the last call to
-	 *     updateStatus.
-	 */
-	
-	function updateStatus(opt_message) {
-		if (opt_message) {
-			root.statusText = opt_message;
-		}
-		var statusField = document.getElementById('statusField');
-		if (statusField) {
-			statusField.innerHTML = root.statusText;
-							}
-	}
+    }
+    }  
+  };
 
-	// The symbols to export.
-	return root;
+  /** Saved text to display in the element with id 'statusField'. */
+  root.statusText = 'NO-STATUSES';
+
+  /**
+   * Set the global status message. If the element with id 'statusField'
+   * exists, then set its HTML to the status message as well.
+   *
+   * @param {string} opt_message The message to set. If null or undefined, then
+   *     set element 'statusField' to the message from the last call to
+   *     updateStatus.
+   */
+  
+  function updateStatus(opt_message) {
+    if (opt_message) {
+      root.statusText = opt_message;
+    }
+    var statusField = document.getElementById('statusField');
+    if (statusField) {
+      statusField.innerHTML = root.statusText;
+              }
+  }
+
+  // The symbols to export.
+  return root;
 
 
-	//  return {};
-	});
+  //  return {};
+  });

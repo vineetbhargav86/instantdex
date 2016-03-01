@@ -32,6 +32,7 @@
     <script type="text/javascript" src="js/controllers/options_controller.js"></script>
     <script type="text/javascript" src="js/controllers/navigation_controller.js"></script>
     <script type="text/javascript" src="js/services/globalServices.js"></script>
+    <script type="text/javascript" src="js/services/apikeyService.js"></script>
     <script type="text/javascript" src="js/services/init.js"></script>
     <script type="text/javascript" src="js/services/storage.js"></script>
     <script type="text/javascript" src="js/services/instantdexServices.js"></script>
@@ -65,6 +66,22 @@ data-path="{tc}/{config}">
     <div ui-view></div>
     
     <div id="listener"></div>
+
+
+    <script type="text/ng-template" id="userPassphraseModal.html">
+        <div class="modal-wrapper">
+            <h4>Enter your passphrase</h4>
+            <hr/>
+            <div class="creds-form-cointainer">
+                <div class="form-field-container">
+                    <input type="text" name="passphrase" placeholder="Passphrase" ng-model="passphrase" class="form-input-field" />
+                </div>
+            </div>
+            <div class="form-action-container">
+                <button class="button" ng-click="ok()">OK</button>
+            </div>
+        </div>
+    </script>
 </body>
 
 </html>
