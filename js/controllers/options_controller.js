@@ -29,6 +29,7 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
     // $scope.getAllExchanges();
     $scope.setExtraParamsToExchanges = function(){
     	var exchngObj = null;
+    	GlobalServices.exchangeApiCredsStatus = [];
     	for(var e in GlobalServices.exchangeDetails){
 			exchngObj = {};
 			exchngObj["name"] = GlobalServices.exchangeDetails[e];
@@ -37,6 +38,7 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
 			// exchngObj["apikey"] = "";
 			// exchngObj["apisecret"] = "";
 			$scope.exchanges.push(exchngObj);
+			GlobalServices.exchangeApiCredsStatus.push(exchngObj);
 		}
     }
 	$scope.setExtraParamsToExchanges();
@@ -71,6 +73,7 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
     			console.log(res);
     			if($scope.exchanges[e]["name"] == apiCreds.exchange){
     				$scope.exchanges[e]["areCredsSet"] = true;
+    				GlobalServices.exchangeApiCredsStatus[e]["areCredsSet"] = true;
     				// $scope.exchange[e]["apikey"] = apiCreds.apikey;
     				// $scope.exchange[e]["apisecret"] = apiCreds.apisecret;
     				break;

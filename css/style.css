@@ -179,7 +179,7 @@ body{ float:left; width:100%; font-family:"Trebuchet MS", Arial, Helvetica, sans
 .consolidate-table-box table th{ font-size:15px; font-weight:bold; line-height:25px; color:#333;}
 .consolidate-table-box table th.transaction-col input{ float:right; padding:12px 25px; background:#127715; color:#fff; text-transform:uppercase; opacity:0.5;}
 .consolidate-table-box table th.transaction-col input:hover{ opacity:1;}
-.consolidate-table-box table td.transaction-col input[type=number]{ float:left; width:250px; border:1px solid #ccc; margin-bottom:0; margin-right:10px; line-height:40px; height:40px;}
+.consolidate-table-box table td.transaction-col input[type=number]{ float:left; width:250px; border:1px solid #ccc; margin-bottom:0; margin-right:10px; line-height:40px; height:40px; padding: 0px 10px;}
 .consolidate-table-box table td.transaction-col input[type=button]{ float:left; padding:10px 15px; background:#1C6FDF; color:#fff; text-transform:uppercase; margin-right:10px; opacity:0.5;}
 .consolidate-table-box table td.transaction-col input[type=button]:last-child{ margin-right:0;}
 .consolidate-table-box table td.transaction-col input[type=button]:hover{ opacity:1;}
