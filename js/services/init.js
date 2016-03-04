@@ -373,6 +373,7 @@ root.handleMessage=function(message_event) {
 
 				//get all coins and exchangewise coins
 				GlobalServices.initExchangeCoinsData();
+				console.log("Calling saveExchangesStatusForSession...");
 			}
 			naclAPI.makeRequest(request, callback);
  		}
@@ -722,6 +723,16 @@ console.log("init called");
         ApikeyService.getApiKeyPairs(function(json) {
             ApikeyService.callApiKeyPairsApi(json);
             console.log('init getapikeypairs', json);
+            var savedExchanges = [];
+            for(var i in GlobalServices.exchangeDetails) {
+                var current = json[GlobalServices.exchangeDetails[i]];
+                
+                if(current === "true" || current === true) {
+                    savedExchanges.push(GlobalServices.exchangeDetails[i]);
+                };      
+            }
+            GlobalServices.exchangeWithApiCreds = savedExchanges;
+            GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
         });
 
     }

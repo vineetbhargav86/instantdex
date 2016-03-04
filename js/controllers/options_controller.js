@@ -1,7 +1,6 @@
 'use strict';
 
 Instantdex.controller('OptionsController', function($scope, $state, $http, ngDialog, InstantdexServices, GlobalServices, ApikeyService){
-	// $scope.exchanges = GlobalServices.exchangeDetails;
 	$scope.exchanges = [];
     $scope.preventDefault = function(event){
         event.preventDefault();
@@ -27,25 +26,32 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
     	// GlobalServices.makeRequest(request, callback);
     // }
     // $scope.getAllExchanges();
-    console.log('before init', $scope.exchanges);
-    console.log('glob serv', GlobalServices.exchangeDetails);
+    // console.log('before init', $scope.exchanges);
+    // console.log('glob serv', GlobalServices.exchangeDetails);
     $scope.setExtraParamsToExchanges = function(){
     	var exchngObj = null;
-    	GlobalServices.exchangeApiCredsStatus = [];
+    	// GlobalServices.exchangeApiCredsStatus = [];
     	for(var e in GlobalServices.exchangeDetails){
 			exchngObj = {};
 			exchngObj["name"] = GlobalServices.exchangeDetails[e];
-			exchngObj["areCredsSet"] = false;
+			if(GlobalServices.exchangeWithApiCreds.indexOf(GlobalServices.exchangeDetails[e]) != -1){
+				exchngObj["areCredsSet"] = true;
+			}
+			else{
+				exchngObj["areCredsSet"] = false;
+			}
 			exchngObj["active"] = "";
-			// exchngObj["apikey"] = "";
-			// exchngObj["apisecret"] = "";
 			$scope.exchanges.push(exchngObj);
-			GlobalServices.exchangeApiCredsStatus.push(exchngObj);
+			GlobalServices.exchangesStatus.push(exchngObj);
 		}
     }
-	$scope.setExtraParamsToExchanges();
-
-
+    if(GlobalServices.exchangesStatus.length > 0){
+    	$scope.exchanges = angular.copy(GlobalServices.exchangesStatus);
+    }
+    else{
+    	$scope.setExtraParamsToExchanges();
+    }
+	
 	var getPassphrase = function() {
 		var modalInstanse = ngDialog.open({
 			template: '' // go from here 
@@ -78,6 +84,11 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
 					for(var e in $scope.exchanges){
 		    			if($scope.exchanges[e]["name"] == apiCreds.value.exchange){
 		    				$scope.exchanges[e]["areCredsSet"] = true;
+		    				GlobalServices.exchangesStatus[e]["areCredsSet"] = true;
+		    				if(GlobalServices.exchangeWithApiCreds.indexOf(apiCreds.value.exchange) == -1){
+		    					GlobalServices.exchangeWithApiCreds.push(apiCreds.value.exchange);
+		    					GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
+		    				}
 		    				break;
 		    			};
 		    		};
@@ -103,9 +114,9 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
     			console.log(res);
     			if($scope.exchanges[e]["name"] == apiCreds.exchange){
     				$scope.exchanges[e]["areCredsSet"] = true;
-    				GlobalServices.exchangeApiCredsStatus[e]["areCredsSet"] = true;
-    				// $scope.exchange[e]["apikey"] = apiCreds.apikey;
-    				// $scope.exchange[e]["apisecret"] = apiCreds.apisecret;
+    				GlobalServices.exchangesStatus[e]["areCredsSet"] = true;
+    				//call loading supported coins
+    				
     				break;
     			}
     		}

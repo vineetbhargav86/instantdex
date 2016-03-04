@@ -85,7 +85,7 @@ Instantdex.service('ApikeyService', function($http, $q, ngDialog, GlobalServices
             decryptJson(passphrase, function(decryptedJson) {
                 // check if apikeys where encrypted
                 // json stores all exchanges names, so we can check for first
-                if(! decryptedJson[exchanges[0]]) {
+                if(! decryptedJson[GlobalServices.exchangeDetails[0]]) {
                     root.createApiKeyPairs(passphrase, function(createdApiKeyPairs) {
                         //console.log('created new apikeypairs', createdApiKeyPairs);
                         return createdApiKeyPairs;
