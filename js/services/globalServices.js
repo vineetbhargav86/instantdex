@@ -11,11 +11,17 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI){
 
 	this.exchangeDetails = [];// Contains all exchange details listed in options view
 
-	this.exchangeApiCredsStatus = [];
+	this.exchangeWithApiCreds = [];
+
+	this.exchangesStatus = [];
 
 	this.exchange_coins = [
 
 	];// List of coins supprted by each exchange
+
+	this.coinsValidExchanges = [];
+
+	this.credsAvailableExchanges = [];
 
 	this.putExchangeWiseCoins = function(exchange, coins){
 		var exch_coins = {"exchange":exchange, "coins": coins};
@@ -38,10 +44,6 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI){
 			var callback = function(req, res){
 				gservices.putExchangeWiseCoins(req['exchange'], res.data.result);
 				gservices.buildUniqueCoinsList(res.data.result, gservices.all_coins);
-				// if(i <= 17){
-				// 	console.log("All Coins: "+ JSON.stringify(gservices.all_coins));
-				// 	console.log("Exchange wise Coins: "+ JSON.stringify(gservices.exchange_coins));
-				// }
 			}
 			gservices.makeRequest(request, callback);
 		}
@@ -56,4 +58,28 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI){
 		return cointypes;
 	};
 
+	this.buildSupportedCoinsListForApiCredsAvailableExchanges = function(){
+		var tempCoins = [];
+		for(var i in gservices.exchangeWithApiCreds){
+			// if(gservices.exchangeWithApiCreds[i].areCredsSet){
+			for(var j in gservices.exchange_coins){
+				if(gservices.exchange_coins[j].exchange == gservices.exchangeWithApiCreds[i]){
+					tempCoins = [];
+					gservices.buildUniqueCoinsList(gservices.exchange_coins[j].coins, tempCoins);
+					gservices.coinsValidExchanges = gservices.removeDuplicatesCoins(angular.extend(gservices.coinsValidExchanges, tempCoins));
+				}
+			}
+			// }
+		}
+	};
+
+	this.removeDuplicatesCoins = function(coinslist){
+		var uniqueCoins = [];
+		for(var i in coinslist){
+			if(uniqueCoins.indexOf(coinslist[i]) == -1){
+				uniqueCoins.push(coinslist[i]);
+			}
+		}
+		return uniqueCoins;
+	}
 });

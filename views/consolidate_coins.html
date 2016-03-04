@@ -32,24 +32,30 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="exchDet in exchangeBalanceData">
+						<tr ng-repeat="exchDet in exchangeBalanceData" ng-show="!showNoCoinMsg">
 							<td><input type="checkbox" name="" value=""></td>
 							<td>{{exchDet.exchange}}</td>
 							<td>{{exchDet.balance}}</td>
 							<td></td>
-							<td class="transaction-col medium-6"><input type="number" name="" value="" ng-model="exchDet.tamount">
+							<td class="transaction-col medium-6"><input type="number" name="" value="" ng-model="exchDet.tamount" ng-change="getTotalOfCoinsToWithdraw()">
 								<span class="btn-box">
 									<input type="button" name="" value="X" ng-click="exchDet.tamount = ''">
 									<input type="button" name="" value="Max" ng-click="exchDet.tamount = exchDet.balance">
 								</span>
 							</td>
 						</tr>
+						<tr ng-show="!showNoCoinMsg && showExchangeCoinFetchingLoader" style="text-align: center;">
+							<td colspan="5" ><img src="../images/spinner.gif" /></td>
+						</tr>
+						<tr ng-show="showNoCoinMsg && !showExchangeCoinFetchingLoader && exchangeBalanceData.length ==0 " style="text-align: center;">
+							<td colspan="5">No {{selectedCoin}} balance found.</td>
+						</tr>
 						<tr id="last-row">
 							<td class="no-border"></td>
 							<td class="no-border"></td>
 							<td class="no-border"></td>
-							<td class="thick-border"><strong>Fee totals: </strong> 0.0003 BTC 1 NXT</td>
-							<td class="thick-border transaction-col medium-6"><strong>Total: </strong>2,4 BTC</td>
+							<td class="thick-border"><strong>Fee totals: </strong> <!-- 0.0003 BTC 1 NXT --></td>
+							<td class="thick-border transaction-col medium-6"><strong>Total: </strong>{{totalCoins}} {{selectedCoin}}</td>
 						</tr>
 					 </tbody>
 				</table>
@@ -75,7 +81,7 @@
 				</li>
 				<li>
 					<span class="send-btn">
-						<input type="button" id="sendbtn" name="Send" value="Send" ng-click="withdrawFromAvailableBAlance()">
+						<input type="button" id="sendbtn" name="Send" value="Send" ng-click="withdrawFromAvailableBalance()">
 					</span>
 				</li>
 			</ul>
