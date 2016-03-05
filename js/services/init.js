@@ -150,7 +150,7 @@ root.makeRequest = function( request, callback ) {
 
 
 'use strict';
-Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices, ApikeyService) {
+Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices, ApikeyService, BalanceServices) {
 
 							var root={
 		/** A reference to the NaCl module, once it is loaded. */
@@ -374,6 +374,7 @@ root.handleMessage=function(message_event) {
 				//get all coins and exchangewise coins
 				GlobalServices.initExchangeCoinsData();
 				console.log("Calling saveExchangesStatusForSession...");
+
 			}
 			naclAPI.makeRequest(request, callback);
  		}
@@ -733,6 +734,7 @@ console.log("init called");
             }
             GlobalServices.exchangeWithApiCreds = savedExchanges;
             GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
+            BalanceServices.initBalanceCall(GlobalServices.exchangeWithApiCreds);
         });
 
     }

@@ -22,7 +22,7 @@
                         </tr>
                         <tr ng-repeat="exchange in exchangeNames">
                             <td><input type="checkbox" ng-model="exchange.isChecked"  ng-change= "checkboxChanged($index)" /></td>
-                            <td> {{exchange.name | firstUpper}}</td>
+                            <td> {{exchange.name}}</td>
                         </tr>
             
                     </table>
@@ -62,7 +62,7 @@
                  </div>
                  <div ng-repeat="exchange in exchangeNames">   
         			<fieldset class="scheduler-border" ng-show="exchange.isChecked" >
-                        <legend class="scheduler-border">{{exchange.name| firstUpper}}</legend>
+                        <legend class="scheduler-border">{{exchange.name}}</legend>
                         <div class="control-group table-responsive"  >
                             <table class="table table-striped">
                                 <tr>
@@ -72,7 +72,7 @@
             
                                 <tr ng-repeat = "val in exchange.coinDetails">
                                     <td>{{val.coin}}</td>
-                                    <td>{{val.bal}}</td>
+                                    <td>{{val.balance}}</td>
                                 </tr>
             
                                 
