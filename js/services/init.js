@@ -734,7 +734,7 @@ console.log("init called");
             }
             GlobalServices.exchangeWithApiCreds = savedExchanges;
             GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
-            BalanceServices.initBalanceCall(GlobalServices.exchangeWithApiCreds);
+            BalanceServices.initBalanceCall();
         });
 
     }
