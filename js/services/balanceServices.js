@@ -26,14 +26,11 @@ Instantdex.service('BalanceServices', function($http, $q, GlobalServices) {
         var tempCoins = [];
         for (var i in balService.validExchangeList) {
             for (var j in balService.exchangeWiseList) {
-                if (balService.exchangeWiseList[j].exchange ==
-                    balService.validExchangeList[i]) {
+                if (balService.exchangeWiseList[j].exchange == balService.validExchangeList[i]) {
                     tempCoins = [];
-                    GlobalServices.buildUniqueCoinsList(balService.exchangeWiseList[
-                        j].coins, tempCoins);
+                    GlobalServices.buildUniqueCoinsList(balService.exchangeWiseList[j].coins, tempCoins);
                     balService.credsAvailableExchanges.push({
-                        'exchange': balService.exchangeWiseList[
-                            j].exchange,
+                        'exchange': balService.exchangeWiseList[j].exchange,
                         'coins': tempCoins
                     });
                 }
@@ -61,8 +58,7 @@ Instantdex.service('BalanceServices', function($http, $q, GlobalServices) {
         var callback = function(req, res) {
             var data = res.data;
             for (var i in balService.exchangeNames) {
-                if (!data.hasOwnProperty('error') && balService
-                    .exchangeNames[i].name === req.exchange) {
+                if (!data.hasOwnProperty('error') && balService.exchangeNames[i].name === req.exchange) {
                     balService.exchangeNames[i].coinDetails.push({
                         "balance": data.balance,
                         "coin": req.base
@@ -81,9 +77,7 @@ Instantdex.service('BalanceServices', function($http, $q, GlobalServices) {
         this.getCoinsOfExchangesWithApiCreds();
         for (var i in this.credsAvailableExchanges) {
             for (var j in this.credsAvailableExchanges[i].coins) {
-                this.getBalanceOfCoinForExchange(this.credsAvailableExchanges[
-                    i].exchange, this.credsAvailableExchanges[
-                    i].coins[j]);
+                this.getBalanceOfCoinForExchange(this.credsAvailableExchanges[i].exchange, this.credsAvailableExchanges[i].coins[j]);
             }
         }
     }
