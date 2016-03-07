@@ -7791,6 +7791,6 @@ nav.top-bar .active a{
   padding: 25px 10px !important;
 }
 
-#listener{
-  height: 0px;
+#listener embed{
+  height: 0px !important;
 }

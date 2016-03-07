@@ -81,5 +81,5 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI){
 			}
 		}
 		return uniqueCoins;
-	}
+	};
 });
