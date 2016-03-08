@@ -6,10 +6,13 @@ Instantdex.service('BalanceServices', function($http, $q, $rootScope, GlobalServ
 	this.exchangeWiseList = [];
 	this.validExchangeList = [];
 	this.totalsTable = [];
-
-	// $watch(GlobalServices.exchangeWithApiCreds, function(){
-	// 	balService.initBalanceCall();
-	// }, true);
+	this.masterExchangeCoins = [
+		{"exchange": "poloniex", "coins":["BTC", "NXT", "XMR", "LTC" ]},
+		{"exchange": "bittrex", "coins":["BTC", "JBS", "LTC", "DASH"]},
+		{"exchange": "truefx", "coins":["EUR", "USD", "GBP", "AUD"]},
+		{"exchange": "btce", "coins":["BTC", "LTC", "NMC", "USD"]},
+		{"exchange": "fxcm", "coins":["USD", "EUR", "GBP", "JPY"]},
+	];
 
 	function initialize() {
 		balService.exchangeWiseList = GlobalServices.exchange_coins;
@@ -96,7 +99,11 @@ Instantdex.service('BalanceServices', function($http, $q, $rootScope, GlobalServ
 				}
 			}
 		}
-		GlobalServices.makeRequest(request, callback);
+		for(var x in balService.masterExchangeCoins){
+			if(balService.masterExchangeCoins[x].exchange == exchange && balService.masterExchangeCoins[x].coins.indexOf(coin) != -1){
+				GlobalServices.makeRequest(request, callback);
+			}
+		}
 	}
 
 	this.initBalanceCall = function() {
