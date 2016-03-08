@@ -2,27 +2,57 @@
 
 Instantdex.controller('ExchangeOverviewController', function($scope,$state, $http, ngDialog,InstantdexServices, GlobalServices, BalanceServices, $interval){
   
-  $scope.credsAvailableExchanges = angular.copy(BalanceServices.credsAvailableExchanges);
-  $scope.exchangeNames = BalanceServices.exchangeNames;
-  $scope.totalsTable = BalanceServices.totalsTable;
+	$scope.credsAvailableExchanges = angular.copy(BalanceServices.credsAvailableExchanges);
+	$scope.exchangeNames = [];
+	$scope.totalsTable = [];
 
-  $scope.selectAll =  function(){
-    $scope.exchangeNames.forEach(function(e){
-      if($scope.selectedAll){
-        e.isChecked = true;
-      }else{
-        e.isChecked = false;
-      }
-    })
-  }
-  
-  $scope.initialize = function(){
-    if($scope.exchangeNames.length == 0){
-    console.log("after seting api cred");
-    BalanceServices.initBalanceCall();
-  }
- }
- $scope.initialize();
+	$scope.$on("newCoinBalanceAdded", function(event, data){
+		$scope.exchangeNames = angular.copy(BalanceServices.exchangeNames);
+	});
+
+	$scope.$on("totalCoinBalanceUpdated", function(event, data){
+		$scope.totalsTable = angular.copy(BalanceServices.totalsTable);
+	});
+
+	// $scope.$watch(BalanceServices.exchangeNames, function(){
+	// 	$scope.exchangeNames = angular.copy(BalanceServices.exchangeNames);
+	// 	$scope.totalsTable = angular.copy(BalanceServices.totalsTable);
+	// }, true);
+
+	$scope.selectAll =  function(){
+		$scope.exchangeNames.forEach(function(e){
+			if($scope.selectedAll){
+				e.isChecked = true;
+		  	}
+		  	else{
+				e.isChecked = false;
+		  	}
+		});
+	}
+
+	$scope.excCheckboxUpdated = function(){
+		var status = true;
+		$scope.exchangeNames.forEach(function(e){
+			if(!e.isChecked){
+				status = false;
+		  	}
+		  // 	else{
+				// status = true;
+		  // 	}
+		});
+		$scope.selectedAll = status;
+	}
+
+	$scope.initialize = function(){
+		// if(BalanceServices.exchangeNames.length == 0){
+		// 	console.log("after seting api cred");
+		// 	BalanceServices.initBalanceCall();
+		// }
+		$scope.exchangeNames = angular.copy(BalanceServices.exchangeNames);
+		$scope.totalsTable = angular.copy(BalanceServices.totalsTable);
+	}
+	$scope.initialize();
+
 
 console.log("Total Table",  $scope.totalsTable)
 
@@ -38,8 +68,4 @@ console.log("Total Table",  $scope.totalsTable)
 //   }
 
 
-}).filter('firstUpper', function() {
-     return function(input, $scope) {
-         return input ? input.substring(0,1).toUpperCase()+input.substring(1).toLowerCase() : "";
-     }
-});
+})

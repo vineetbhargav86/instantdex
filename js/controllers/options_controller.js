@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.controller('OptionsController', function($scope, $state, $http, ngDialog, InstantdexServices, GlobalServices, ApikeyService){
+Instantdex.controller('OptionsController', function($scope, $state, $http, ngDialog, InstantdexServices, GlobalServices, ApikeyService, BalanceServices){
 	$scope.exchanges = [];
     $scope.preventDefault = function(event){
         event.preventDefault();
@@ -87,7 +87,9 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
 		    				GlobalServices.exchangesStatus[e]["areCredsSet"] = true;
 		    				if(GlobalServices.exchangeWithApiCreds.indexOf(apiCreds.value.exchange) == -1){
 		    					GlobalServices.exchangeWithApiCreds.push(apiCreds.value.exchange);
+                                BalanceServices.getCoinBalanceForAnExchange(apiCreds.value.exchange);
 		    					GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
+                                $scope.$watch(GlobalServices.exchangeWithApiCreds);
 		    				}
 		    				break;
 		    			};

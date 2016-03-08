@@ -21,7 +21,7 @@
                             <th>Exchange</th>
                         </tr>
                         <tr ng-repeat="exchange in exchangeNames">
-                            <td><input type="checkbox" ng-model="exchange.isChecked"/></td>
+                            <td><input type="checkbox" ng-model="exchange.isChecked" ng-change="excCheckboxUpdated()"/></td>
                             <td> {{exchange.name | firstUpper}}</td>
                         </tr>
             
