@@ -1,155 +1,122 @@
 <!--    original index.html cut short to view      -->
 <div ng-controller="ConsolidateCoinsController">
-    <div class="row">
-        <div class="header small-12 columns">
-            <h1>Consolidate Coins</h1>	
-        </div>
-    </div>
-    
-    <div class="row">
-    	<div class="consolidate-bottom-box small-12 columns">
-        	<div class="top-caption-box">
-            	<label>Select coin</label>
-                <select>
-    				<option value="Bitcoin">Bitcoin (BTC)</option>
-    				<option value="Bitcoin">Bitcoin (BTC)</option>
-    			</select>
-            </div>
-            
-            <div class="consolidate-table-box">
-            	<h2>Source</h2>
-            	<div class="table-box">
-                <table>
-    				<thead>
-                        <tr>
-                            <th>Active? []</th>
-                            <th>Exchange</th>
-                            <th>Available Amount</th>
-                            <th>Transfer Fee</th>
-                            <th class="transaction-col">How much to send <input type="button" name="" value="Send Max"></th>
-                        </tr>
-                    </thead>
-    				<tbody>
-                        <tr>
-                            <td><input type="checkbox" name="" value=""></td>
-                            <td>Bittrex</td>
-                            <td>0.00223</td>
-                            <td>0.00001</td>
-                            <td class="transaction-col medium-6"><input type="number" name="" value="" placeholder="0.002"><span class="btn-box"><input type="button" name="" value="X"><input type="button" name="" value="Max"></span></td>
-                        </tr>
-        
-                        <tr>
-                            <td><input type="checkbox" name="" value=""></td>
-                            <td>Poloneix</td>
-                            <td>1.4</td>
-                            <td>0.00002</td>
-                            <td class="transaction-col medium-6"><input type="number" name="" value="" placeholder="13998"><span class="btn-box"><input type="button" name="" value="X"><input type="button" name="" value="Max"></span></td>
-                        </tr>
-        
-                        <tr>
-                            <td><input type="checkbox" name="" value=""></td>
-                            <td>NXT AE</td>
-                            <td>2</td>
-                            <td>1 NXT</td>
-                            <td class="transaction-col medium-6"><input type="number" name="" value="" placeholder="1"><span class="btn-box"><input type="button" name="" value="X"><input type="button" name="" value="Max"></span></td>
-                        </tr> 
-                        <tr>
-                            <td><input type="checkbox" name="" value=""></td>
-                            <td>Bter</td>
-                            <td>1,542</td>
-                            <td>0.0001</td>
-                            <td class="transaction-col disabled medium-6"><input type="number" name="" value="" placeholder="1"><span class="btn-box"><input type="button" name="" value="X"><input type="button" name="" value="Max"></span></td>
-                        </tr>    
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="transaction-col medium-6"></td>
-                        </tr>
-        
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="transaction-col medium-6"></td>
-                        </tr>
-        
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="transaction-col medium-6"></td>
-                        </tr>
-                        <tr id="last-row">
-                            <td class="no-border"></td>
-                            <td class="no-border"></td>
-                            <td class="no-border"></td>
-                            <td class="thick-border"><strong>Fee totals: </strong> 0.0003 BTC 1 NXT</td>
-                            <td class="thick-border transaction-col medium-6"><strong>Total: </strong>2,4 BTC</td>
-                        </tr>
-                     </tbody>
-    			</table>
-    			</div>
-            </div>
-            
-            <div class="bot-caption-box">
-            	<label>Destination</label>
-                <select>
-    				<option value="Bitcoin">BTC Address</option>
-    				<option value="Bitcoin">BTC Address</option>
-    			</select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-    	<div class="dest-addrs small-12 columns">
-        	<ul class="dest-addrs-list">
-            	<li>
-                	<label>Enter Destination Address</label>
-                    <span class="text"><input type="text" name="destination-address" value="" placeholder=""></span>
-                </li>
-                <li>
-                	<span class="send-btn">
-                    	<input type="button" id="sendbtn" name="Send" value="Send">
-                    </span>
-                </li>
-            </ul>
-        </div>
-    </div>
-    
-    
-    <div class="footer-frame small-12 columns">
-      	<div class="footer">
-          <h4>Order History</h4>
-          <div class="table-box">
-          <table>
-          	<thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Source</th>
-                    <th>Destination</th>
-                    <th>Coin</th>
-                    <th>Amount</th>
-                    <th>Confirmations</th>
-                </tr>
-            </thead>
-                
-            <tbody>
-                <tr>
-                    <td>01.01.2013</td>
-                    <td>Bittrex</td>
-                    <td>NXT AE</td>
-                    <td>NXT</td>
-                    <td>1000</td>
-                    <td>1000+</td>
-                </tr>
-            </tbody>
-            </table>
-            </div>
-          </div>
-      </div>
+	<div class="row">
+		<div class="header small-12 columns">
+			<h1>Consolidate Coins</h1>	
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="consolidate-bottom-box small-12 columns">
+			<div class="top-caption-box">
+				<!-- <label></label> -->
+				<select ng-model="selectedCoin" ng-change="coinChanged()">
+					<option value="-1">Select coin</option>
+					<option value="{{coin}}" ng-repeat="coin in allCoins | orderBy: coin">{{coin}}</option>
+				</select>
+			</div>
+			
+			<div class="consolidate-table-box">
+				<h2>Source</h2>
+				<div class="table-box">
+				<table>
+					<thead>
+						<tr>
+							<th>Active? []</th>
+							<th>Exchange</th>
+							<th>Available Amount</th>
+							<th>Transfer Fee</th>
+							<th class="transaction-col">How much to send 
+								<input type="button" name="" value="Send Max" ng-click="setMaxToAll()">
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="exchDet in exchangeBalanceData" ng-show="!showNoCoinMsg">
+							<td><input type="checkbox" name="" value=""></td>
+							<td>{{exchDet.exchange}}</td>
+							<td>{{exchDet.balance}}</td>
+							<td></td>
+							<td class="transaction-col medium-6"><input type="number" name="" value="" ng-model="exchDet.tamount" ng-change="getTotalOfCoinsToWithdraw()">
+								<span class="btn-box">
+									<input type="button" name="" value="X" ng-click="exchDet.tamount = '';getTotalOfCoinsToWithdraw();">
+									<input type="button" name="" value="Max" ng-click="exchDet.tamount = exchDet.balance;getTotalOfCoinsToWithdraw();">
+								</span>
+							</td>
+						</tr>
+						<tr ng-show="!showNoCoinMsg && showExchangeCoinFetchingLoader" style="text-align: center;">
+							<td colspan="5" ><img src="../images/spinner.gif" /></td>
+						</tr>
+						<tr ng-show="showNoCoinMsg && !showExchangeCoinFetchingLoader && exchangeBalanceData.length ==0 " style="text-align: center;">
+							<td colspan="5">No {{selectedCoin}} balance found.</td>
+						</tr>
+						<tr id="last-row">
+							<td class="no-border"></td>
+							<td class="no-border"></td>
+							<td class="no-border"></td>
+							<td class="thick-border"><strong>Fee totals: </strong> <!-- 0.0003 BTC 1 NXT --></td>
+							<td class="thick-border transaction-col medium-6"><strong>Total: </strong>{{totalCoins}} {{selectedCoin}}</td>
+						</tr>
+					 </tbody>
+				</table>
+				</div>
+			</div>
+			
+			<div class="bot-caption-box">
+				<label>Destination</label>
+				<select>
+					<option value="Bitcoin">BTC Address</option>
+					<option value="Bitcoin">BTC Address</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="dest-addrs small-12 columns">
+			<ul class="dest-addrs-list">
+				<li>
+					<label>Enter Destination Address</label>
+					<span class="text"><input type="text" name="destination-address" value="" placeholder="" ng-model="destaddr"></span>
+				</li>
+				<li>
+					<span class="send-btn">
+						<input type="button" id="sendbtn" name="Send" value="Send" ng-click="withdrawFromAvailableBalance()">
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	
+	<div class="footer-frame small-12 columns">
+		<div class="footer">
+		  <h4>Order History</h4>
+		  <div class="table-box">
+		  <table>
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Source</th>
+					<th>Destination</th>
+					<th>Coin</th>
+					<th>Amount</th>
+					<th>Confirmations</th>
+				</tr>
+			</thead>
+				
+			<tbody>
+				<tr>
+					<td>01.01.2013</td>
+					<td>Bittrex</td>
+					<td>NXT AE</td>
+					<td>NXT</td>
+					<td>1000</td>
+					<td>1000+</td>
+				</tr>
+			</tbody>
+			</table>
+			</div>
+		  </div>
+	  </div>
 </div>

@@ -7790,3 +7790,7 @@ nav.top-bar .active a{
 .angular-accordion-pane-content{
   padding: 25px 10px !important;
 }
+
+#listener embed{
+  height: 0px !important;
+}
