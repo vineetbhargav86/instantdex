@@ -77,6 +77,7 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 					$scope.showNoCoinMsg = true;
 				}
 			}
+			$scope.getTotalOfCoinsToWithdraw();
 		}
 		GlobalServices.makeRequest(request, callback);
 	}
@@ -119,6 +120,7 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 		for(var i in $scope.exchangeBalanceData){
 			$scope.exchangeBalanceData[i].tamount = $scope.exchangeBalanceData[i].balance;
 		}
+		$scope.getTotalOfCoinsToWithdraw();
 	}
 
 	$scope.showMsgDialog = function(msg) {

@@ -39,8 +39,8 @@
 							<td></td>
 							<td class="transaction-col medium-6"><input type="number" name="" value="" ng-model="exchDet.tamount" ng-change="getTotalOfCoinsToWithdraw()">
 								<span class="btn-box">
-									<input type="button" name="" value="X" ng-click="exchDet.tamount = ''">
-									<input type="button" name="" value="Max" ng-click="exchDet.tamount = exchDet.balance">
+									<input type="button" name="" value="X" ng-click="exchDet.tamount = '';getTotalOfCoinsToWithdraw();">
+									<input type="button" name="" value="Max" ng-click="exchDet.tamount = exchDet.balance;getTotalOfCoinsToWithdraw();">
 								</span>
 							</td>
 						</tr>
