@@ -86,7 +86,8 @@ Instantdex.service('BalanceServices', function($http, $q, $rootScope, GlobalServ
 					if(data.balance > 0){
 						balService.exchangeNames[i].coinDetails.push({
 							"balance": data.balance,
-							"coin": req.base
+							"coin": req.base,
+							"loadtime": (new Date()).getTime()
 						});
 						$rootScope.$broadcast("newCoinBalanceAdded", req.exchange);
 					}
@@ -126,6 +127,25 @@ Instantdex.service('BalanceServices', function($http, $q, $rootScope, GlobalServ
 						balService.getBalanceOfCoinForExchange(balService.credsAvailableExchanges[i].exchange, balService.credsAvailableExchanges[i].coins[j]);
 				}
 				break;
+			}
+		}
+	}
+
+	this.isBalanceFetchedRecently = function(exchange, coin){
+		var currTime = 0;
+		for(var i in balService.exchangeNames){
+			if(balService.exchangeNames[i].name == exchange){
+				for(var j in balService.exchangeNames[i].coinDetails){
+					if(balService.exchangeNames[i].coinDetails[j].coin == coin){
+						currTime = (new Date()).getTime();
+						if((currTime - balService.exchangeNames[i].coinDetails[j].loadtime)/60000 >= 1){// Check if the time elaspsed for the balance call on this coin is more than 1 minute.
+							return {"recent":false, "ind1":i, "ind2":j};
+						}
+						else{
+							return {"recent":true, "ind1":i, "ind2":j};
+						}
+					}
+				}
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.controller('ConsolidateCoinsController', function($scope, $state, GlobalServices, ngDialog){
+Instantdex.controller('ConsolidateCoinsController', function($scope, $state, GlobalServices, ngDialog, BalanceServices){
 	$scope.allCoins = angular.copy(GlobalServices.coinsValidExchanges);
 	$scope.exchangeWiseList = angular.copy(GlobalServices.exchange_coins);
 	$scope.selectedCoin = "-1";
@@ -44,8 +44,27 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 		// 	}
 		// }
 		$scope.exchangeBalanceData = [];
+		var exists = false;
 		for(var i in $scope.credsAvailableExchanges){
-			$scope.getBalanceOfCoinForExchange($scope.credsAvailableExchanges[i], $scope.selectedCoin);
+			exists = false;
+			var balFetched = BalanceServices.isBalanceFetchedRecently($scope.credsAvailableExchanges[i], $scope.selectedCoin);
+			if(!balFetched["recent"]){
+				$scope.getBalanceOfCoinForExchange($scope.credsAvailableExchanges[i], $scope.selectedCoin);
+				BalanceServices.exchangeNames[balFetched["ind1"]].coinDetails[balFetched["ind2"]] = (new Date()).getTime();
+			}
+			else{
+				for(var j in $scope.exchangeBalanceData){
+					if($scope.exchangeBalanceData[j].exchange == $scope.credsAvailableExchanges[i]){
+						$scope.exchangeBalanceData[j].balance = BalanceServices.exchangeNames[balFetched["ind1"]].coinDetails[balFetched["ind2"]];
+						$scope.showExchangeCoinFetchingLoader = false;
+						exists = true;
+					}
+				}
+				if(!exists){
+					$scope.exchangeBalanceData.push({"balance": BalanceServices.exchangeNames[balFetched["ind1"]].coinDetails[balFetched["ind2"]].balance, "exchange": $scope.credsAvailableExchanges[i], "transferfee":"", "tamount": ""});
+					$scope.showExchangeCoinFetchingLoader = false;
+				}
+			}
 		}
 
 		console.log("Exchanges for selected coin: "+JSON.stringify($scope.credsAvailableExchanges));
@@ -59,7 +78,6 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 			// $scope.exchangeBalanceData = [];
 			if(!data.hasOwnProperty('error')){
 				$scope.showNoCoinMsg = false;
-				$scope.showExchangeCoinFetchingLoader = false;
 				var exchangeExists = false;
 				for(var j in $scope.exchangeBalanceData){
 					if($scope.exchangeBalanceData[j].exchange == req.exchange){
@@ -72,11 +90,11 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 				}
 			}
 			else{
-				$scope.showExchangeCoinFetchingLoader = false;
 				if($scope.exchangeBalanceData.length == 0){
 					$scope.showNoCoinMsg = true;
 				}
 			}
+			$scope.showExchangeCoinFetchingLoader = false;
 			$scope.getTotalOfCoinsToWithdraw();
 		}
 		GlobalServices.makeRequest(request, callback);
