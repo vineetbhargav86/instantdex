@@ -22,7 +22,7 @@ Instantdex.service('BalanceServices', function($http, $q, $rootScope, GlobalServ
 		for (var i in balService.validExchangeList) {
 			exists = false;
 			for(var j in balService.exchangeNames){
-				if(balService.validExchangeList[i] == balService.exchangeNames[j]){
+				if(balService.validExchangeList[i] == balService.exchangeNames[j].name){
 					exists = true;
 					break;
 				}
@@ -118,6 +118,7 @@ Instantdex.service('BalanceServices', function($http, $q, $rootScope, GlobalServ
 	}
 
 	this.getCoinBalanceForAnExchange = function(exchange){
+		initialize();
 		balService.getCoinsOfExchangesWithApiCreds();
 		for (var i in balService.credsAvailableExchanges) {
 			if(balService.credsAvailableExchanges[i].exchange == exchange){

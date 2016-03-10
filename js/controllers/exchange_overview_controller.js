@@ -2,9 +2,19 @@
 
 Instantdex.controller('ExchangeOverviewController', function($scope,$state, $http, ngDialog,InstantdexServices, GlobalServices, BalanceServices, $interval){
   
-	$scope.credsAvailableExchanges = angular.copy(BalanceServices.credsAvailableExchanges);
+	// $scope.credsAvailableExchanges = angular.copy(BalanceServices.credsAvailableExchanges);
 	$scope.exchangeNames = [];
 	$scope.totalsTable = [];
+	if(GlobalServices.exchangeWithApiCreds.length == 0){
+		$scope.showExchangeData = false;	
+	}
+	else{
+		$scope.showExchangeData = true;
+	}
+	
+	// $scope.$on("newExchangeApiCredAdded", function(event, data){
+	// 	$scope.exchangeNames = angular.copy(BalanceServices.exchangeNames);
+	// });
 
 	$scope.$on("newCoinBalanceAdded", function(event, data){
 		$scope.exchangeNames = angular.copy(BalanceServices.exchangeNames);

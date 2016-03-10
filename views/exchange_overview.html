@@ -4,12 +4,12 @@
             <h1>Exchange Overview</h1>  
         </div>
         
-        <div class="show-dust-box small-12 columns">
+        <div class="show-dust-box small-12 columns" ng-show="showExchangeData">
             <span class="checkbox"><input class=""  type="checkbox" name="" value="">  Show dust</span>
         </div>
     </div>
-  
-    <div class="row">
+    <div class="row text-center" ng-show="!showExchangeData"><h3>Please add api key pairs on options tab to view exchange details here.</h3></div>
+    <div class="row" ng-show="showExchangeData">
         <div class="exchange-overview-box small-12 columns">
             <div class="row">
                 <div class="left-box large-3 medium-6 small-12 columns">

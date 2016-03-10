@@ -730,15 +730,17 @@ console.log("init called");
                 
                 if(current === "true" || current === true) {
                     savedExchanges.push(GlobalServices.exchangeDetails[i]);
-                };      
+                };
             }
             GlobalServices.exchangeWithApiCreds = savedExchanges;
             GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
-            BalanceServices.initBalanceCall();
+            if(GlobalServices.exchangeWithApiCreds.length != 0){
+            	BalanceServices.initBalanceCall();
+            }
         });
 
     }
-    }  
+    }
   };
 
   /** Saved text to display in the element with id 'statusField'. */

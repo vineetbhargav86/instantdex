@@ -125,6 +125,7 @@ Instantdex.service('ApikeyService', function($http, $q, ngDialog, GlobalServices
 
         //console.log('updeted', decryptedJson);
         encryptJson(decryptedJson.passphrase, decryptedJson, cb);
+        root.callApiKeyPairsApi(decryptedJson);
     };
     
     /**

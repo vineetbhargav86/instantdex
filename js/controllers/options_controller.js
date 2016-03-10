@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.controller('OptionsController', function($scope, $state, $http, ngDialog, InstantdexServices, GlobalServices, ApikeyService, BalanceServices){
+Instantdex.controller('OptionsController', function($scope, $state, $http, $rootScope, ngDialog, InstantdexServices, GlobalServices, ApikeyService, BalanceServices){
 	$scope.exchanges = [];
     $scope.preventDefault = function(event){
         event.preventDefault();
@@ -81,25 +81,25 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, ngDia
 	    		// user enter passphrase and then update saved apikey pairs
 	    		ApikeyService.getApiKeyPairs(function(json) {
 					// update model
-					for(var e in $scope.exchanges){
-		    			if($scope.exchanges[e]["name"] == apiCreds.value.exchange){
-		    				$scope.exchanges[e]["areCredsSet"] = true;
-		    				GlobalServices.exchangesStatus[e]["areCredsSet"] = true;
-		    				if(GlobalServices.exchangeWithApiCreds.indexOf(apiCreds.value.exchange) == -1){
-		    					GlobalServices.exchangeWithApiCreds.push(apiCreds.value.exchange);
-                                BalanceServices.getCoinBalanceForAnExchange(apiCreds.value.exchange);
-		    					GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
-                                $scope.$watch(GlobalServices.exchangeWithApiCreds);
-		    				}
-		    				break;
-		    			};
-		    		};
-		    		// update saved apikeys
+					// update saved apikeys
 					ApikeyService.updateApiKeyPairs(json, apiCreds.value, function() {
 						console.log('updated apikey', apiCreds.value);
+						for(var e in $scope.exchanges){
+			    			if($scope.exchanges[e]["name"] == apiCreds.value.exchange){
+			    				$scope.exchanges[e]["areCredsSet"] = true;
+			    				GlobalServices.exchangesStatus[e]["areCredsSet"] = true;
+			    				if(GlobalServices.exchangeWithApiCreds.indexOf(apiCreds.value.exchange) == -1){
+			    					GlobalServices.exchangeWithApiCreds.push(apiCreds.value.exchange);
+	                                // $rootScope.$broadcast("newExchangeApiCredAdded", apiCreds.value.exchange);
+	                                GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
+	                                BalanceServices.getCoinBalanceForAnExchange(apiCreds.value.exchange);
+			    				}
+			    				break;
+			    			};
+			    		};
 					});
-		        });
 
+		        });
 	    	}
 	    });
 	};
