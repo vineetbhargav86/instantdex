@@ -2,17 +2,18 @@
 		<div class="row">
 			<div class="header small-12 columns">
 				<h1>Coin Exchange</h1>
+				{{exchangeCoinTabs}}
 				<div class="row">
 					<div class="top-part small-12 columns">
 						<div class="row">
 							<div class="left-part small-12 medium-8 large-8 columns">
 								<label>Pairing</label>
-								<select ng-options="coin.value as coin.key for coin in coinslist" ng-model="coinType1">
+								<select ng-options="coin as coin for coin in coinsValidExchanges" ng-model="coinType1">
 									<option value="">Select Coin</option>
 								</select>
 								<span class="seprator">/</span>
 								
-								<select ng-options="coin.value as coin.key for coin in coinslist" ng-model="coinType2">
+								<select ng-options="coin as coin for coin in coinsValidExchanges" ng-model="coinType2">
 									<option value="">Select Coin</option>
 								</select>
 								

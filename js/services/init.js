@@ -525,7 +525,7 @@ root.handleMessage=function(message_event) {
 			{elm.appendChild(node);
 					}
 			//document.getElementById('log').appendChild(message);
-							console.log(message);
+							//uncomentconsole.log(message);
 	}
 
 	/**
