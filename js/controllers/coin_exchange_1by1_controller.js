@@ -5,8 +5,9 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
     $scope.coinslist = GlobalServices.getCoinTypes();
 
     $scope.exchangeWithApiCreds = GlobalServices.exchangeWithApiCreds;
-    $scope.credsAvailableExchanges = GlobalServices.credsAvailableExchanges;
-    $scope.exchange_coins = GlobalServices.exchange_coins;
+    $scope.coinsValidExchanges = GlobalServices.coinsValidExchanges;
+    
+    $scope.selectedCoinsBalance = {};
 
     $scope.coinType1 = $stateParams.coinType1 || "";
     $scope.coinType2 = $stateParams.coinType2 || "";
@@ -25,47 +26,85 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
             });
         }
     }
-    $scope.exchangeCoinTabs = [];
-    console.log('balance', BalanceServices.exchangeNames);
-    var showCoinExchangeDetails = function() {
-        console.log('showCoinExchangeDetails start',$scope.exchangeWithApiCreds);
-        angular.forEach($scope.exchangeWithApiCreds, function(exch) {
-            angular.forEach($scope.exchange_coins, function(exCoins) {
-                if(exCoins.exchange === exch) {
-                    var coins = exCoins.coins || [];
-                    console.log('coins', coins);
-                    for(var i=0; i<coins.length; i++) {
-                        console.log('coins and coinType', coins, $scope.coinType1);
-                        if( (coins[i][0] === $scope.coinType1 && 
-                            coins[i][1] === $scope.coinType2) || 
-                            (coins[i][0] === $scope.coinType2 && 
-                            coins[i][1] === $scope.coinType1) ) {
+    $scope.exchangeCoinTabs = [];    
 
-                            $scope.exchangeCoinTabs.push(exch);
+    // returns true if non zero balance for coin or when coinName is empty
+    // update selectedCoinsBalance
+    var checkBalanceForCoin = function(coinName) {
+        if( !coinName) return true;
+
+        var exchangeNames = angular.copy(BalanceServices.exchangeNames);
+        var hasBalance = false;
+
+        for(var i=0;i<exchangeNames.length;i++) {
+            var coinDetails = exchangeNames[i].coinDetails || [];
+            if(coinDetails.length) {
+                for(var j=0; j<coinDetails.length; j++) {
+                    if(coinDetails[j].coin === coinName) {
+                        hasBalance = true;
+                        $scope.selectedCoinsBalance[coinName] = { 
+                            balance: coinDetails[j].balance,
+                            exchange: exchangeNames[i].name
                         };
-                    }
-                }
-            });
-        });
+                    };
+                };
+            }
+        };
+
+        return hasBalance;
     };
+
+    checkBalanceForCoin($scope.coinType1);
+    checkBalanceForCoin($scope.coinType2);
+
+    var deleteNonSelectedCoins = function() {
+        for(var prop in $scope.selectedCoinsBalance) {
+
+            if(prop !== $scope.coinType1 && prop !== $scope.coinType2)
+                delete $scope.selectedCoinsBalance[prop];
+        };
+    };
+
 
     // check if coin type 1 not equal to coin type 2
     $scope.$watch("coinType1", function(newVal, oldVal) {
+        if(newVal === oldVal) return;
+
         if(newVal && newVal === $scope.coinType2) {
             $scope.coinType1 = oldVal;
         };
-        showCoinExchangeDetails();
+        deleteNonSelectedCoins();
+
+        if(!checkBalanceForCoin(newVal) && !Object.keys($scope.selectedCoinsBalance).length) {
+            $scope.coinType1 = '';  
+        };
+        
     });
 
     // check if coin type 2 not equal to  coin type 1
     $scope.$watch("coinType2", function(newVal, oldVal) {
+        if(newVal === oldVal) return;
+        
         if(newVal && newVal === $scope.coinType1) {
             $scope.coinType2 = oldVal;
         };
-        showCoinExchangeDetails();
+
+        deleteNonSelectedCoins();
+        
+        if( !checkBalanceForCoin(newVal) && !Object.keys($scope.selectedCoinsBalance).length) {
+            $scope.coinType2 = '';  
+        };
+        
     });
     
+    $scope.getBalance = function(exchangeName, coinName) {
+        if($scope.selectedCoinsBalance[coinName] && 
+            $scope.selectedCoinsBalance[coinName].exchange === exchangeName) {
 
+            return $scope.selectedCoinsBalance[coinName].balance;
+        } else 
+            return 0;
+    };
     $scope.exchangeCoinsTypes = function(event){
         event.preventDefault();
         var temp = $scope.coinType1;

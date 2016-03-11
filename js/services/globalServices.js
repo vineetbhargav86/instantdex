@@ -20,7 +20,7 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
 	];// List of coins supprted by each exchange
 
 	this.coinsValidExchanges = [];
-console.log('after init', this.coinsValidExchanges);
+
 	this.credsAvailableExchanges = [];
 
 	this.putExchangeWiseCoins = function(exchange, coins){
@@ -60,14 +60,12 @@ console.log('after init', this.coinsValidExchanges);
 
 	this.buildSupportedCoinsListForApiCredsAvailableExchanges = function(){
 		var tempCoins = [];
-		console.log('when function just starts', gservices.coinsValidExchanges);
 		for(var i in gservices.exchangeWithApiCreds){
 			// if(gservices.exchangeWithApiCreds[i].areCredsSet){
 			for(var j in gservices.exchange_coins){
 				if(gservices.exchange_coins[j].exchange == gservices.exchangeWithApiCreds[i]){
 					tempCoins = [];
 					gservices.buildUniqueCoinsList(gservices.exchange_coins[j].coins, tempCoins);
-					console.log('build supp coins list',gservices.coinsValidExchanges, tempCoins);
 					gservices.coinsValidExchanges = gservices.removeDuplicatesCoins(angular.extend(gservices.coinsValidExchanges, tempCoins));
 				}
 			}
@@ -76,7 +74,6 @@ console.log('after init', this.coinsValidExchanges);
 	};
 
 	this.removeDuplicatesCoins = function(coinslist){
-		console.log('coinslist', coinslist);
 		var uniqueCoins = [];
 		for(var i in coinslist){
 			if(uniqueCoins.indexOf(coinslist[i]) == -1){

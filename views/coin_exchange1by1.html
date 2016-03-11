@@ -2,7 +2,6 @@
 		<div class="row">
 			<div class="header small-12 columns">
 				<h1>Coin Exchange</h1>
-				{{exchangeCoinTabs}}
 				<div class="row">
 					<div class="top-part small-12 columns">
 						<div class="row">
@@ -53,32 +52,32 @@
 		<div class="row">
 			<div class="angular-box small-12 columns">
 				<angular-accordion>
-			<pane>
+			<pane ng-repeat='exchange in exchangeWithApiCreds'>
 				<pane-header>
-					<span>Bittrex</span>
-					<span>CoinA: 10</span>
-					<span>CoinB: 20</span>
+					<span>{{exchange}}</span>
+					<span ng-show="coinType1">{{coinType1}}: {{getBalance(exchange, coinType1)}}</span>
+					<span ng-show="coinType2">{{coinType2}}: {{getBalance(exchange, coinType2)}}</span>
 				</pane-header>
 				<pane-content class="ce-accordion">
 					<div class="row">
 						<div class="left-box medium-6 columns">
 							<div class="innr-box">
-								<h4>Buy CoinB for CoinA</h4>
-								<h5><strong>Balance:</strong> 100 CoinA</h5>
+								<h4>Buy {{coinType2}} for {{coinType1}}</h4>
+								<h5><strong>Balance:</strong> {{getBalance(exchange, coinType1)}} {{coinType1}}</h5>
 								<form>
 									<ul class="form-list">
 										<li>
 											<label>Quantity</label>
 											<div class="input-group">
 													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">CoinB</span>
+													<span class="input-group-label">{{coinType2}}</span>
 											</div>
 										</li>
 										<li>
 											<label>Bid</label>
 											<div class="input-group">
 													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">CoinA</span>
+													<span class="input-group-label">{{coinType1}}</span>
 											</div>
 										</li>
 										<li>
@@ -104,17 +103,17 @@
 											</select>
 											<div class="input-group small">
 													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">CoinA</span>
+													<span class="input-group-label">{{coinType1}}</span>
 											</div>
 										</li>
 										<li>
 											<label>Total</label>
 											<div class="input-group small left">
 													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">CoinA</span>
+													<span class="input-group-label">{{coinType1}}</span>
 											</div>
 											<span class="buy-btn">
-												<a href="#" ng-click="preventDefault($event)">Buy CoinB</a>
+												<a href="#" ng-click="preventDefault($event)">Buy {{coinType2}}</a>
 											</span>
 										</li>
 									</ul>
@@ -123,22 +122,22 @@
 						</div>
 						<div class="right-box medium-6 columns">
 							<div class="innr-box">
-								<h4>Sell CoinB for CoinA</h4>
-								<h5><strong>Balance:</strong> 100 CoinB</h5>
+								<h4>Sell {{coinType2}} for {{coinType1}}</h4>
+								<h5><strong>Balance:</strong> {{getBalance(exchange, coinType2)}} {{coinType2}}</h5>
 								<form>
 									<ul class="form-list">
 										<li>
 											<label>Quantity</label>
 											<div class="input-group">
 													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">CoinB</span>
+													<span class="input-group-label">{{coinType2}}</span>
 											</div>
 										</li>
 										<li>
 											<label>Ask</label>
 											<div class="input-group">
 													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">CoinA</span>
+													<span class="input-group-label">{{coinType1}}</span>
 											</div>
 										</li>
 										<li>
@@ -161,10 +160,10 @@
 											<label>Total</label>
 											<div class="input-group small left">
 													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">CoinA</span>
+													<span class="input-group-label">{{coinType1}}</span>
 											</div>
 											<span class="buy-btn">
-												<a href="#" ng-click="preventDefault($event)">Buy CoinB</a>
+												<a href="#" ng-click="preventDefault($event)">Buy {{coinType2}}</a>
 											</span>
 										</li>
 									</ul>
@@ -263,7 +262,7 @@
 					</div>
 				</pane-content>
 			</pane>
-			<pane>
+			<!--<pane>
 				<pane-header>
 					<span>BTer</span>
 					<span>CoinA: 10</span>
@@ -312,7 +311,7 @@
 				<pane-content class="ce-accordion">
 						Content 3
 				</pane-content>
-			</pane>
+			</pane>-->
 			
 		</angular-accordion>
 			</div>
