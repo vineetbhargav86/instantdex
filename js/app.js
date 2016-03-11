@@ -15,11 +15,13 @@ var Instantdex = angular.module('InstandexApp', [
         })
         .state('coin_exchange', {
             url: '/coin_exchange',
-            templateUrl: 'views/coin_exchange.html'
+            templateUrl: 'views/coin_exchange.html',
+            params: {coinType1: "", coinType2: ""}
         })
         .state('coin_exchange1by1', {
             url: '/coin_exchange1by1',
-            templateUrl: 'views/coin_exchange1by1.html'
+            templateUrl: 'views/coin_exchange1by1.html',
+            params: {coinType1: "", coinType2: ""}
         })
         .state('exchange_overview', {
             url: '/exchange_overview',

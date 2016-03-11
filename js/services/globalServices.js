@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.service('GlobalServices', function($http, $q, naclAPI){
+Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
 	var gservices = this;
 
 	this.makeRequest = function(request, callback){
