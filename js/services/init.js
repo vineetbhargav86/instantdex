@@ -150,7 +150,7 @@ root.makeRequest = function( request, callback ) {
 
 
 'use strict';
-Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices, ApikeyService, BalanceServices) {
+Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices, ApikeyService, BalanceServices, $rootScope) {
 
 							var root={
 		/** A reference to the NaCl module, once it is loaded. */
@@ -733,6 +733,7 @@ console.log("init called");
                 };
             }
             GlobalServices.exchangeWithApiCreds = savedExchanges;
+            $rootScope.$broadcast("newExchangeApiCredAdded", savedExchanges);
             GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
             if(GlobalServices.exchangeWithApiCreds.length != 0){
             	BalanceServices.initBalanceCall();

@@ -7794,3 +7794,13 @@ nav.top-bar .active a{
 #listener embed{
   height: 0px !important;
 }
+
+.exchange_rate_span_width{
+  width: 150px;
+}
+
+.exchange_rate_span_width input{
+  margin: 0px;
+  color: #bbb;
+  border: 1px solid #bbb;
+}

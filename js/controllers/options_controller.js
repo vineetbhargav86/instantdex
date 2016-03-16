@@ -1,11 +1,12 @@
 'use strict';
 
-Instantdex.controller('OptionsController', function($scope, $state, $http, $rootScope, ngDialog, InstantdexServices, GlobalServices, ApikeyService, BalanceServices){
+Instantdex.controller('OptionsController', function($scope, $state, $stateParams, $http, $rootScope, ngDialog, InstantdexServices, GlobalServices, ApikeyService, BalanceServices){
 	$scope.exchanges = [];
     $scope.preventDefault = function(event){
         event.preventDefault();
     }
 
+    $rootScope.$broadcast('tabChanged', 3);
     // $scope.getAllExchanges = function(){
     	// var request = '{\"agent\":\"InstantDEX\",\"method\":\"allexchanges\"}';
     	// var callback = function(req, res){
@@ -28,36 +29,6 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, $root
     // $scope.getAllExchanges();
     // console.log('before init', $scope.exchanges);
     // console.log('glob serv', GlobalServices.exchangeDetails);
-    $scope.setExtraParamsToExchanges = function(){
-    	var exchngObj = null;
-    	// GlobalServices.exchangeApiCredsStatus = [];
-    	for(var e in GlobalServices.exchangeDetails){
-			exchngObj = {};
-			exchngObj["name"] = GlobalServices.exchangeDetails[e];
-			if(GlobalServices.exchangeWithApiCreds.indexOf(GlobalServices.exchangeDetails[e]) != -1){
-				exchngObj["areCredsSet"] = true;
-			}
-			else{
-				exchngObj["areCredsSet"] = false;
-			}
-			exchngObj["active"] = "";
-			$scope.exchanges.push(exchngObj);
-			GlobalServices.exchangesStatus.push(exchngObj);
-		}
-    }
-    if(GlobalServices.exchangesStatus.length > 0){
-    	$scope.exchanges = angular.copy(GlobalServices.exchangesStatus);
-    }
-    else{
-    	$scope.setExtraParamsToExchanges();
-    }
-	
-	var getPassphrase = function() {
-		var modalInstanse = ngDialog.open({
-			template: '' // go from here 
-		})
-	};
-
     $scope.open = function (exchange) {
 	    var modalInstance = ngDialog.open({
 	      template: 'apiExchangeCredsModal.html',
@@ -90,7 +61,7 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, $root
 			    				GlobalServices.exchangesStatus[e]["areCredsSet"] = true;
 			    				if(GlobalServices.exchangeWithApiCreds.indexOf(apiCreds.value.exchange) == -1){
 			    					GlobalServices.exchangeWithApiCreds.push(apiCreds.value.exchange);
-	                                // $rootScope.$broadcast("newExchangeApiCredAdded", apiCreds.value.exchange);
+	                                $rootScope.$broadcast("newExchangeApiCredAdded", apiCreds.value.exchange);
 	                                GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
 	                                BalanceServices.getCoinBalanceForAnExchange(apiCreds.value.exchange);
 			    				}
@@ -103,6 +74,42 @@ Instantdex.controller('OptionsController', function($scope, $state, $http, $root
 	    	}
 	    });
 	};
+
+    $scope.setExtraParamsToExchanges = function(){
+    	var exchngObj = null;
+    	// GlobalServices.exchangeApiCredsStatus = [];
+    	for(var e in GlobalServices.exchangeDetails){
+			exchngObj = {};
+			exchngObj["name"] = GlobalServices.exchangeDetails[e];
+			if(GlobalServices.exchangeWithApiCreds.indexOf(GlobalServices.exchangeDetails[e]) != -1){
+				exchngObj["areCredsSet"] = true;
+			}
+			else{
+				exchngObj["areCredsSet"] = false;
+			}
+			exchngObj["active"] = "";
+			$scope.exchanges.push(exchngObj);
+			GlobalServices.exchangesStatus.push(exchngObj);
+		}
+    }
+    if(GlobalServices.exchangesStatus.length > 0){
+    	$scope.exchanges = angular.copy(GlobalServices.exchangesStatus);	
+    }
+    else{
+    	$scope.setExtraParamsToExchanges();
+    }
+
+	if($stateParams["exchange"] != null && $stateParams["exchange"] != "" && typeof($stateParams["exchange"]) != "undefined"){
+		console.log("state change exchange add creds: "+$stateParams["exchange"]);
+		$scope.open($stateParams["exchange"]);
+	}
+
+	var getPassphrase = function() {
+		var modalInstanse = ngDialog.open({
+			template: '' // go from here 
+		});
+	};
+
 
 	// deprecated function. can be deleted. 
 	// apikey pairs api access in init.js with 
