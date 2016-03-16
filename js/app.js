@@ -29,7 +29,8 @@ var Instantdex = angular.module('InstandexApp', [
         })
         .state('options', {
             url: '/options',
-            templateUrl: 'views/option.html'
+            templateUrl: 'views/option.html',
+            params: {exchange: ""}
         })
     }]);
 

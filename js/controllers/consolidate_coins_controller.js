@@ -10,6 +10,9 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 	$scope.showNoCoinMsg = false;
 	$scope.showExchangeCoinFetchingLoader = false;
 	$scope.totalCoins = 0;
+	$scope.isNewCoinBalanceFetched = false;
+	$scope.newCoinBalanceFetchedInd1= -1;
+	// $scope.newCoinBalanceFetchedInd2= -1;
 	// $scope.getCoinsOfExchangesWithApiCreds = function(){
 	// 	var tempCoins = [];
 	// 	for(var i in GlobalServices.exchangesStatus){
@@ -30,37 +33,52 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 	//with withdraw api send some amount to a address
 
 	//get all exchanges which deals with selected coin
+
+	$scope.getIndexOfExchangeNamesFromBalanceServiceVar = function(exchange){
+		for(var i in BalanceServices.exchangeNames){
+			if(BalanceServices.exchangeNames[i].name == exchange){
+				return i;
+			}
+			return -1;
+		}
+	};
+
+	$scope.exchangeExistsInExchangeBalanceData = function(exchange){
+		for(var j in $scope.exchangeBalanceData){
+			if($scope.exchangeBalanceData[j].exchange == exchange){
+				return j;
+			}
+		}
+		return -1;
+	}
+
 	$scope.coinChanged = function(){
 		$scope.showExchangeCoinFetchingLoader = true;
 		$scope.showNoCoinMsg = false;
 		var coinExchanges = [];
-		// for(var i in $scope.exchangeWiseList){
-		// 	for(var j  in $scope.exchangeWiseList[i].coins){
-		// 		if($scope.exchangeWiseList[i].coins[j].indexOf($scope.selectedCoin) > -1){
-		// 			if(coinExchanges.indexOf($scope.exchangeWiseList[i].exchange) == -1){
-		// 				coinExchanges.push($scope.exchangeWiseList[i].exchange);
-		// 			}
-		// 		}
-		// 	}
-		// }
 		$scope.exchangeBalanceData = [];
-		var exists = false;
+		var exchInd = 0;
 		for(var i in $scope.credsAvailableExchanges){
-			exists = false;
+			// exists = false;
 			var balFetched = BalanceServices.isBalanceFetchedRecently($scope.credsAvailableExchanges[i], $scope.selectedCoin);
-			if(!balFetched["recent"]){
+			if(typeof(balFetched) == "undefined" || !balFetched["recent"]){
+				if(typeof(balFetched) == "undefined"){
+				// 	$scope.isNewCoinBalanceFetched = true;
+				// 	$scope.newCoinBalanceFetchedInd1 = $scope.getIndexOfExchangeNamesFromBalanceServiceVar($scope.credsAvailableExchanges[i]);
+					$scope.exchangeBalanceData.push({"balance": "", "exchange": $scope.credsAvailableExchanges[i], "transferfee":"", "tamount": ""});
+				}
 				$scope.getBalanceOfCoinForExchange($scope.credsAvailableExchanges[i], $scope.selectedCoin);
-				BalanceServices.exchangeNames[balFetched["ind1"]].coinDetails[balFetched["ind2"]] = (new Date()).getTime();
+				if(typeof(balFetched) != "undefined"){
+					BalanceServices.exchangeNames[balFetched["ind1"]].coinDetails[balFetched["ind2"]].loadtime = (new Date()).getTime();
+				}
 			}
 			else{
-				for(var j in $scope.exchangeBalanceData){
-					if($scope.exchangeBalanceData[j].exchange == $scope.credsAvailableExchanges[i]){
-						$scope.exchangeBalanceData[j].balance = BalanceServices.exchangeNames[balFetched["ind1"]].coinDetails[balFetched["ind2"]];
-						$scope.showExchangeCoinFetchingLoader = false;
-						exists = true;
-					}
+				exchInd = $scope.exchangeExistsInExchangeBalanceData($scope.credsAvailableExchanges[i]);
+				if(exchInd != -1){
+					$scope.exchangeBalanceData[exchInd].balance = BalanceServices.exchangeNames[balFetched["ind1"]].coinDetails[balFetched["ind2"]];
+					$scope.showExchangeCoinFetchingLoader = false;
 				}
-				if(!exists){
+				else{
 					$scope.exchangeBalanceData.push({"balance": BalanceServices.exchangeNames[balFetched["ind1"]].coinDetails[balFetched["ind2"]].balance, "exchange": $scope.credsAvailableExchanges[i], "transferfee":"", "tamount": ""});
 					$scope.showExchangeCoinFetchingLoader = false;
 				}
@@ -69,6 +87,7 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 
 		console.log("Exchanges for selected coin: "+JSON.stringify($scope.credsAvailableExchanges));
 	}
+
 
 	//get balance for each exchange for selected coin with balance api
 	$scope.getBalanceOfCoinForExchange = function(exchange, coin){
@@ -79,6 +98,15 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 			if(!data.hasOwnProperty('error')){
 				$scope.showNoCoinMsg = false;
 				var exchangeExists = false;
+				// if($scope.isNewCoinBalanceFetched){
+				// 	BalanceServices.exchangeNames[$scope.newCoinBalanceFetchedInd1].coinDetails.push({
+				// 		"balance": data.balance,
+				// 		"coin": req.base,
+				// 		"loadtime": (new Date()).getTime()
+				// 	});
+				// 	$scope.isNewCoinBalanceFetched = false;
+				// 	$scope.newCoinBalanceFetchedInd1 = -1;
+				// }
 				for(var j in $scope.exchangeBalanceData){
 					if($scope.exchangeBalanceData[j].exchange == req.exchange){
 						$scope.exchangeBalanceData[j].balance = data.balance;

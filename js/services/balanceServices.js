@@ -16,6 +16,7 @@ Instantdex.service('BalanceServices', function($http, $q, $rootScope, GlobalServ
 
 	function initialize() {
 		balService.exchangeWiseList = GlobalServices.exchange_coins;
+		console.log("All exchages coins :"+ JSON.stringify(GlobalServices.exchange_coins));
 		balService.validExchangeList = GlobalServices.exchangeWithApiCreds;
 		var exchangeNames = [];
 		var exists = false;

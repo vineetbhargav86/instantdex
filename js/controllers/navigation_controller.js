@@ -17,5 +17,9 @@ Instantdex.controller('NavigationController', function($scope, $state){
 			}
 		}
 	}
+
+	$scope.$on("tabChanged", function(event, data){
+		$scope.setTabActive(data);
+	});
 });
 

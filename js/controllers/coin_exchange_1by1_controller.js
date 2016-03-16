@@ -6,7 +6,7 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
 
     $scope.exchangeWithApiCreds = GlobalServices.exchangeWithApiCreds;
     $scope.coinsValidExchanges = GlobalServices.coinsValidExchanges;
-    
+    console.log("coinsValidExchanges: "+GlobalServices.coinsValidExchanges);
     $scope.selectedCoinsBalance = {};
 
     $scope.coinType1 = $stateParams.coinType1 || "";
@@ -26,7 +26,7 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
             });
         }
     }
-    $scope.exchangeCoinTabs = [];    
+    $scope.exchangeCoinTabs = [];
 
     // returns true if non zero balance for coin or when coinName is empty
     // update selectedCoinsBalance
