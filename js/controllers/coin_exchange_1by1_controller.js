@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, GlobalServices, $stateParams, BalanceServices){
+Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, GlobalServices, $stateParams, BalanceServices, InstantdexServices){
     $scope.combinedor1by1 = true;
     $scope.coinslist = GlobalServices.getCoinTypes();
 
@@ -11,6 +11,13 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
 
     $scope.coinType1 = $stateParams.coinType1 || "";
     $scope.coinType2 = $stateParams.coinType2 || "";
+
+    $scope.orderHistory = [];
+
+    GlobalServices.getOrderHistory($scope.exchangeWithApiCreds)
+        .then(function(orderHistory) {
+            $scope.orderHistory = orderHistory;
+        });
 
     $scope.switchToCombinedOr1By1 = function(){
         if($scope.combinedor1by1){
@@ -115,5 +122,4 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
     $scope.preventDefault = function(event){
         event.preventDefault();
     }
-
 });

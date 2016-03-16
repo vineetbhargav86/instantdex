@@ -7,11 +7,19 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, GlobalS
 
     $scope.credsAvailableExchanges = GlobalServices.credsAvailableExchanges;
     $scope.coinsValidExchanges = GlobalServices.coinsValidExchanges;
-
+    $scope.exchangeWithApiCreds = GlobalServices.exchangeWithApiCreds;
+    
     $scope.coinType1 = $stateParams.coinType1 || "";
     $scope.coinType2 = $stateParams.coinType2 || "";
     
     $scope.selectedCoinsBalance = {};
+
+    $scope.orderHistory = [];
+
+    GlobalServices.getOrderHistory($scope.exchangeWithApiCreds)
+        .then(function(orderHistory) {
+            $scope.orderHistory = orderHistory;
+        });
 
     $scope.switchToCombinedOr1By1 = function(){
         if($scope.combinedor1by1){
