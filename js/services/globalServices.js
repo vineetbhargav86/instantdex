@@ -81,4 +81,65 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
 		}
 		return uniqueCoins;
 	};
+	this.getOrderHistory = function(exchanges) {
+    	var defer = $q.defer();
+
+    	var url = "http://127.0.0.1:7778/api/InstantDEX/tradehistory?exchange=";
+
+    	var orderHistory = {};
+    	var count = 0;
+
+    	angular.forEach(exchanges, function(exch) {
+    		$http.get(url + exch).then(function(result) {
+    			//console.log('res for exch', exch, result);
+    			
+    			orderHistory[exch] = {};
+
+    			angular.forEach(result.data, function(history, pair) {
+    				console.log(history);
+    				
+    				if(angular.isArray(history) ) {
+    					// group data for orderNumber
+    					var tempGrouped = {};
+    					for(var i=0; i<history.length;i++) {
+    						var orderNum = history[i].orderNumber;
+
+    						if(!tempGrouped[orderNum]) {
+    							tempGrouped[orderNum] = {
+    								fee: 0,
+    								amount: 0,
+    								total: 0,
+    								rate: 0,
+    								rateCount: 0
+    							};
+    						};
+    						
+    						//console.log('history i', i, history[i]);
+    						tempGrouped[orderNum].type = history[i].type;
+    						tempGrouped[orderNum].fee += Number(history[i].fee);
+    						tempGrouped[orderNum].amount += Number(history[i].amount);
+    						tempGrouped[orderNum].total += Number(history[i].total);
+    						tempGrouped[orderNum].rate += Number(history[i].rate);
+    						tempGrouped[orderNum].rateCount++;
+    						//console.log('in iteration', i, tempGrouped, typeof history[i].amount);
+    						
+    					};
+    					// update rate 
+    					angular.forEach(tempGrouped, function(val, prop) {
+    						tempGrouped[prop].rate = tempGrouped[prop].rate / tempGrouped[prop].rateCount;
+    						delete tempGrouped.rateCount;
+    					});
+    					orderHistory[exch] = tempGrouped;
+    				};
+    			});
+
+    			count++;
+    			// if resolved all http requests, resolve orderHistory
+    			if(count === exchanges.length)
+    				defer.resolve(orderHistory); 
+    		});
+    	});
+
+    	return defer.promise;	
+    };
 });

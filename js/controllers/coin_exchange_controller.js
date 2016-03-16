@@ -5,13 +5,24 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
     $scope.combinedor1by1 = false;
     $scope.credsAvailableExchanges = GlobalServices.credsAvailableExchanges;
     $scope.coinsValidExchanges = GlobalServices.coinsValidExchanges;
+
+    $scope.exchangeWithApiCreds = GlobalServices.exchangeWithApiCreds;
+    
     console.log("coinsValidExchanges: "+GlobalServices.coinsValidExchanges);
+
     $scope.coinType1 = $stateParams.coinType1 || "";
     $scope.coinType2 = $stateParams.coinType2 || "";
 
     $scope.loadingAvePrice = false;
 
     $scope.selectedCoinsBalance = {};
+
+    $scope.orderHistory = [];
+
+    GlobalServices.getOrderHistory($scope.exchangeWithApiCreds)
+        .then(function(orderHistory) {
+            $scope.orderHistory = orderHistory;
+        });
 
     $scope.avePriceResponse = {};
     $scope.exchCoinsTable = [];

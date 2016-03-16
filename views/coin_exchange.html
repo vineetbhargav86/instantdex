@@ -219,33 +219,37 @@
 	
 
   <div class="footer-frame small-12 columns">
-	<div class="footer">
-	  <h4>Order History</h4>
-	  <div class="table-box">
-	  <table>
-		<thead>
-			<tr>
-				<th>lorem</th>
-				<th>ipsum</th>
-				<th>dolor</th>
-				<th>sit</th>
-				<th>lorem</th>
-			</tr>
-		</thead>
-			
-		<tbody>
-			<tr>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-			</tr>
-		</tbody>
-			
-		</table>
-		</div>
-	  </div>
+  	<div class="footer">
+      <h4>Order History</h4>
+      <div class="table-box">
+      <table>
+      	<thead>
+            <tr>
+              <th>Type</th>
+              <th>Ordernumber</th>
+              <th>Fee</th>
+              <th>Amount</th>
+              <th>Total</th>
+              <th>rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat-start='(exch,order) in orderHistory'>
+              <td colspan='6'>{{exch}}</td>
+            </tr>
+            <tr ng-repeat-end ng-repeat='(orderNum, orderDet) in order'>
+              <td>{{orderDet.type}}</td>  
+              <td>{{orderNum}}</td> 
+              <td>{{orderDet.fee | number:8}}</td>  
+              <td>{{orderDet.amount | number:8}}</td> 
+              <td>{{orderDet.total | number:8}}</td>  
+              <td>{{orderDet.rate | number:8}}</td> 
+            </tr>
+          </tbody>
+            
+        </table>
+        </div>
+      </div>
   </div>
 </div>
 
