@@ -7,12 +7,12 @@
 						<div class="row">
 							<div class="left-part small-12 medium-8 large-8 columns">
 								<label>Pairing</label>
-								<select ng-options="coin as coin for coin in coinsValidExchanges" ng-model="coinType1">
+								<select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType1" ng-change="coinsChanged()">
 									<option value="">Select Coin</option>
 								</select>
 								<span class="seprator">/</span>
 								
-								<select ng-options="coin as coin for coin in coinsValidExchanges" ng-model="coinType2">
+								<select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType2" ng-change="coinsChanged()">
 									<option value="">Select Coin</option>
 								</select>
 								
@@ -180,36 +180,16 @@
 									<table>
 										<thead>
 											<tr>
-												<th>Quantity CoinB</th>
-												<th>Price in CoinA</th>
-												<th>Total in CoinA</th>
+												<th>Quantity {{coinType2}}</th>
+												<th>Price in {{coinType1}}</th>
+												<th>Total in {{coinType1}}</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<td>10</td>
-												<td>0.0012</td>
-												<td>0.012</td>
-											</tr>
-											<tr>
-												<td>45</td>
-												<td>0.0014</td>
-												<td>0.063</td>
-											</tr>
-											<tr>
-												<td>12</td>
-												<td>0.001672</td>
-												<td>0.020064</td>
-											</tr>
-											<tr>
-												<td>62</td>
-												<td>0.00168845</td>
-												<td>0.1046839</td>
-											</tr>
-											<tr>
-												<td>266</td>
-												<td>0.0019</td>
-												<td>0.5054</td>
+										<tbody class="text-right">
+											<tr ng-repeat="bid in orderbook[exchange].sellorders" class="text-right">
+												<td>{{bid.volume | toFixed:8}}</td>
+												<td>{{bid.price | toFixed:8}}</td>
+												<td>{{bid.price * bid.volume | toFixed:8}}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -223,36 +203,16 @@
 									<table>
 										<thead>
 											<tr>
-												<th>Quantity CoinB</th>
-												<th>Price in CoinA</th>
-												<th>Total in CoinA</th>
+												<th>Quantity {{coinType2}}</th>
+												<th>Price in {{coinType1}}</th>
+												<th>Total in {{coinType1}}</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<td>10</td>
-												<td>0.0012</td>
-												<td>0.012</td>
-											</tr>
-											<tr>
-												<td>45</td>
-												<td>0.0014</td>
-												<td>0.063</td>
-											</tr>
-											<tr>
-												<td>12</td>
-												<td>0.001672</td>
-												<td>0.020064</td>
-											</tr>
-											<tr>
-												<td>62</td>
-												<td>0.00168845</td>
-												<td>0.1046839</td>
-											</tr>
-											<tr>
-												<td>266</td>
-												<td>0.0019</td>
-												<td>0.5054</td>
+										<tbody class="text-right">
+											<tr ng-repeat="ask in orderbook[exchange].buyorders" class="text-right">
+												<td>{{ask.volume | toFixed:8}}</td>
+												<td>{{ask.price | toFixed:8}}</td>
+												<td>{{ask.price * ask.volume | toFixed:8}}</td>
 											</tr>
 										</tbody>
 									</table>

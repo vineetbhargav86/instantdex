@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, GlobalServices, $stateParams, BalanceServices){
+Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $stateParams, GlobalServices, BalanceServices, CoinExchangeService, $interval){
     $scope.combinedor1by1 = true;
     $scope.coinslist = GlobalServices.getCoinTypes();
 
@@ -8,6 +8,8 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
     $scope.coinsValidExchanges = GlobalServices.coinsValidExchanges;
     console.log("coinsValidExchanges: "+GlobalServices.coinsValidExchanges);
     $scope.selectedCoinsBalance = {};
+
+    $scope.orderbook = angular.copy(CoinExchangeService.orderbook);
 
     $scope.coinType1 = $stateParams.coinType1 || "";
     $scope.coinType2 = $stateParams.coinType2 || "";
@@ -57,6 +59,38 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
     checkBalanceForCoin($scope.coinType1);
     checkBalanceForCoin($scope.coinType2);
 
+    $scope.checkExchAvailabilityInOrderBook = function(exchange){
+        if(Object.keys($scope.orderbook).indexOf(exchange) != -1){
+            return i;
+        }
+        return -1;
+    }
+
+    $scope.orderBookApiCallback = function(req, res){
+        var obDets = res.data;
+        $scope.orderbook[obDets.exchange] = {"sellorders": [], "buyorders": [], "loadtime": (new Date()).getTime()};
+        $scope.orderbook[obDets.exchange]["sellorders"] = obDets.asks;
+        $scope.orderbook[obDets.exchange]["buyorders"] = obDets.bids;
+   
+        CoinExchangeService.orderbook[obDets.exchange] = {"sellorders": [], "buyorders": [], "loadtime": (new Date()).getTime()};
+        CoinExchangeService.orderbook[obDets.exchange]["sellorders"] = obDets.asks;
+        CoinExchangeService.orderbook[obDets.exchange]["buyorders"] = obDets.bids;
+    }
+
+    $scope.fetchOrderTables = function(){
+        for(var i in $scope.exchangeWithApiCreds){
+            if(!CoinExchangeService.isOrderbookFetchedRecently($scope.exchangeWithApiCreds[i]) && $scope.coinType1 != "" && $scope.coinType2 != ""){
+                CoinExchangeService.callOrderBookApi($scope.orderBookApiCallback, $scope.exchangeWithApiCreds[i], $scope.coinType1, $scope.coinType2, 10);
+            }
+        }
+    }
+    
+    $scope.fetchOrderTables();
+
+    $interval(function(){//Call OrderBookApi every 2 minute as it keeps changing
+        $scope.fetchOrderTables();
+    }, 120000);
+
     var deleteNonSelectedCoins = function() {
         for(var prop in $scope.selectedCoinsBalance) {
 
@@ -105,11 +139,17 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
         } else 
             return 0;
     };
+
     $scope.exchangeCoinsTypes = function(event){
         event.preventDefault();
         var temp = $scope.coinType1;
         $scope.coinType1 = $scope.coinType2;
         $scope.coinType2 = temp;
+        $scope.fetchOrderTables();
+    }
+
+    $scope.coinsChanged = function(){
+        $scope.fetchOrderTables();
     }
 
     $scope.preventDefault = function(event){
@@ -117,3 +157,10 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, Glo
     }
 
 });
+
+Instantdex.filter('toFixed', function(){
+    return function(input, dpoints){
+        return parseFloat(input).toFixed(dpoints);
+    }
+});
+

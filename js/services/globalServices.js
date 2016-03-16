@@ -66,15 +66,14 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
 				if(gservices.exchange_coins[j].exchange == gservices.exchangeWithApiCreds[i]){
 					tempCoins = [];
 					gservices.buildUniqueCoinsList(gservices.exchange_coins[j].coins, tempCoins);
-					gservices.coinsValidExchanges = gservices.removeDuplicatesCoins(angular.extend(gservices.coinsValidExchanges, tempCoins));
+					gservices.coinsValidExchanges = gservices.keepUniqueCoins(gservices.coinsValidExchanges, tempCoins);
 				}
 			}
 			// }
 		}
 	};
 
-	this.removeDuplicatesCoins = function(coinslist){
-		var uniqueCoins = [];
+	this.keepUniqueCoins = function(uniqueCoins, coinslist){
 		for(var i in coinslist){
 			if(uniqueCoins.indexOf(coinslist[i]) == -1){
 				uniqueCoins.push(coinslist[i]);
