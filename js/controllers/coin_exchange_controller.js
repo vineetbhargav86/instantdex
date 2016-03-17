@@ -3,6 +3,7 @@
 Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI, naclCommon, $stateParams, GlobalServices, BalanceServices, $interval, $timeout){
     naclCommon.onload();
     $scope.combinedor1by1 = false;
+    $scope.timerOn = false;
     $scope.credsAvailableExchanges = GlobalServices.credsAvailableExchanges;
     $scope.coinsValidExchanges = GlobalServices.coinsValidExchanges;
 
@@ -275,6 +276,37 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
             "exchange": exchange
         });
     }
+    
+    $scope.timerStart = function(){
+      
+      var endtimeSeconds = 5; 
+      var endtime = Date.now() + endtimeSeconds*1000 + 1999; 
+     
+      var myTimer = $interval(function(){startTimer();}, 1000);
+      
+     function startTimer(){
+        var differ = endtime - Date.now();
+        if(differ<1000)
+          stopTimer();
+       else{
+        var sec = Math.floor( (differ/1000) % 60 );
+        var min = Math.floor( (differ/1000/60) % 60 ); 
+        if(min<10) min = '0'+min;
+        if(sec<10) sec = '0'+sec;
+        $scope.timer = min+':'+sec;
+       $scope.timerOn = true;
+       }
+      };
+      
+      function stopTimer(){
+        if(angular.isDefined(myTimer)){
+          $interval.cancel(myTimer);
+          myTimer = undefined;
+          $scope.timerOn = false;
+        }
+      };
+      
+    };
 
     $scope.convertDisabled = false;
 
