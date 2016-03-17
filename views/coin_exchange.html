@@ -206,8 +206,9 @@
 						
 						<li>
 							<span class="convert-btn">
-								<input type="submit" value="Convert" alt="" />
+								<input ng-click="timerStart()" ng-disabled="timerOn" type="submit" value="Convert" alt="" />
 							</span>
+							<span class="convert-timer" ng-show="timerOn">{{timer}}</span>
 						</li>
 					</ul>
 				  
