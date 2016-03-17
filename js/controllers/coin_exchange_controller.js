@@ -282,7 +282,7 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
       
      function startTimer(){
         var differ = endtime - Date.now();
-        if(differ<999)
+        if(differ<1000)
           stopTimer();
        else{
         var sec = Math.floor( (differ/1000) % 60 );
