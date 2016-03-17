@@ -121,12 +121,16 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
         }
     }
 
+
     $scope.callAvePriceApi = function(basevolume){
         if($scope.coinType1 == "" || $scope.coinType2 == ""){
             return;
         }
         var request = '{\"agent\":\"tradebot\",\"method\":\"aveprice\",\"comment\":\" \",\"base\":\"'+$scope.coinType1+'\",\"rel\":\"'+$scope.coinType2+'\",\"basevolume\":\"'+basevolume+'\"}';
         var callback = function(req, res){
+            // call resume tradebot
+            GlobalServices.resumeTradeBot(res.data.tag);
+
             $scope.avePriceResponse = res.data;
             for(var j in $scope.exchCoinsTable){                
                 $scope.exchCoinsTable[j].price = res.data.aveprice;
@@ -272,4 +276,13 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
         });
     }
 
+    $scope.convertDisabled = false;
+
+    $scope.convert = function() {
+        console.log('convert calling');
+        $scope.convertDisabled = true;
+        $timeout(function() {
+            $scope.convertDisabled = false;
+        }, 5000);
+    };
 });

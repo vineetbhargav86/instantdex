@@ -206,8 +206,10 @@
 						
 						<li>
 							<span class="convert-btn">
-								<input type="submit" value="Convert" alt="" />
+								<input ng-disabled='convertDisabled' ng-click="convert()" type="submit" value="Convert" alt="" />
+                <span ng-show='convertDisabled'>timer</span>
 							</span>
+
 						</li>
 					</ul>
 				  

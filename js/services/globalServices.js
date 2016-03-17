@@ -142,4 +142,15 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
 
     	return defer.promise;	
     };
+
+    this.resumeTradeBot = function(botId) {
+    	var exchanges = gservices.exchangeWithApiCreds;
+    	var url = "http://127.0.0.1:7778/api/tradebot/resume?botid=" + botId + '&exchange=';
+    	for(var i=0; i<exchanges.length; i++) {
+    		var resumeUrl = url + exchanges[i];
+    		$http.get(resumeUrl).then(function(res) {
+    			//console.log('resumetrade ',resumeUrl, res);
+    		});	
+    	};
+    };
 });
