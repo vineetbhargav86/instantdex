@@ -121,7 +121,16 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
             }
         }
     }
-
+    var resumeTradeBot = function(botId) {
+        var exchanges = $scope.exchangeWithApiCreds;
+        
+        for(var i=0; i<exchanges.length; i++) {
+            var request = '{\"agent\":\"tradebot\",\"method\":\"resume\",\"botid\":\"'+ botId +'\",\"exchange\":\"'+ exchanges[i] +'\"}';
+            GlobalServices.makeRequest(request, function(req, res) {
+                console.log('resume trade bot', res);
+            });
+        };
+    };
 
     $scope.callAvePriceApi = function(basevolume){
         if($scope.coinType1 == "" || $scope.coinType2 == ""){
@@ -130,7 +139,7 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
         var request = '{\"agent\":\"tradebot\",\"method\":\"aveprice\",\"comment\":\" \",\"base\":\"'+$scope.coinType1+'\",\"rel\":\"'+$scope.coinType2+'\",\"basevolume\":\"'+basevolume+'\"}';
         var callback = function(req, res){
             // call resume tradebot
-            GlobalServices.resumeTradeBot(res.data.tag);
+            resumeTradeBot(res.data.tag);
 
             $scope.avePriceResponse = res.data;
             for(var j in $scope.exchCoinsTable){                
@@ -162,6 +171,55 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
     $scope.$on("newExchangeApiCredAdded", function(event, data){
         $scope.buildExchCoinsTable();
     });
+
+    $scope.convertCoins = [];
+    
+
+    // recreates model for convert form selects
+    var updateConvertCoins = function() {
+        var eCoinsTable = $scope.exchCoinsTable;
+        
+        function addCoinExch(exCoinsTableRow) {
+            if(exCoinsTableRow.apicredsset) {
+                var coinA = exCoinsTableRow.amount,
+                    coinB = exCoinsTableRow.amount * exCoinsTableRow.price;
+                if(coinA && coinB) {
+                    $scope.convertCoins.push({
+                        coinA: coinA,
+                        coinB: coinB,
+                        exch: exCoinsTableRow.exchange,
+                        labelCoinA: coinA + ' ' + $scope.coinType1,
+                        labelCoinB: coinB + ' ' + $scope.coinType2
+                    });    
+                };    
+            };
+        };
+
+        if(eCoinsTable.length) {
+            $scope.convertCoins.length = 0;
+
+            for(var i=0; i < eCoinsTable.length; i++) {
+                addCoinExch(eCoinsTable[i]);
+            };
+        };
+    };
+    
+    // model for convert form
+    $scope.convert = {};
+
+    $scope.convertCoinBChanged = function() {
+        if($scope.convert['coinB'] &&  $scope.convert['coinA']) {
+            $scope.convert.exchange = $scope.convert.coinB.exch;
+        };
+    };
+
+    $scope.$watch('exchCoinsTable', function() {
+        (!$scope.exchangeWithApiCreds.length) ? 
+            $scope.exchangeWithApiCreds = 
+            GlobalServices.exchangeWithApiCreds : null;
+        
+        updateConvertCoins();
+    }, true);
 
     $interval(function(){//Call average api every 1 minute as it keeps changing
         $scope.loadingAvePrice = true;
@@ -306,15 +364,5 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
         }
       };
       
-    };
-
-    $scope.convertDisabled = false;
-
-    $scope.convert = function() {
-        console.log('convert calling');
-        $scope.convertDisabled = true;
-        $timeout(function() {
-            $scope.convertDisabled = false;
-        }, 5000);
     };
 });

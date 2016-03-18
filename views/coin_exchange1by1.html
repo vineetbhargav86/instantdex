@@ -300,8 +300,8 @@
 							<td>{{orderDet.type}}</td>	
 							<td>{{orderNum}}</td>	
 							<td>{{orderDet.fee | number:8}}</td>	
-							<td>{{orderDet.amount | number:8}}</td>	
-							<td>{{orderDet.total | number:8}}</td>	
+							<td>{{orderDet.amount | number:8}}&nbsp;{{orderDet.pair[1]}}</td>	
+							<td>{{orderDet.total | number:8}}&nbsp;{{orderDet.pair[0]}}</td>	
 							<td>{{orderDet.rate | number:8}}</td>	
 						</tr>
 					</tbody>

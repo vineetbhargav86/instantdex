@@ -64,7 +64,6 @@
 						<th>Total {{coinType1}}</th>
 					</tr>
 				</thead>
-					
 				<tbody>
 					<tr ng-show="coinType1 == '' || coinType2 == ''">
 						<td colspan="4" class="text-center">Please select both coins to load current exchange rate.</td>
@@ -174,34 +173,43 @@
 				</div>
 		 </div>
 		 </div>
-		 
+
 		<div class="row">
 			<div class="bottom-area small-12 columns">
 				<div class="convert-area">
 					<ul class="convert-list">
 						<li>
 							<label>Convert</label>
-							 <select>
+              <select ng-options="convCoin as convCoin.labelCoinA for convCoin in convertCoins" ng-model="convert.coinA">
+                  <option value="">---</option>
+              </select>
+							 <!--<select>
 								  <option>0.2565 CoinA</option>
-							  </select>
+							  </select>-->
 						</li>
 						
 						<li>
 							<label>into</label>
-							 <select>
+              <select ng-options="convCoin as convCoin.labelCoinB for convCoin in convertCoins" ng-model="convert.coinB" ng-change="convertCoinBChanged()">
+                  <option value="">---</option>
+              </select>
+							 <!--<select>
 								  <option>2500 CoinA</option>
-							  </select>
+							  </select>-->
 						</li>
 						
 						<li>
 							<label>Stored at</label>
-							 <select>
+              <select ng-options="exch for exch in exchangeWithApiCreds" ng-model="convert.exchange">
+                  <option value="">---</option>
+              </select>
+							 <!--<select>
 								  <option>Super NET</option>
 								  <option>Bittrex</option>
 								  <option>Poloniex</option>
 								  <option>NXT AE</option>
 								  <option>---</option>
-							  </select>
+							  </select>-->
 						</li>
 						
 						<li>
