@@ -82,25 +82,25 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout, ngDi
 		return uniqueCoins;
 	};
 	this.getOrderHistory = function(exchanges) {
-    	var defer = $q.defer();
-
-    	var url = "http://127.0.0.1:7778/api/InstantDEX/tradehistory?exchange=";
-
-    	var orderHistory = {};
-    	var count = 0;
+    	var defer = $q.defer(),
+    		orderHistory = {},
+    		count = 0;
 
     	angular.forEach(exchanges, function(exch) {
-    		$http.get(url + exch).then(function(result) {
-    			//console.log('res for exch', exch, result);
+    		var request = '{"agent":"InstantDEX", "method":"tradehistory","exchange":"' + exch + '"}';
 
+    		gservices.makeRequest(request, function(req, res) {
+    			//console.log('res for exch', exch, result);
     			orderHistory[exch] = {};
 
-    			angular.forEach(result.data, function(history, pair) {
-    				console.log(history);
+    			angular.forEach(res.data, function(history, pair) {
+    				console.log(pair,history);
 
     				if(angular.isArray(history) ) {
     					// group data for orderNumber
-    					var tempGrouped = {};
+    					var tempGrouped = {},
+    						coinPair = pair.split("_");
+
     					for(var i=0; i<history.length;i++) {
     						var orderNum = history[i].orderNumber;
 
@@ -121,6 +121,7 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout, ngDi
     						tempGrouped[orderNum].total += Number(history[i].total);
     						tempGrouped[orderNum].rate += Number(history[i].rate);
     						tempGrouped[orderNum].rateCount++;
+    						tempGrouped[orderNum].pair = coinPair;
     						//console.log('in iteration', i, tempGrouped, typeof history[i].amount);
 
     					};
@@ -129,7 +130,8 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout, ngDi
     						tempGrouped[prop].rate = tempGrouped[prop].rate / tempGrouped[prop].rateCount;
     						delete tempGrouped.rateCount;
     					});
-    					orderHistory[exch] = tempGrouped;
+    					//orderHistory[exch] = tempGrouped;
+    					angular.extend(orderHistory[exch], tempGrouped);
     				};
     			});
 

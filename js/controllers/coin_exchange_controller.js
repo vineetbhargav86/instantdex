@@ -3,6 +3,7 @@
 Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI, naclCommon, $stateParams, GlobalServices, BalanceServices, $interval, $timeout){
     naclCommon.onload();
     $scope.combinedor1by1 = false;
+    $scope.timerOn = false;
     $scope.credsAvailableExchanges = GlobalServices.credsAvailableExchanges;
     $scope.coinsValidExchanges = GlobalServices.coinsValidExchanges;
 
@@ -120,6 +121,16 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
             }
         }
     }
+    var resumeTradeBot = function(botId) {
+        var exchanges = $scope.exchangeWithApiCreds;
+        
+        for(var i=0; i<exchanges.length; i++) {
+            var request = '{\"agent\":\"tradebot\",\"method\":\"resume\",\"botid\":\"'+ botId +'\",\"exchange\":\"'+ exchanges[i] +'\"}';
+            GlobalServices.makeRequest(request, function(req, res) {
+                console.log('resume trade bot', res);
+            });
+        };
+    };
 
     $scope.callAvePriceApi = function(basevolume){
         if($scope.coinType1 == "" || $scope.coinType2 == ""){
@@ -127,6 +138,9 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
         }
         var request = '{\"agent\":\"tradebot\",\"method\":\"aveprice\",\"comment\":\" \",\"base\":\"'+$scope.coinType1+'\",\"rel\":\"'+$scope.coinType2+'\",\"basevolume\":\"'+basevolume+'\"}';
         var callback = function(req, res){
+            // call resume tradebot
+            resumeTradeBot(res.data.tag);
+
             $scope.avePriceResponse = res.data;
             for(var j in $scope.exchCoinsTable){                
                 $scope.exchCoinsTable[j].price = res.data.aveprice;
@@ -157,6 +171,55 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
     $scope.$on("newExchangeApiCredAdded", function(event, data){
         $scope.buildExchCoinsTable();
     });
+
+    $scope.convertCoins = [];
+    
+
+    // recreates model for convert form selects
+    var updateConvertCoins = function() {
+        var eCoinsTable = $scope.exchCoinsTable;
+        
+        function addCoinExch(exCoinsTableRow) {
+            if(exCoinsTableRow.apicredsset) {
+                var coinA = exCoinsTableRow.amount,
+                    coinB = exCoinsTableRow.amount * exCoinsTableRow.price;
+                if(coinA && coinB) {
+                    $scope.convertCoins.push({
+                        coinA: coinA,
+                        coinB: coinB,
+                        exch: exCoinsTableRow.exchange,
+                        labelCoinA: coinA + ' ' + $scope.coinType1,
+                        labelCoinB: coinB + ' ' + $scope.coinType2
+                    });    
+                };    
+            };
+        };
+
+        if(eCoinsTable.length) {
+            $scope.convertCoins.length = 0;
+
+            for(var i=0; i < eCoinsTable.length; i++) {
+                addCoinExch(eCoinsTable[i]);
+            };
+        };
+    };
+    
+    // model for convert form
+    $scope.convert = {};
+
+    $scope.convertCoinBChanged = function() {
+        if($scope.convert['coinB'] &&  $scope.convert['coinA']) {
+            $scope.convert.exchange = $scope.convert.coinB.exch;
+        };
+    };
+
+    $scope.$watch('exchCoinsTable', function() {
+        (!$scope.exchangeWithApiCreds.length) ? 
+            $scope.exchangeWithApiCreds = 
+            GlobalServices.exchangeWithApiCreds : null;
+        
+        updateConvertCoins();
+    }, true);
 
     $interval(function(){//Call average api every 1 minute as it keeps changing
         $scope.loadingAvePrice = true;
@@ -271,5 +334,35 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
             "exchange": exchange
         });
     }
-
+    
+    $scope.timerStart = function(){
+      
+      var endtimeSeconds = 5; 
+      var endtime = Date.now() + endtimeSeconds*1000 + 1999; 
+     
+      var myTimer = $interval(function(){startTimer();}, 1000);
+      
+     function startTimer(){
+        var differ = endtime - Date.now();
+        if(differ<1000)
+          stopTimer();
+       else{
+        var sec = Math.floor( (differ/1000) % 60 );
+        var min = Math.floor( (differ/1000/60) % 60 ); 
+        if(min<10) min = '0'+min;
+        if(sec<10) sec = '0'+sec;
+        $scope.timer = min+':'+sec;
+       $scope.timerOn = true;
+       }
+      };
+      
+      function stopTimer(){
+        if(angular.isDefined(myTimer)){
+          $interval.cancel(myTimer);
+          myTimer = undefined;
+          $scope.timerOn = false;
+        }
+      };
+      
+    };
 });

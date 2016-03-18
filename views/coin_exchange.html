@@ -64,7 +64,6 @@
 						<th>Total {{coinType1}}</th>
 					</tr>
 				</thead>
-
 				<tbody>
 					<tr ng-show="coinType1 == '' || coinType2 == ''">
 						<td colspan="4" class="text-center">Please select both coins to load current exchange rate.</td>
@@ -95,40 +94,6 @@
 						<td>{{(ecns.price != '' && ecns.price != null) ? ecns.price * ecns.amount : 0 | toFixed:8 }}</td>
 					</tr>
 
-					<!-- <tr>
-						<td>Bittrex</td>
-						<td>0.00013 CoinA</td>
-						<td><span class="left-total">(+500 CoinB)<br /> 1500 CoinB Total</span><span class="change-amount"><a href="#" ng-click="preventDefault($event)">Change amount</a></span></td>
-						<td>(0.065 CoinA)<br /> (0.1265 CoinA) Total</td>
-					</tr>
-
-					<tr>
-						<td>poloniex</td>
-						<td>0.00013 CoinA</td>
-						<td><span class="left-total">(+1000 CoinB)<br /> 2500 CoinB Total</span></td>
-						 <td>(+0.13 CoinA)<br /> 0.2565 CoinA Total</td>
-					</tr>
-
-					 <tr class="line">
-						<td>bitfinex</td>
-						<td>0.000135 CoinA</td>
-						<td>(1238 CoinB)</td>
-						 <td>(0.16713 CoinA)</td>
-					</tr> -->
-
-<!-- 					<tr>
-						<td>Bter</td>
-						<td>0.00014 CoinA</td>
-						<td><span class="left-total">(+2000 CoinB)<br /> 3500 CoinB Total</span><span class="balance-low">Your balance is too low (0.01 CoinA</span></td>
-						<td>(+0.28 CoinA)<br /> 0.5365 CoinA Total</td>
-					</tr> -->
-
-				   <!--  <tr>
-						<td>MGW</td>
-						<td>0.00015 CoinA</td>
-						<td><span class="left-total">(+5000 CoinB)<br /> 8500 CoinB Total</span><span class="change-amount"><a href="#"  ng-click="preventDefault($event)">Change amount</a></span></td>
-						<td>(0.75 CoinA)<br /> (1.2865 CoinA) Total</td>
-					</tr> -->
 				 </tbody>
 
 				</table>
@@ -150,24 +115,6 @@
 										<a href="#" ng-click="goToOptionsAddCreds($event, exch.exchange)" ng-show="!exch.apicredsset" class="float-right">Add Api Key</a>
 									</td>
 								</tr>
-								<!-- <tr>
-									<td><input type="checkbox" value="" alt="" checked="checked" /> BTer - 0.01 CoinA</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value="" alt="" checked="checked" /> Polo - 1 CoinA</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value="" alt="" />BTC38.com <a href="#" ng-click="preventDefault($event)">Add Api Key</a></td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value="" alt="" checked="checked" />bitfinex<a href="#" ng-click="preventDefault($event)">Add Api Key</a></td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value="" alt="" checked="checked" />MultiGateWay - 2 CoinA</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value="" alt="" checked="checked" /> Bittrex - 3 CoinA</td>
-								</tr> -->
 							</tbody>
 						</table>
 					</div>
@@ -181,33 +128,34 @@
 					<ul class="convert-list">
 						<li>
 							<label>Convert</label>
-							 <select>
-								  <option>0.2565 CoinA</option>
-							  </select>
+              <select ng-options="convCoin as convCoin.labelCoinA for convCoin in convertCoins" ng-model="convert.coinA">
+                  <option value="">---</option>
+              </select>
+
 						</li>
 
 						<li>
 							<label>into</label>
-							 <select>
-								  <option>2500 CoinA</option>
-							  </select>
+              <select ng-options="convCoin as convCoin.labelCoinB for convCoin in convertCoins" ng-model="convert.coinB" ng-change="convertCoinBChanged()">
+                  <option value="">---</option>
+              </select>
+
 						</li>
 
 						<li>
 							<label>Stored at</label>
-							 <select>
-								  <option>Super NET</option>
-								  <option>Bittrex</option>
-								  <option>Poloniex</option>
-								  <option>NXT AE</option>
-								  <option>---</option>
-							  </select>
+              <select ng-options="exch for exch in exchangeWithApiCreds" ng-model="convert.exchange">
+                  <option value="">---</option>
+              </select>
+							
 						</li>
 
 						<li>
 							<span class="convert-btn">
-								<input type="submit" value="Convert" alt="" />
+								<input ng-click="timerStart()" ng-disabled="timerOn" type="submit" value="Convert" alt="" />
 							</span>
+							<span class="convert-timer" ng-show="timerOn">{{timer}}</span>
+
 						</li>
 					</ul>
 
