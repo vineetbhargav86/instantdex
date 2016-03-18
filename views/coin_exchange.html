@@ -9,22 +9,22 @@
         	<div class="row">
                  <div class="left-part small-12 medium-8 large-8 columns">
                       <label>Pairing</label>
-                      <select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType1" ng-change="coinsChanged()">
+                      <select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType1" ng-change="coinsChanged()" title="Used as Base in exchange">
                           <option value="">Select Coin</option>
                       </select>
                       <span class="seprator">/</span>
-                      
-                      <select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType2" ng-change="coinsChanged()">
+
+                      <select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType2" ng-change="coinsChanged()" title="Used as Rel in exchange">
                           <option value="">Select Coin</option>
                       </select>
-                      
+
                       <span class="interchange-img">
                           <a href="#" ng-click="exchangeCoinsTypes($event)">
                               <i class="fa fa-exchange"></i>
                           </a>
-                      </span>     
+                      </span>
                   </div>
-            
+
                  <div class="right-part small-12 medium-4 large-4 columns">
                     <div class="top">
                         <h2>View</h2>
@@ -51,7 +51,7 @@
      </div>
 </div>
 
-   <div class="bottom-part small-12 columns">     
+   <div class="bottom-part small-12 columns">
 		<div class="row">
 			<div class="left-part small-12 medium-8 large-8 columns">
 			<div class="table-box">
@@ -64,7 +64,7 @@
 						<th>Total {{coinType1}}</th>
 					</tr>
 				</thead>
-					
+
 				<tbody>
 					<tr ng-show="coinType1 == '' || coinType2 == ''">
 						<td colspan="4" class="text-center">Please select both coins to load current exchange rate.</td>
@@ -73,9 +73,9 @@
 						<td>{{ecns.exchange}}</td>
 						<td>
 							<p>
-								<span ng-show="!loadingAvePrice" class="float-left exchange_rate_span_width">{{ecns.price}}</span>
-								<span ng-show="loadingAvePrice" class="float-left exchange_rate_span_width"><img src="../images/spinner.gif" /></span> 
-								<span style="width: 50px;"class="float-left">{{coinType1}}</span>
+								<span ng-show="!loadingAvePrice" class="float-left exchange_rate_span_width">{{ecns.price | toFixed:8}}</span>
+								<span ng-show="loadingAvePrice" class="float-left exchange_rate_span_width"><img src="../images/spinner.gif" /></span>
+								<span style="width: 50px;"class="float-left">{{coinType2}}</span>
 							</p>
 						</td>
 						<td>
@@ -88,41 +88,41 @@
 									<a href="#" ng-click="preventDefault($event);">Change amount</a>
 								</span>
 								<span ng-show="showAmountInput[$index]" class="change-amount float-left exchange_rate_span_width" ng-click="toggleAmoutInput($index);">
-									<a href="#" ng-click="preventDefault($event);">Done X</a>
+									<a href="#" ng-click="preventDefault($event);">Done <i class="fa fa-times"></i></a>
 								</span>
 							</p>
 						</td>
-						<td>{{(ecns.price != '' && ecns.price != null) ? ecns.price * ecns.amount : 0}}</td>
+						<td>{{(ecns.price != '' && ecns.price != null) ? ecns.price * ecns.amount : 0 | toFixed:8 }}</td>
 					</tr>
-					
+
 					<!-- <tr>
 						<td>Bittrex</td>
 						<td>0.00013 CoinA</td>
 						<td><span class="left-total">(+500 CoinB)<br /> 1500 CoinB Total</span><span class="change-amount"><a href="#" ng-click="preventDefault($event)">Change amount</a></span></td>
 						<td>(0.065 CoinA)<br /> (0.1265 CoinA) Total</td>
 					</tr>
-					
+
 					<tr>
 						<td>poloniex</td>
 						<td>0.00013 CoinA</td>
 						<td><span class="left-total">(+1000 CoinB)<br /> 2500 CoinB Total</span></td>
 						 <td>(+0.13 CoinA)<br /> 0.2565 CoinA Total</td>
 					</tr>
-					
+
 					 <tr class="line">
 						<td>bitfinex</td>
 						<td>0.000135 CoinA</td>
 						<td>(1238 CoinB)</td>
 						 <td>(0.16713 CoinA)</td>
 					</tr> -->
-					
+
 <!-- 					<tr>
 						<td>Bter</td>
 						<td>0.00014 CoinA</td>
 						<td><span class="left-total">(+2000 CoinB)<br /> 3500 CoinB Total</span><span class="balance-low">Your balance is too low (0.01 CoinA</span></td>
 						<td>(+0.28 CoinA)<br /> 0.5365 CoinA Total</td>
 					</tr> -->
-					
+
 				   <!--  <tr>
 						<td>MGW</td>
 						<td>0.00015 CoinA</td>
@@ -130,13 +130,13 @@
 						<td>(0.75 CoinA)<br /> (1.2865 CoinA) Total</td>
 					</tr> -->
 				 </tbody>
-					
+
 				</table>
 				</div>
-			
+
 		</div>
-		
-			 <div class="right-part small-12 medium-4 large-4 columns"> 
+
+			 <div class="right-part small-12 medium-4 large-4 columns">
 				<div class="bottom">
 					<h4>Exchanges that offer {{coinType1}}/{{coinType2}} market Show? - Exchange - Balance</h4>
 					<div class="table-box">
@@ -144,9 +144,9 @@
 							<tbody>
 								<tr ng-show="coinType1 == '' || coinType2 == ''">
 									<td colspan="4" class="text-center">Please select both coins to load current exchange rate.</td>
-								</tr>                    
+								</tr>
 								<tr ng-repeat="exch in exchCoinsTable | orderBy: '-apicredsset'" ng-show="coinType1 != '' || coinType2 != ''">
-									<td><input type="checkbox" value="" alt="" checked="checked" class="float-left"/> <span class="float-left">{{exch.exchange}} - </span> <span ng-show="exch.apicredsset" class="float-left"> {{exch.price}} {{coinType1}} </span>
+									<td><input type="checkbox" value="" alt="" checked="checked" class="float-left"/> <span class="float-left">{{exch.exchange}} - </span> <span ng-show="exch.apicredsset" class="float-left"> {{exch.price}} {{coinType2}} </span>
 										<a href="#" ng-click="goToOptionsAddCreds($event, exch.exchange)" ng-show="!exch.apicredsset" class="float-right">Add Api Key</a>
 									</td>
 								</tr>
@@ -169,12 +169,12 @@
 									<td><input type="checkbox" value="" alt="" checked="checked" /> Bittrex - 3 CoinA</td>
 								</tr> -->
 							</tbody>
-						</table>  
-					</div>                  
+						</table>
+					</div>
 				</div>
 		 </div>
 		 </div>
-		 
+
 		<div class="row">
 			<div class="bottom-area small-12 columns">
 				<div class="convert-area">
@@ -185,14 +185,14 @@
 								  <option>0.2565 CoinA</option>
 							  </select>
 						</li>
-						
+
 						<li>
 							<label>into</label>
 							 <select>
 								  <option>2500 CoinA</option>
 							  </select>
 						</li>
-						
+
 						<li>
 							<label>Stored at</label>
 							 <select>
@@ -203,20 +203,20 @@
 								  <option>---</option>
 							  </select>
 						</li>
-						
+
 						<li>
 							<span class="convert-btn">
 								<input type="submit" value="Convert" alt="" />
 							</span>
 						</li>
 					</ul>
-				  
+
 			  </div>
 			</div>
-		</div> 
-		 
-	</div>  
-	
+		</div>
+
+	</div>
+
 
   <div class="footer-frame small-12 columns">
   	<div class="footer">
@@ -238,15 +238,15 @@
               <td colspan='6'>{{exch}}</td>
             </tr>
             <tr ng-repeat-end ng-repeat='(orderNum, orderDet) in order'>
-              <td>{{orderDet.type}}</td>  
-              <td>{{orderNum}}</td> 
-              <td>{{orderDet.fee | number:8}}</td>  
-              <td>{{orderDet.amount | number:8}}</td> 
-              <td>{{orderDet.total | number:8}}</td>  
-              <td>{{orderDet.rate | number:8}}</td> 
+              <td>{{orderDet.type}}</td>
+              <td>{{orderNum}}</td>
+              <td>{{orderDet.fee | number:8}}</td>
+              <td>{{orderDet.amount | number:8}}</td>
+              <td>{{orderDet.total | number:8}}</td>
+              <td>{{orderDet.rate | number:8}}</td>
             </tr>
           </tbody>
-            
+
         </table>
         </div>
       </div>

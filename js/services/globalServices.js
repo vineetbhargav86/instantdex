@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
+Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout, ngDialog){
 	var gservices = this;
 
 	this.makeRequest = function(request, callback){
@@ -92,12 +92,12 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
     	angular.forEach(exchanges, function(exch) {
     		$http.get(url + exch).then(function(result) {
     			//console.log('res for exch', exch, result);
-    			
+
     			orderHistory[exch] = {};
 
     			angular.forEach(result.data, function(history, pair) {
     				console.log(history);
-    				
+
     				if(angular.isArray(history) ) {
     					// group data for orderNumber
     					var tempGrouped = {};
@@ -113,7 +113,7 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
     								rateCount: 0
     							};
     						};
-    						
+
     						//console.log('history i', i, history[i]);
     						tempGrouped[orderNum].type = history[i].type;
     						tempGrouped[orderNum].fee += Number(history[i].fee);
@@ -122,9 +122,9 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
     						tempGrouped[orderNum].rate += Number(history[i].rate);
     						tempGrouped[orderNum].rateCount++;
     						//console.log('in iteration', i, tempGrouped, typeof history[i].amount);
-    						
+
     					};
-    					// update rate 
+    					// update rate
     					angular.forEach(tempGrouped, function(val, prop) {
     						tempGrouped[prop].rate = tempGrouped[prop].rate / tempGrouped[prop].rateCount;
     						delete tempGrouped.rateCount;
@@ -136,10 +136,18 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout){
     			count++;
     			// if resolved all http requests, resolve orderHistory
     			if(count === exchanges.length)
-    				defer.resolve(orderHistory); 
+    				defer.resolve(orderHistory);
     		});
     	});
 
-    	return defer.promise;	
+    	return defer.promise;
     };
+
+    this.showMessageDialog = function(msg){
+    	var dialogInstance = ngDialog.open({
+            template: "<p>"+msg+"</p>",
+            plain: true
+        });
+    };
+
 });

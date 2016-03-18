@@ -151,7 +151,7 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 		}
 		if(errorWithdrawal.length > 0){
 			//show error message
-			$scope.showMsgDialog("Exchange(s)- "+errorWithdrawal.join()+" donot have sufficient balance to withdraw.");
+			GlobalServices.showMessageDialog("Exchange(s)- "+errorWithdrawal.join()+" donot have sufficient balance to withdraw.");
 		}
 	}
 
@@ -169,15 +169,4 @@ Instantdex.controller('ConsolidateCoinsController', function($scope, $state, Glo
 		$scope.getTotalOfCoinsToWithdraw();
 	}
 
-	$scope.showMsgDialog = function(msg) {
-        var dialogInstance = ngDialog.open({
-            template: "<p>"+msg+"</p>",
-            // controller: function($scope) {
-            //     $scope.ok = function() {
-            //         $scope.closeThisDialog();
-            //     }                
-            // }
-            plain: true
-        });
-    };
 });

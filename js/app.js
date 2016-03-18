@@ -39,3 +39,9 @@ Instantdex.filter('firstUpper', function() {
          return input ? input.substring(0,1).toUpperCase()+input.substring(1).toLowerCase() : "";
      }
 });
+
+Instantdex.filter('toFixed', function(){
+    return function(input, dpoints){
+        return parseFloat(input).toFixed(dpoints);
+    }
+});

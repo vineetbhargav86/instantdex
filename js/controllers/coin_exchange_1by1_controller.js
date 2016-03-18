@@ -14,12 +14,24 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
     $scope.coinType1 = $stateParams.coinType1 || "";
     $scope.coinType2 = $stateParams.coinType2 || "";
 
-    $scope.orderHistory = [];
+    $scope.sellDet = [];
+    $scope.buyDet = [];
 
-    GlobalServices.getOrderHistory($scope.exchangeWithApiCreds)
-        .then(function(orderHistory) {
-            $scope.orderHistory = orderHistory;
-        });
+    $scope.orderHistory = [];
+    $scope.openOrders = {};
+    // GlobalServices.getOrderHistory($scope.exchangeWithApiCreds)
+    //     .then(function(orderHistory) {
+    //         $scope.orderHistory = orderHistory;
+    //     });
+
+    $scope.initBuySellObjectsPerExchange = function(){
+        for(var i in $scope.exchangeWithApiCreds){
+            $scope.sellDet[$scope.exchangeWithApiCreds[i]] = {"price": 0, "quantity": 0};
+            $scope.buyDet[$scope.exchangeWithApiCreds[i]] = {"price": 0, "quantity": 0};
+            // $scope.openOrders[$scope.exchangeWithApiCreds[i]] = [];
+        }
+        $scope.openOrders = angular.copy(CoinExchangeService.openOrders);
+    }
 
     $scope.switchToCombinedOr1By1 = function(){
         if($scope.combinedor1by1){
@@ -51,7 +63,7 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
                 for(var j=0; j<coinDetails.length; j++) {
                     if(coinDetails[j].coin === coinName) {
                         hasBalance = true;
-                        $scope.selectedCoinsBalance[coinName] = { 
+                        $scope.selectedCoinsBalance[coinName] = {
                             balance: coinDetails[j].balance,
                             exchange: exchangeNames[i].name
                         };
@@ -78,7 +90,7 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
         $scope.orderbook[obDets.exchange] = {"sellorders": [], "buyorders": [], "loadtime": (new Date()).getTime()};
         $scope.orderbook[obDets.exchange]["sellorders"] = obDets.asks;
         $scope.orderbook[obDets.exchange]["buyorders"] = obDets.bids;
-   
+
         CoinExchangeService.orderbook[obDets.exchange] = {"sellorders": [], "buyorders": [], "loadtime": (new Date()).getTime()};
         CoinExchangeService.orderbook[obDets.exchange]["sellorders"] = obDets.asks;
         CoinExchangeService.orderbook[obDets.exchange]["buyorders"] = obDets.bids;
@@ -91,18 +103,95 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
             }
         }
     }
-    
+
     $scope.fetchOrderTables();
 
     $interval(function(){//Call OrderBookApi every 2 minute as it keeps changing
         $scope.fetchOrderTables();
     }, 120000);
 
+    $scope.validateBalance = function(exchange){
+        if($scope.selectedCoinsBalance[$scope.coinType1] && $scope.selectedCoinsBalance[$scope.coinType1].balance){
+            if($scope.selectedCoinsBalance[$scope.coinType1].balance < $scope.sellDet[exchange].quantity ){
+                GlobalServices.showMessageDialog("Balance is not sufficient to go ahead with the trade.");
+                return false;
+            }
+        }
+        else{
+            GlobalServices.showMessageDialog("No balance available to go ahead with the trade.");
+            return false;
+        }
+        return true;
+    }
+
+    $scope.verifyCoinPairForExchange = function(exchange){
+        for(var i in GlobalServices.exchange_coins){
+            if(GlobalServices.exchange_coins[i].exchange == exchange){
+                for(var j in GlobalServices.exchange_coins[i].coins){
+                    if((GlobalServices.exchange_coins[i].coins[j][0] == $scope.coinType1 && GlobalServices.exchange_coins[i].coins[j][1] == $scope.coinType2) ||
+                        (GlobalServices.exchange_coins[i].coins[j][1] == $scope.coinType1 && GlobalServices.exchange_coins[i].coins[j][0] == $scope.coinType2)){
+                        return true;
+                    }
+                }
+            }
+        }
+        GlobalServices.showMessageDialog("Selected coin pairs for exchange are not valid.");
+        return false;
+    }
+
+    $scope.buyApiCallback = function(req, res){
+        // Call openorders api and
+        $scope.callOpenOrdersApi(req.exchange);
+    }
+
+    $scope.callBuyApi = function(event, exchange){
+        event.preventDefault();
+        if($scope.verifyCoinPairForExchange(exchange)){
+            CoinExchangeService.buyApiWrapper($scope.buyApiCallback, exchange, $scope.coinType1, $scope.coinType2, $scope.buyDet[exchange]['price'], $scope.buyDet[exchange]['quantity'], 1);
+        }
+    }
+
+    $scope.sellApiCallback = function(req, res){
+        // Call openorders api and
+        $scope.callOpenOrdersApi(req.exchange);
+    }
+
+    $scope.callSellApi = function(event, exchange){
+        event.preventDefault();
+        if($scope.verifyCoinPairForExchange(exchange) && $scope.validateBalance(exchange)){
+            CoinExchangeService.sellApiWrapper($scope.sellApiCallback, exchange, $scope.coinType1, $scope.coinType2, $scope.sellDet[exchange]['price'], $scope.sellDet[exchange]['quantity'], 1);
+        }
+    }
+
+    $scope.openOrderApiCallback = function(req, res){
+        // populate orderhistory table
+
+        if(res.data[$scope.coinType1+"_"+$scope.coinType2] && res.data[$scope.coinType1+"_"+$scope.coinType2].length > 0){
+            for(var i in res.data[$scope.coinType1+"_"+$scope.coinType2]){
+                $scope.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
+                CoinExchangeService.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
+            }
+        }
+        else if(res.data[$scope.coinType2+"_"+$scope.coinType1] && res.data[$scope.coinType2+"_"+$scope.coinType1] > 0){
+            for(var i in res.data[$scope.coinType1+"_"+$scope.coinType2]){
+                $scope.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
+                CoinExchangeService.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
+            }
+        }
+    }
+
+    $scope.callOpenOrdersApi = function(exchange){
+        CoinExchangeService.openOrdersApiWrapper($scope.openOrderApiCallback, exchange);
+    }
+
+    $scope.initBuySellObjectsPerExchange(); // Init called here..
+
     var deleteNonSelectedCoins = function() {
         for(var prop in $scope.selectedCoinsBalance) {
 
-            if(prop !== $scope.coinType1 && prop !== $scope.coinType2)
+            if(prop !== $scope.coinType1 && prop !== $scope.coinType2){
                 delete $scope.selectedCoinsBalance[prop];
+            }
         };
     };
 
@@ -117,33 +206,33 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
         deleteNonSelectedCoins();
 
         if(!checkBalanceForCoin(newVal) && !Object.keys($scope.selectedCoinsBalance).length) {
-            $scope.coinType1 = '';  
+            $scope.coinType1 = '';
         };
-        
+
     });
 
     // check if coin type 2 not equal to  coin type 1
     $scope.$watch("coinType2", function(newVal, oldVal) {
         if(newVal === oldVal) return;
-        
+
         if(newVal && newVal === $scope.coinType1) {
             $scope.coinType2 = oldVal;
         };
 
         deleteNonSelectedCoins();
-        
+
         if( !checkBalanceForCoin(newVal) && !Object.keys($scope.selectedCoinsBalance).length) {
-            $scope.coinType2 = '';  
+            $scope.coinType2 = '';
         };
-        
+
     });
-    
+
     $scope.getBalance = function(exchangeName, coinName) {
-        if($scope.selectedCoinsBalance[coinName] && 
+        if($scope.selectedCoinsBalance[coinName] &&
             $scope.selectedCoinsBalance[coinName].exchange === exchangeName) {
 
             return $scope.selectedCoinsBalance[coinName].balance;
-        } else 
+        } else
             return 0;
     };
 
@@ -164,10 +253,3 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
     }
 
 });
-
-Instantdex.filter('toFixed', function(){
-    return function(input, dpoints){
-        return parseFloat(input).toFixed(dpoints);
-    }
-});
-

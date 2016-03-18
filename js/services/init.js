@@ -47,18 +47,18 @@ root.makeRequest = function( request, callback ) {
 						console.log('pexe Response is ' + response);
 						if(typeof callback === 'function'){
 								callback(request, response);
-		
+
 						}
-				});   
+				});
 				}else{
 						request = JSON.parse( request );
 				var usepost=root.useGETRequest(request);
 				var url="";
 		/*
-		 * Ajax request will be sent if pexe is not loaded or 
+		 * Ajax request will be sent if pexe is not loaded or
 		 * if usepexe is set to false
 		 * (this adds the user the ability to handle how requests are sent)
-		 */ 
+		 */
 		if(!usepost){
 			url=root.returnAJAXPostURL(request);
 			$http({
@@ -84,9 +84,9 @@ root.makeRequest = function( request, callback ) {
 					}, function errorCallback(response) {
 						 console.log('POST request failed.');
 					});
-					 
+
 			}
-		
+
 		}
 
 	 }
@@ -99,9 +99,9 @@ root.makeRequest = function( request, callback ) {
 						return true;
 				}
 		};
-		
+
 		root.returnAJAXPostURL=function(request){
-				
+
 				var url=root.domain+":"+root.port;
 				if(request.method === undefined){
 						console.log("Invalid request.");
@@ -110,9 +110,9 @@ root.makeRequest = function( request, callback ) {
 				console.log("Post Url for request:"+url);
 				return url;
 		};
-		
+
 		root.returnAJAXgetURL=function(request){
-				
+
 				var url=root.domain+":"+root.port+"/api/";
 				if(request.method === undefined){
 						console.log("Invalid request.");
@@ -123,9 +123,9 @@ root.makeRequest = function( request, callback ) {
 				}else{
 						 url=url+request.agent+"/";
 				}
-				
+
 				url=url+request.method+"/";
-				
+
 				for(var i in request){
 						if(i==="agent" ||i==="method"){
 								continue;
@@ -150,7 +150,7 @@ root.makeRequest = function( request, callback ) {
 
 
 'use strict';
-Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices, ApikeyService, BalanceServices, $rootScope) {
+Instantdex.factory('naclCommon', function($log,naclAPI,fileStorageService, GlobalServices, ApikeyService, BalanceServices, CoinExchangeService, $rootScope) {
 
 							var root={
 		/** A reference to the NaCl module, once it is loaded. */
@@ -240,7 +240,7 @@ var isRelease = true;
 	 * Run all tests for this example.
 	 *
 	 * @param {Object} moduleEl The module DOM element.
-	 
+
 	function runTests(moduleEl) {
 		console.log('runTests()');
 		root.tester = new Tester();
@@ -301,7 +301,7 @@ var isRelease = true;
 		var listenerDiv = document.getElementById('listener');
 		listenerDiv.appendChild(moduleEl);
 		$log.info('nacl module appended');
-		
+
 		// Request the offsetTop property to force a relayout. As of Apr 10, 2014
 		// this is needed if the module is being loaded on a Chrome App's
 		// background page (see crbug.com/350445).
@@ -352,7 +352,7 @@ var isRelease = true;
 		console.log("nacl Listeners attached");
 	}
 
-			
+
 			function ArrayBufferToString(buf) { return String.fromCharCode.apply(null, new Uint16Array(buf)); }
 
 // Called by the common.js module.
@@ -361,20 +361,45 @@ root.handleMessage=function(message_event) {
 	if ((typeof(data) === 'string' || data instanceof String)) {
 		root.logMessage(data);
 		if(data.indexOf("iguana_rpcloop")>-1  || data.indexOf("bind(127.0.0.1)")>-1){
-			
+
 			//var x='{"agent":"SuperNET","method":"help"}';
 			//var x='{"agent":"InstantDEX","method":"apikeypair","exchange":"qq","apikey":"oo","apisecret":"kk"}';
-		
+
  //naclAPI.makeRequest(x);
+/**
+
+         	*  Ask user passphrase
+         	*  Decrypt apikeypairs json
+         	*  Access all api keys if where saved
+         	*/
+	        ApikeyService.getApiKeyPairs(function(json) {
+	            ApikeyService.callApiKeyPairsApi(json);
+	            console.log('init getapikeypairs', json);
+	            var savedExchanges = [];
+	            for(var i in GlobalServices.exchangeDetails) {
+	                var current = json[GlobalServices.exchangeDetails[i]];
+
+	                if(current === "true" || current === true) {
+	                    savedExchanges.push(GlobalServices.exchangeDetails[i]);
+	                };
+	            }
+	            GlobalServices.exchangeWithApiCreds = savedExchanges;
+	            $rootScope.$broadcast("newExchangeApiCredAdded", savedExchanges);
+	            //get all coins and exchangewise coins
+				GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
+	            if(GlobalServices.exchangeWithApiCreds.length != 0){
+	            	BalanceServices.initBalanceCall();
+	            }
+
+				CoinExchangeService.getOpenOrders();
+	        });
+
 			var request = '{\"agent\":\"InstantDEX\",\"method\":\"allexchanges\"}';
 			var callback = function(req, res){
 				GlobalServices.exchangeDetails = res.data.result;
 				// console.log(res.data.result);
-
-				//get all coins and exchangewise coins
 				GlobalServices.initExchangeCoinsData();
 				console.log("Calling saveExchangesStatusForSession...");
-
 			}
 			naclAPI.makeRequest(request, callback);
  		}
@@ -411,8 +436,8 @@ root.handleMessage=function(message_event) {
 	} else {
 		root.logMessage('Error: Unknow message `' + data + '` received from NaCl module.');
 	}
-	
-	
+
+
 };
 
 
@@ -552,7 +577,7 @@ root.handleMessage=function(message_event) {
 							}
 							return true;
 							}
-							
+
 							function retmsg(msg)
 							{
 							root.naclModule.postMessage(msg);
@@ -598,7 +623,7 @@ root.handleMessage=function(message_event) {
 							}
 							console.log(request);
 							}
-							
+
 		if (typeof message_event.data === 'string') {
 			for (var type in defaultMessageTypes) {
 				if (defaultMessageTypes.hasOwnProperty(type)) {
@@ -657,7 +682,7 @@ root.handleMessage=function(message_event) {
 			root.updateStatus('Waiting.');
 		}
 	}
-	
+
 	root.onload=function(){
 
 if(!root.loaded){
@@ -666,7 +691,7 @@ console.log("init called");
     // The data-* attributes on the body can be referenced via body.dataset.
     if (body.dataset) {
         //var  loadFunction = root.domContentLoaded;
-        
+
         // From https://developer.mozilla.org/en-US/docs/DOM/window.location
         var searchVars = {};
         if (window.location.search.length > 1) {
@@ -678,7 +703,7 @@ console.log("init called");
             }
         }
 
-        
+
             var toolchains = body.dataset.tools.split(' ');
             var configs = body.dataset.configs.split(' ');
 
@@ -716,29 +741,6 @@ console.log("init called");
                 body.dataset.height, attrs);
 	root.loaded=true;
 
-        /**
-         *  Ask user passphrase
-         *  Decrypt apikeypairs json
-         *  Access all api keys if where saved
-         */
-        ApikeyService.getApiKeyPairs(function(json) {
-            ApikeyService.callApiKeyPairsApi(json);
-            console.log('init getapikeypairs', json);
-            var savedExchanges = [];
-            for(var i in GlobalServices.exchangeDetails) {
-                var current = json[GlobalServices.exchangeDetails[i]];
-                
-                if(current === "true" || current === true) {
-                    savedExchanges.push(GlobalServices.exchangeDetails[i]);
-                };
-            }
-            GlobalServices.exchangeWithApiCreds = savedExchanges;
-            $rootScope.$broadcast("newExchangeApiCredAdded", savedExchanges);
-            GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
-            if(GlobalServices.exchangeWithApiCreds.length != 0){
-            	BalanceServices.initBalanceCall();
-            }
-        });
 
     }
     }
@@ -755,7 +757,7 @@ console.log("init called");
    *     set element 'statusField' to the message from the last call to
    *     updateStatus.
    */
-  
+
   function updateStatus(opt_message) {
     if (opt_message) {
       root.statusText = opt_message;

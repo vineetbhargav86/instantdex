@@ -7,20 +7,20 @@
 						<div class="row">
 							<div class="left-part small-12 medium-8 large-8 columns">
 								<label>Pairing</label>
-								<select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType1" ng-change="coinsChanged()">
+								<select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType1" ng-change="coinsChanged()" title="Used as Base in exchange">
 									<option value="">Select Coin</option>
 								</select>
 								<span class="seprator">/</span>
-								
-								<select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType2" ng-change="coinsChanged()">
+
+								<select ng-options="coin as coin for coin in coinsValidExchanges | orderBy:'coin'" ng-model="coinType2" ng-change="coinsChanged()" title="Used as Rel in exchange">
 									<option value="">Select Coin</option>
 								</select>
-								
+
 								<span class="interchange-img">
 									<a href="#" ng-click="exchangeCoinsTypes($event)">
 											<i class="fa fa-exchange"></i>
 									</a>
-								</span>     
+								</span>
 							</div>
 							<div class="right-part small-12 medium-4 large-4 columns">
 								<div class="top">
@@ -48,7 +48,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="row">
 			<div class="angular-box small-12 columns">
 				<angular-accordion>
@@ -62,22 +62,22 @@
 					<div class="row">
 						<div class="left-box medium-6 columns">
 							<div class="innr-box">
-								<h4>Buy {{coinType2}} for {{coinType1}}</h4>
-								<h5><strong>Balance:</strong> {{getBalance(exchange, coinType1)}} {{coinType1}}</h5>
+								<h4>Buy {{coinType1}} for {{coinType2}}</h4>
+								<h5><strong>Balance:</strong> {{getBalance(exchange, coinType2)}} {{coinType2}}</h5>
 								<form>
 									<ul class="form-list">
 										<li>
 											<label>Quantity</label>
 											<div class="input-group">
-													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">{{coinType2}}</span>
+													<input type="text" name="" class="rem-value input-group-field"  ng-model="buyDet[exchange].quantity">
+													<span class="input-group-label">{{coinType1}}</span>
 											</div>
 										</li>
 										<li>
 											<label>Bid</label>
 											<div class="input-group">
-													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">{{coinType1}}</span>
+													<input type="text" name="" class="rem-value input-group-field"  ng-model="buyDet[exchange].price">
+													<span class="input-group-label">{{coinType2}}</span>
 											</div>
 										</li>
 										<li>
@@ -109,11 +109,11 @@
 										<li>
 											<label>Total</label>
 											<div class="input-group small left">
-													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">{{coinType1}}</span>
+													<input type="text" name="" class="rem-value input-group-field" ng-disabled="true" value="{{buyDet[exchange].quantity * buyDet[exchange].price}}">
+													<span class="input-group-label">{{coinType2}}</span>
 											</div>
 											<span class="buy-btn">
-												<a href="#" ng-click="preventDefault($event)">Buy {{coinType2}}</a>
+												<a href="#" ng-click="callBuyApi($event, exchange)">Buy {{coinType1}}</a>
 											</span>
 										</li>
 									</ul>
@@ -122,30 +122,30 @@
 						</div>
 						<div class="right-box medium-6 columns">
 							<div class="innr-box">
-								<h4>Sell {{coinType2}} for {{coinType1}}</h4>
-								<h5><strong>Balance:</strong> {{getBalance(exchange, coinType2)}} {{coinType2}}</h5>
+								<h4>Sell {{coinType1}} for {{coinType2}}</h4>
+								<h5><strong>Balance:</strong> {{getBalance(exchange, coinType1)}} {{coinType1}}</h5>
 								<form>
 									<ul class="form-list">
 										<li>
 											<label>Quantity</label>
 											<div class="input-group">
-													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">{{coinType2}}</span>
+													<input type="text" name="" class="rem-value input-group-field" ng-model="sellDet[exchange].quantity">
+													<span class="input-group-label">{{coinType1}}</span>
 											</div>
 										</li>
 										<li>
 											<label>Ask</label>
 											<div class="input-group">
-													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">{{coinType1}}</span>
+													<input type="text" name="" class="rem-value input-group-field"  ng-model="sellDet[exchange].price">
+													<span class="input-group-label">{{coinType2}}</span>
 											</div>
 										</li>
 										<li>
 											<label>Order Type</label>
 											<div class="input-group">
-												 <select>
-															<option>Limit (default)</option>
-													</select>
+												<select>
+													<option>Limit (default)</option>
+												</select>
 											</div>
 										</li>
 										<li>
@@ -159,11 +159,11 @@
 										<li>
 											<label>Total</label>
 											<div class="input-group small left">
-													<input type="text" name="" class="rem-value input-group-field" value="">
-													<span class="input-group-label">{{coinType1}}</span>
+													<input type="text" name="" class="rem-value input-group-field" ng-disabled="true" value="{{sellDet[exchange].quantity * sellDet[exchange].price}}">
+													<span class="input-group-label">{{coinType2}}</span>
 											</div>
 											<span class="buy-btn">
-												<a href="#" ng-click="preventDefault($event)">Sell {{coinType2}}</a>
+												<a href="#" ng-click="callSellApi($event, exchange)">Sell {{coinType1}}</a>
 											</span>
 										</li>
 									</ul>
@@ -171,7 +171,7 @@
 							</div>
 						</div>
 					</div>
-		
+
 					<div class="row">
 						<div class="left-box medium-6 columns">
 							<div class="innr-box-01">
@@ -180,9 +180,9 @@
 									<table>
 										<thead>
 											<tr>
-												<th>Quantity {{coinType2}}</th>
-												<th>Price in {{coinType1}}</th>
-												<th>Total in {{coinType1}}</th>
+												<th>Quantity {{coinType1}}</th>
+												<th>Price in {{coinType2}}</th>
+												<th>Total in {{coinType2}}</th>
 											</tr>
 										</thead>
 										<tbody class="text-right">
@@ -203,9 +203,9 @@
 									<table>
 										<thead>
 											<tr>
-												<th>Quantity {{coinType2}}</th>
-												<th>Price in {{coinType1}}</th>
-												<th>Total in {{coinType1}}</th>
+												<th>Quantity {{coinType1}}</th>
+												<th>Price in {{coinType2}}</th>
+												<th>Total in {{coinType2}}</th>
 											</tr>
 										</thead>
 										<tbody class="text-right">
@@ -272,11 +272,11 @@
 						Content 3
 				</pane-content>
 			</pane>-->
-			
+
 		</angular-accordion>
 			</div>
 		</div>
-		
+
 		<div class="footer-frame small-12 columns">
 			<div class="footer">
 				<h4>Order History</h4>
@@ -286,23 +286,37 @@
 						<tr>
 							<th>Type</th>
 							<th>Ordernumber</th>
-							<th>Fee</th>
 							<th>Amount</th>
 							<th>Total</th>
 							<th>rate</th>
+							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat-start='(exch,order) in orderHistory'>
+						<!-- <tr ng-repeat-start='(exch,order) in orderHistory'>
 							<td colspan='6'>{{exch}}</td>
 						</tr>
 						<tr ng-repeat-end ng-repeat='(orderNum, orderDet) in order'>
-							<td>{{orderDet.type}}</td>	
-							<td>{{orderNum}}</td>	
-							<td>{{orderDet.fee | number:8}}</td>	
-							<td>{{orderDet.amount | number:8}}</td>	
-							<td>{{orderDet.total | number:8}}</td>	
-							<td>{{orderDet.rate | number:8}}</td>	
+							<td>{{orderDet.type}}</td>
+							<td>{{orderNum}}</td>
+							<td>{{orderDet.fee | number:8}}</td>
+							<td>{{orderDet.amount | number:8}}</td>
+							<td>{{orderDet.total | number:8}}</td>
+							<td>{{orderDet.rate | number:8}}</td>
+						</tr> -->
+						<tr ng-repeat-start='(exch,orders) in openOrders'>
+							<td colspan='6'><strong>{{exch | firstUpper}} Pending Orders:<strong></td>
+						</tr>
+						<tr ng-repeat-end ng-repeat='ord in orders'>
+							<td>{{ord.type}}</td>
+							<td>{{ord.orderNumber}}</td>
+							<!-- <td>{{ord.fee | number:8}}</td> -->
+							<td>{{ord.amount | number:8}}</td>
+							<td>{{ord.total | number:8}}</td>
+							<td>{{ord.rate | number:8}}</td>
+							<td>
+								<a href="#" ng-click="preventDefault($event)">Cancel Order <i class="fa fa-times"></i></a>
+							</td>
 						</tr>
 					</tbody>
 				</table>
