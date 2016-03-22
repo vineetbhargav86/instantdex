@@ -16,7 +16,7 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
 
     $scope.sellDet = [];
     $scope.buyDet = [];
-
+    $scope.minTotalError = false;
     $scope.orderHistory = [];
     $scope.openOrders = {};
     // GlobalServices.getOrderHistory($scope.exchangeWithApiCreds)
@@ -25,12 +25,12 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
     //     });
 
     $scope.initBuySellObjectsPerExchange = function(){
+        $scope.openOrders = angular.copy(CoinExchangeService.openOrders);
         for(var i in $scope.exchangeWithApiCreds){
             $scope.sellDet[$scope.exchangeWithApiCreds[i]] = {"price": 0, "quantity": 0};
             $scope.buyDet[$scope.exchangeWithApiCreds[i]] = {"price": 0, "quantity": 0};
             // $scope.openOrders[$scope.exchangeWithApiCreds[i]] = [];
         }
-        $scope.openOrders = angular.copy(CoinExchangeService.openOrders);
     }
 
     $scope.switchToCombinedOr1By1 = function(){
@@ -110,7 +110,7 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
         $scope.fetchOrderTables();
     }, 120000);
 
-    $scope.validateBalance = function(exchange){
+    $scope.validate = function(exchange){
         if($scope.selectedCoinsBalance[$scope.coinType1] && $scope.selectedCoinsBalance[$scope.coinType1].balance){
             if($scope.selectedCoinsBalance[$scope.coinType1].balance < $scope.sellDet[exchange].quantity ){
                 GlobalServices.showMessageDialog("Balance is not sufficient to go ahead with the trade.");
@@ -119,6 +119,10 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
         }
         else{
             GlobalServices.showMessageDialog("No balance available to go ahead with the trade.");
+            return false;
+        }
+        if($scope.sellDet[exchange].price * $scope.sellDet[exchange].quantity < 0.0001){
+            GlobalServices.showMessageDialog("Total should be minimum 0.0001.");
             return false;
         }
         return true;
@@ -141,7 +145,12 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
 
     $scope.buyApiCallback = function(req, res){
         // Call openorders api and
-        $scope.callOpenOrdersApi(req.exchange);
+        if(res.data.hasOwnProperty("error")){
+            GlobalServices.showMessageDialog(res.data.error);
+        }
+        else{
+            $scope.callOpenOrdersApi(req.exchange);
+        }
     }
 
     $scope.callBuyApi = function(event, exchange){
@@ -153,31 +162,46 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
 
     $scope.sellApiCallback = function(req, res){
         // Call openorders api and
-        $scope.callOpenOrdersApi(req.exchange);
+        if(res.data.hasOwnProperty("error")){
+            GlobalServices.showMessageDialog(res.data.error);
+        }
+        else{
+            $scope.callOpenOrdersApi(req.exchange);
+        }
     }
 
     $scope.callSellApi = function(event, exchange){
         event.preventDefault();
-        if($scope.verifyCoinPairForExchange(exchange) && $scope.validateBalance(exchange)){
+        if($scope.verifyCoinPairForExchange(exchange) && $scope.validate(exchange)){
             CoinExchangeService.sellApiWrapper($scope.sellApiCallback, exchange, $scope.coinType1, $scope.coinType2, $scope.sellDet[exchange]['price'], $scope.sellDet[exchange]['quantity'], 1);
         }
     }
 
     $scope.openOrderApiCallback = function(req, res){
         // populate orderhistory table
-
-        if(res.data[$scope.coinType1+"_"+$scope.coinType2] && res.data[$scope.coinType1+"_"+$scope.coinType2].length > 0){
-            for(var i in res.data[$scope.coinType1+"_"+$scope.coinType2]){
-                $scope.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
-                CoinExchangeService.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
+        $scope.openOrders[req.exchange] = [];
+        CoinExchangeService.openOrders[req.exchange] = [];
+        var keys = Object.keys(res.data);
+        for(var i in keys){
+            if(keys[i] != "tag" && res.data[keys[i]].length > 0){
+                for(var j in res.data[keys[i]]){
+                    $scope.openOrders[req.exchange].push(res.data[keys[i]][j]);
+                    CoinExchangeService.openOrders[req.exchange].push(res.data[keys[i]][j]);
+                }
             }
         }
-        else if(res.data[$scope.coinType2+"_"+$scope.coinType1] && res.data[$scope.coinType2+"_"+$scope.coinType1] > 0){
-            for(var i in res.data[$scope.coinType1+"_"+$scope.coinType2]){
-                $scope.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
-                CoinExchangeService.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
-            }
-        }
+        // if(res.data[$scope.coinType1+"_"+$scope.coinType2] && res.data[$scope.coinType1+"_"+$scope.coinType2].length > 0){
+        //     for(var i in res.data[$scope.coinType1+"_"+$scope.coinType2]){
+        //         $scope.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
+        //         CoinExchangeService.openOrders[req.exchange].push(res.data[$scope.coinType1+"_"+$scope.coinType2][i]);
+        //     }
+        // }
+        // else if(res.data[$scope.coinType2+"_"+$scope.coinType1] && res.data[$scope.coinType2+"_"+$scope.coinType1].length > 0){
+        //     for(var i in res.data[$scope.coinType2+"_"+$scope.coinType1]){
+        //         $scope.openOrders[req.exchange].push(res.data[$scope.coinType2+"_"+$scope.coinType1][i]);
+        //         CoinExchangeService.openOrders[req.exchange].push(res.data[$scope.coinType2+"_"+$scope.coinType1][i]);
+        //     }
+        // }
     }
 
     $scope.callOpenOrdersApi = function(exchange){

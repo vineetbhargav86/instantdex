@@ -8,7 +8,7 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
     $scope.coinsValidExchanges = GlobalServices.coinsValidExchanges;
 
     $scope.exchangeWithApiCreds = GlobalServices.exchangeWithApiCreds;
-    
+
     console.log("coinsValidExchanges: "+GlobalServices.coinsValidExchanges);
 
     $scope.coinType1 = $stateParams.coinType1 || "";
@@ -123,7 +123,7 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
     }
     var resumeTradeBot = function(botId) {
         var exchanges = $scope.exchangeWithApiCreds;
-        
+
         for(var i=0; i<exchanges.length; i++) {
             var request = '{\"agent\":\"tradebot\",\"method\":\"resume\",\"botid\":\"'+ botId +'\",\"exchange\":\"'+ exchanges[i] +'\"}';
             GlobalServices.makeRequest(request, function(req, res) {
@@ -142,7 +142,7 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
             resumeTradeBot(res.data.tag);
 
             $scope.avePriceResponse = res.data;
-            for(var j in $scope.exchCoinsTable){                
+            for(var j in $scope.exchCoinsTable){
                 $scope.exchCoinsTable[j].price = res.data.aveprice;
             }
             $scope.loadingAvePrice = false;
@@ -173,12 +173,12 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
     });
 
     $scope.convertCoins = [];
-    
+
 
     // recreates model for convert form selects
     var updateConvertCoins = function() {
         var eCoinsTable = $scope.exchCoinsTable;
-        
+
         function addCoinExch(exCoinsTableRow) {
             if(exCoinsTableRow.apicredsset) {
                 var coinA = exCoinsTableRow.amount,
@@ -190,8 +190,8 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
                         exch: exCoinsTableRow.exchange,
                         labelCoinA: coinA + ' ' + $scope.coinType1,
                         labelCoinB: coinB + ' ' + $scope.coinType2
-                    });    
-                };    
+                    });
+                };
             };
         };
 
@@ -203,7 +203,7 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
             };
         };
     };
-    
+
     // model for convert form
     $scope.convert = {};
 
@@ -214,10 +214,10 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
     };
 
     $scope.$watch('exchCoinsTable', function() {
-        (!$scope.exchangeWithApiCreds.length) ? 
-            $scope.exchangeWithApiCreds = 
+        (!$scope.exchangeWithApiCreds.length) ?
+            $scope.exchangeWithApiCreds =
             GlobalServices.exchangeWithApiCreds : null;
-        
+
         updateConvertCoins();
     }, true);
 
@@ -253,7 +253,7 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
                 for(var j=0; j<coinDetails.length; j++) {
                     if(coinDetails[j].coin === coinName) {
                         hasBalance = true;
-                        $scope.selectedCoinsBalance[coinName] = { 
+                        $scope.selectedCoinsBalance[coinName] = {
                             balance: coinDetails[j].balance,
                             exchange: exchangeNames[i].name
                         };
@@ -284,9 +284,9 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
         deleteNonSelectedCoins();
 
         if(!checkBalanceForCoin(newVal) && !Object.keys($scope.selectedCoinsBalance).length) {
-            $scope.coinType1 = '';  
+            $scope.coinType1 = '';
         };
-        
+
     });
 
     // check if coin type 2 not equal to  coin type 1
@@ -299,9 +299,9 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
         deleteNonSelectedCoins();
 
         if( !checkBalanceForCoin(newVal) && !Object.keys($scope.selectedCoinsBalance).length) {
-            $scope.coinType2 = '';  
+            $scope.coinType2 = '';
         };
-        
+
     });
 
     $scope.exchangeCoinsTypes = function(event){
@@ -334,28 +334,28 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
             "exchange": exchange
         });
     }
-    
+
     $scope.timerStart = function(){
-      
-      var endtimeSeconds = 5; 
-      var endtime = Date.now() + endtimeSeconds*1000 + 1999; 
-     
+
+      var endtimeSeconds = 5;
+      var endtime = Date.now() + endtimeSeconds*1000 + 1999;
+
       var myTimer = $interval(function(){startTimer();}, 1000);
-      
+
      function startTimer(){
         var differ = endtime - Date.now();
         if(differ<1000)
           stopTimer();
        else{
         var sec = Math.floor( (differ/1000) % 60 );
-        var min = Math.floor( (differ/1000/60) % 60 ); 
+        var min = Math.floor( (differ/1000/60) % 60 );
         if(min<10) min = '0'+min;
         if(sec<10) sec = '0'+sec;
         $scope.timer = min+':'+sec;
        $scope.timerOn = true;
        }
       };
-      
+
       function stopTimer(){
         if(angular.isDefined(myTimer)){
           $interval.cancel(myTimer);
@@ -363,6 +363,6 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
           $scope.timerOn = false;
         }
       };
-      
+
     };
 });

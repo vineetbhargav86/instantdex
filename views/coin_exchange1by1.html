@@ -177,6 +177,28 @@
 							<div class="innr-box-01">
 								<h4>Sell Orders</h4>
 								<div class="table-box">
+									<!-- <p class="fixed-table-header float-left">
+										<span class="small-2 large-4 columns">Quantity {{coinType1}}</span>
+										<span class="small-2 large-4 columns">Price in {{coinType2}}</span>
+										<span class="small-2 large-4 columns">Total in {{coinType2}}</span>
+									</p>
+									<p class="text-right float-left">
+										<p ng-repeat="bid in orderbook[exchange].sellorders" class="text-right">
+											<span class="small-2 large-4 columns">{{bid.volume | toFixed:8}}</span>
+											<span class="small-2 large-4 columns">{{bid.price | toFixed:8}}</span>
+											<span class="small-2 large-4 columns">{{bid.price * bid.volume | toFixed:8}}</span>
+										</p>
+									</p> -->
+									<!-- <p class="fixed-table-header float-left">
+										<span class="small-2 large-4 columns">Quantity {{coinType1}}</span>
+										<span class="small-2 large-4 columns">Price in {{coinType2}}</span>
+										<span class="small-2 large-4 columns">Total in {{coinType2}}</span>
+									</p> -->
+									<!-- <div class="row fixed-table-header">
+										<span class="small-2 large-4 columns">Quantity {{coinType1}}</span>
+										<span class="small-2 large-4 columns">Price in {{coinType2}}</span>
+										<span class="small-2 large-4 columns">Total in {{coinType2}}</span>
+									</div> -->
 									<table>
 										<thead>
 											<tr>
@@ -255,7 +277,7 @@
 							<td>{{orderDet.rate | number:8}}</td>
 						</tr> -->
 						<tr ng-repeat-start='(exch,orders) in openOrders'>
-							<td colspan='6'><strong>{{exch | firstUpper}} Pending Orders:<strong></td>
+							<td colspan='6'><strong>{{exch | firstUpper}} Pending Orders:</strong> <span ng-show="orders.length == 0">No pending orders</span></td>
 						</tr>
 						<tr ng-repeat-end ng-repeat='ord in orders'>
 							<td>{{ord.type}}</td>

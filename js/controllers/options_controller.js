@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.controller('OptionsController', function($scope, $state, $stateParams, $http, $rootScope, ngDialog, InstantdexServices, GlobalServices, ApikeyService, BalanceServices){
+Instantdex.controller('OptionsController', function($scope, $state, $stateParams, $http, $rootScope, ngDialog, InstantdexServices, GlobalServices, ApikeyService, BalanceServices, CoinExchangeService){
 	$scope.exchanges = [];
     $scope.preventDefault = function(event){
         event.preventDefault();
@@ -62,6 +62,7 @@ Instantdex.controller('OptionsController', function($scope, $state, $stateParams
 			    				if(GlobalServices.exchangeWithApiCreds.indexOf(apiCreds.value.exchange) == -1){
 			    					GlobalServices.exchangeWithApiCreds.push(apiCreds.value.exchange);
 	                                $rootScope.$broadcast("newExchangeApiCredAdded", apiCreds.value.exchange);
+									CoinExchangeService.getOpenOrders();
 	                                GlobalServices.buildSupportedCoinsListForApiCredsAvailableExchanges();
 	                                BalanceServices.getCoinBalanceForAnExchange(apiCreds.value.exchange);
 			    				}
@@ -93,7 +94,7 @@ Instantdex.controller('OptionsController', function($scope, $state, $stateParams
 		}
     }
     if(GlobalServices.exchangesStatus.length > 0){
-    	$scope.exchanges = angular.copy(GlobalServices.exchangesStatus);	
+    	$scope.exchanges = angular.copy(GlobalServices.exchangesStatus);
     }
     else{
     	$scope.setExtraParamsToExchanges();
@@ -106,14 +107,14 @@ Instantdex.controller('OptionsController', function($scope, $state, $stateParams
 
 	var getPassphrase = function() {
 		var modalInstanse = ngDialog.open({
-			template: '' // go from here 
+			template: '' // go from here
 		});
 	};
 
 
-	// deprecated function. can be deleted. 
-	// apikey pairs api access in init.js with 
-	// function call begins wiht:  
+	// deprecated function. can be deleted.
+	// apikey pairs api access in init.js with
+	// function call begins wiht:
 	// ApikeyService.getApiKeyPairs(true, function(json) {
 	$scope.apiKeyPair = function(apiCreds){
 		var request = '{\"agent\":\"InstantDEX\",\"method\":\"apikeypair\",\"exchange\":\"'+apiCreds.exchange+
@@ -125,7 +126,7 @@ Instantdex.controller('OptionsController', function($scope, $state, $stateParams
     				$scope.exchanges[e]["areCredsSet"] = true;
     				GlobalServices.exchangesStatus[e]["areCredsSet"] = true;
     				//call loading supported coins
-    				
+
     				break;
     			}
     		}

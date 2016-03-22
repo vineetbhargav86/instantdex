@@ -372,6 +372,7 @@ root.handleMessage=function(message_event) {
          	*  Decrypt apikeypairs json
          	*  Access all api keys if where saved
          	*/
+			$rootScope.$broadcast("appInitialised", "");
 	        ApikeyService.getApiKeyPairs(function(json) {
 	            ApikeyService.callApiKeyPairsApi(json);
 	            console.log('init getapikeypairs', json);

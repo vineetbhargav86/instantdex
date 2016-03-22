@@ -48,16 +48,16 @@ Instantdex.service('CoinExchangeService', function($http, $q, $timeout, GlobalSe
 
 	this.openOrderApiCallback = function(req, res){
 	    // populate orderhistory table
-		var keys = Object.keys(res.data);
-		if(res.data.hasOwnProperty("message")){
+		if(res.data.hasOwnProperty("message") || res.data.hasOwnProperty("error")){
 			return false;// Error
 		}
+		var keys = Object.keys(res.data);
 		for(var i in keys){
-			for(var j in res.data[keys[i]]){
-				if(keys[i] != "tag"){
+			if(keys[i] != "tag" && res.data[keys[i]].length > 0){
+				for(var j in res.data[keys[i]]){
 					coinExchService.openOrders[req.exchange].push(res.data[keys[i]][j]);
-				}
-	        }
+		        }
+			}
 		}
 	}
 

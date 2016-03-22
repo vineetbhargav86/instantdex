@@ -12,8 +12,8 @@
     <link rel="stylesheet" type="text/css" href="css/ngDialog.min.css">
     <link rel="stylesheet" type="text/css" href="css/ngDialog-theme-default.min.css">
     <link rel="stylesheet" type="text/css" href="css/angular-accordion.css">
-    
-    <link rel="stylesheet" type="text/css" href="css/angular-csp.css">  
+
+    <link rel="stylesheet" type="text/css" href="css/angular-csp.css">
 
     <!-- <script src="js/jquery.min.js"></script> -->
     <script src="js/libs/angular.min.js"></script>
@@ -44,6 +44,11 @@
 data-path="{tc}/{config}">
     <div class="fixed">
     <nav class="top-bar top-bar-01" data-topbar role="navigation" ng-controller="NavigationController">
+
+        <div ng-show="showInitSpinner" class="overlay">
+        	<img src="images/big-spinner.gif" class="init-spinner"/>
+        </div>
+
     	<div class="row">
         	<div class="top-section small-12 columns">
                 <ul class="title-area">
@@ -66,7 +71,7 @@ data-path="{tc}/{config}">
     </div>
 
     <div ui-view></div>
-    
+
     <div id="listener"></div>
 
 

@@ -7,6 +7,8 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout, ngDi
 		naclAPI.makeRequest(request, callback);
 	}
 
+	this.showInitSpinner = true;
+
 	this.all_coins = [];// List of all supported coins
 
 	this.exchangeDetails = [];// Contains all exchange details listed in options view
