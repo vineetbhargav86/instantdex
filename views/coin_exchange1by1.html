@@ -287,7 +287,7 @@
 							<td>{{ord.total | number:8}}</td>
 							<td>{{ord.rate | number:8}}</td>
 							<td>
-								<a href="#" ng-click="preventDefault($event)">Cancel Order <i class="fa fa-times"></i></a>
+								<a href="#" ng-click="callCancelApi($event, exch, ord.orderNumber)">Cancel Order <i class="fa fa-times"></i></a>
 							</td>
 						</tr>
 					</tbody>

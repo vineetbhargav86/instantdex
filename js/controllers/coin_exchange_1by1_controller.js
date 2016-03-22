@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $stateParams, GlobalServices, BalanceServices, CoinExchangeService, InstantdexServices, $interval){
+Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $stateParams, GlobalServices, BalanceServices, CoinExchangeService, InstantdexServices, $interval, ngDialog){
     $scope.combinedor1by1 = true;
     $scope.coinslist = GlobalServices.getCoinTypes();
 
@@ -19,6 +19,7 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
     $scope.minTotalError = false;
     $scope.orderHistory = [];
     $scope.openOrders = {};
+    console.log('open orders', $scope.openOrders);
     // GlobalServices.getOrderHistory($scope.exchangeWithApiCreds)
     //     .then(function(orderHistory) {
     //         $scope.orderHistory = orderHistory;
@@ -160,6 +161,7 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
         }
     }
 
+
     $scope.sellApiCallback = function(req, res){
         // Call openorders api and
         if(res.data.hasOwnProperty("error")){
@@ -176,6 +178,25 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
             CoinExchangeService.sellApiWrapper($scope.sellApiCallback, exchange, $scope.coinType1, $scope.coinType2, $scope.sellDet[exchange]['price'], $scope.sellDet[exchange]['quantity'], 1);
         }
     }
+
+    $scope.cancelApiCallback = function(req, res){
+        if(res.data.hasOwnProperty("error")){
+            GlobalServices.showMessageDialog(res.data.error);
+        } else {
+            $scope.callOpenOrdersApi(req.exchange);
+        }
+    };
+
+    $scope.callCancelApi = function(event, exchange, orderid) {
+        event.preventDefault();
+        
+        GlobalServices.showConfirmDialog(
+            'Are you sure you want to cancel order <b>' + orderid + '</b>?'
+        ).then(function() {
+            CoinExchangeService.cancelOrdersApiWrapper($scope.cancelApiCallback, exchange, orderid);
+        });
+        
+    };
 
     $scope.openOrderApiCallback = function(req, res){
         // populate orderhistory table

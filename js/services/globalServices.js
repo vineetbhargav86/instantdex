@@ -154,4 +154,14 @@ Instantdex.service('GlobalServices', function($http, $q, naclAPI, $timeout, ngDi
         });
     };
 
+    this.showConfirmDialog = function(msg) {
+    	return ngDialog.openConfirm({
+            template: '<p>' + msg + '</p>\
+	                <div class="ngdialog-buttons">\
+	                    <button type="button" class="button" ng-click="confirm()">Yes</button>\
+	                </div>',
+            plain: true
+        });
+    };
+
 });

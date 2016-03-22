@@ -41,9 +41,18 @@ Instantdex.service('CoinExchangeService', function($http, $q, $timeout, GlobalSe
 	this.openOrdersApiWrapper = function(scopeCallback, exchange){
 		var request = '{\"agent\":\"InstantDEX\",\"method\":\"openorders\",\"exchange\":\"'+exchange+'\"}';
 		var callback = function(req, res){
+			console.log('open orders', res);
 			scopeCallback(req, res);
 		}
 		GlobalServices.makeRequest(request, callback);
+	}
+
+	this.cancelOrdersApiWrapper = function(scopeCallback, exchange, orderid) {
+		var request = '{\"agent\":\"InstantDEX\",\"method\":\"cancelorder\",\"exchange\":\"'+exchange+'\",\"orderid\":\"'+orderid+'\"}';
+		var callback = function(req, res){
+			scopeCallback(req, res);
+		}
+		GlobalServices.makeRequest(request, callback);	
 	}
 
 	this.openOrderApiCallback = function(req, res){
