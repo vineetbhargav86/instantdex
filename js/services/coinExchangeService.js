@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.service('CoinExchangeService', function($http, $q, $timeout, GlobalServices){
+Instantdex.service('CoinExchangeService', function($http, $q, $timeout, GlobalServices, $rootScope){
 	var coinExchService = this;
 	this.orderbook = [];
 	this.openOrders = {};
@@ -59,6 +59,7 @@ Instantdex.service('CoinExchangeService', function($http, $q, $timeout, GlobalSe
 		        }
 			}
 		}
+		$rootScope.$broadcast("openOrdersFetched", "");
 	}
 
 	this.getOpenOrders = function(){

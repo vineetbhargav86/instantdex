@@ -7826,3 +7826,10 @@ nav.top-bar .active a{
     top: 40%;
     left: 45%;
 }
+
+.orders-inner-error{
+    width: 200px;
+}
+.orders-inner-header{
+    margin: 0px;
+}

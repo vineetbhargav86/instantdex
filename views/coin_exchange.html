@@ -169,32 +169,72 @@
   	<div class="footer">
       <h4>Order History</h4>
       <div class="table-box">
-      <table>
-      	<thead>
-            <tr>
-              <th>Type</th>
-              <th>Ordernumber</th>
-              <th>Fee</th>
-              <th>Amount</th>
-              <th>Total</th>
-              <th>rate</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat-start='(exch,order) in orderHistory'>
-              <td colspan='6'>{{exch}}</td>
-            </tr>
-            <tr ng-repeat-end ng-repeat='(orderNum, orderDet) in order'>
-              <td>{{orderDet.type}}</td>
-              <td>{{orderNum}}</td>
-              <td>{{orderDet.fee | number:8}}</td>
-              <td>{{orderDet.amount | number:8}}</td>
-              <td>{{orderDet.total | number:8}}</td>
-              <td>{{orderDet.rate | number:8}}</td>
-            </tr>
-          </tbody>
+	      <table>
+	      	<thead>
+	            <tr>
+				  <!-- <th>Exchange</th> -->
+	              <th>Type</th>
+	              <th>Ordernumber</th>
+	              <th>Fee</th>
+	              <th>Amount</th>
+	              <th>Total</th>
+	              <th>Rate</th>
+				  <th>Action</th>
+	            </tr>
+	          </thead>
+	          <tbody>
+				<!-- Open Orders -->
+				<!-- <caption class="text-left"><strong>Open Orders: </strong></caption> -->
+				<tr class="text-left"><td colspan='7'><h5 class="orders-inner-header">Open Orders: </h5></td></tr>
+	  			<tr ng-repeat-start='(exch,orders) in openOrders'>
+	  				<td colspan='7'>
+						<strong class="float-left">{{exch | firstUpper}} - </strong>
+						<span ng-show="orders.length == 0" class="float-left orders-inner-error">No pending orders</span>
+					</td>
+					<!-- <td colspan='6'></td> -->
+	  			</tr>
+	  			<tr ng-repeat-end ng-repeat='ord in orders'>
+					<!-- <td>{{exch | firstUpper}}</td> -->
+	  				<td>{{ord.type}}</td>
+	  				<td>{{ord.orderNumber}}</td>
+	  				<td>{{ord.fee | number:8}}</td>
+	  				<td>{{ord.amount | number:8}}</td>
+	  				<td>{{ord.total | number:8}}</td>
+	  				<td>{{ord.rate | number:8}}</td>
+	  				<td>
+	  					<a href="#" ng-click="preventDefault($event)">Cancel Order <i class="fa fa-times"></i></a>
+	  				</td>
+	  			</tr>
 
-        </table>
+				<tr><td colspan='7'></td></tr>
+
+				<!-- <caption class="text-left"><strong>Order History : </strong></caption> -->
+				<tr class="text-left"><td colspan='7'><h5 class="orders-inner-header">Order History: </h5></td></tr>
+			    <tr ng-repeat-start='(exch,order) in orderHistory'>
+			      <td colspan='7'>
+			   	   <strong class="float-left">{{exch | firstUpper}} - </strong>
+			   	   <span ng-show="Object.getOwnPropertyNames(orderHistory[exch]).length == 0" class="float-left orders-inner-error">No history</span>
+			      </td>
+			      <!-- <td colspan='6'></td> -->
+			    </tr>
+			    <tr ng-repeat-end ng-repeat='(orderNum, orderDet) in order'>
+			      <!-- <td>{{exch | firstUpper}}</td> -->
+			      <td>{{orderDet.type}}</td>
+			      <td>{{orderNum}}</td>
+			      <td>{{orderDet.fee | number:8}}</td>
+			      <td>{{orderDet.amount | number:8}}</td>
+			      <td>{{orderDet.total | number:8}}</td>
+			      <td>{{orderDet.rate | number:8}}</td>
+				  <td></td>
+			    </tr>
+			 </tbody>
+		 </table>
+		 <!-- Trade Orders -->
+		 <!-- <table>
+			 <tbody>
+
+	        </tbody>
+	    </table> -->
         </div>
       </div>
   </div>

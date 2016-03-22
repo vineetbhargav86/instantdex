@@ -1,6 +1,6 @@
 'use strict';
 
-Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI, naclCommon, $stateParams, GlobalServices, BalanceServices, $interval, $timeout){
+Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI, naclCommon, $stateParams, GlobalServices, BalanceServices, CoinExchangeService, $interval, $timeout){
     naclCommon.onload();
     $scope.combinedor1by1 = false;
     $scope.timerOn = false;
@@ -19,6 +19,16 @@ Instantdex.controller('CoinExchangeController', function($scope, $state, naclAPI
     $scope.selectedCoinsBalance = {};
 
     $scope.orderHistory = [];
+    $scope.openOrders = angular.copy(CoinExchangeService.openOrders);
+
+    $scope.$on("openOrdersFetched", function(event, data){
+        $scope.openOrders = angular.copy(CoinExchangeService.openOrders);
+
+        GlobalServices.getOrderHistory(GlobalServices.exchangeWithApiCreds)
+            .then(function(orderHistory) {
+                $scope.orderHistory = orderHistory;
+            });
+    });
 
     GlobalServices.getOrderHistory($scope.exchangeWithApiCreds)
         .then(function(orderHistory) {

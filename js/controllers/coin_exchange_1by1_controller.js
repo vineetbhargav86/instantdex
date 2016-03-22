@@ -24,6 +24,10 @@ Instantdex.controller('CoinExchange1By1Controller', function($scope, $state, $st
     //         $scope.orderHistory = orderHistory;
     //     });
 
+    $scope.$on("openOrdersFetched", function(event, data){
+        $scope.openOrders = angular.copy(CoinExchangeService.openOrders);
+    });
+
     $scope.initBuySellObjectsPerExchange = function(){
         $scope.openOrders = angular.copy(CoinExchangeService.openOrders);
         for(var i in $scope.exchangeWithApiCreds){
